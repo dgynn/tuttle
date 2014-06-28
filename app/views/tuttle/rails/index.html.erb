@@ -1,0 +1,22 @@
+<h1>Rails Configuration</h1>
+
+<h2>Config Settings</h2>
+<pre>
+Rails Version = <%= Rails::VERSION::STRING %>
+</pre>
+
+<dl class="dl-horizontal">
+  <%- @config.instance_variables.sort.each do |symbol| %>
+    <dt><%= symbol %></dt>
+    <dd><samp><%= @config.instance_variable_get(symbol) %></samp></dd>
+  <%- end %>
+</dl>
+
+<!--
+<pre>
+<%- @config.instance_variables.each do |symbol| %>
+<%= "#{symbol} = #{@config.instance_variable_get(symbol)}" %>
+
+<%- end %>
+</pre>
+-->

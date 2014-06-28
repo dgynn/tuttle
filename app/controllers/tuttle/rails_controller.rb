@@ -1,9 +1,10 @@
 require_dependency "tuttle/application_controller"
 
 module Tuttle
-  class HomeController < ApplicationController
+  class RailsController < ApplicationController
 
     def index
+      @config = Rails.configuration
     end
 
   end

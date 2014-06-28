@@ -1,0 +1,34 @@
+<h1>Ruby Configuration</h1>
+
+<h2>Gems</h2>
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Version</th>
+    <th>Summary</th>
+    <th>License</th>
+    <th>Homepage</th>
+  </tr>
+  <% Bundler.rubygems.all_specs.sort_by(&:name).each do |gemspec| %>
+      <tr>
+        <td class="text-nowrap"><%= gemspec.name %></td>
+        <td><%= gemspec.version.to_s %></td>
+        <td><%= gemspec.summary %></td>
+        <td><%= gemspec.licenses.join(', ') %></td>
+        <td><%= link_to gemspec.homepage, gemspec.homepage if !gemspec.homepage.blank? %></td>
+      </tr>
+  <% end %>
+</table>
+
+<h2>Garbage Collection Stats</h2>
+<pre>
+<%= GC.stat %>
+</pre>
+
+<h2>Environment</h2>
+<pre>
+<% ENV.sort.each do |key, val| %>
+<%= key %> = <%= val %>
+<% end %>
+</pre>
+

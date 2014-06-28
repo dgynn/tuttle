@@ -1,7 +1,7 @@
 require_dependency "tuttle/application_controller"
 
 module Tuttle
-  class HomeController < ApplicationController
+  class RubyController < ApplicationController
 
     def index
     end
