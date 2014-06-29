@@ -1,0 +1,17 @@
+<h2>Models</h2>
+
+<% if !Rails.configuration.eager_load %>
+<div class="alert alert-warning" role="alert">
+Note: This application is configured with <samp>eager_load=false</samp>. Only models whose classes have been loaded will be shown.
+</div>
+<% end %>
+
+<% if (0 == @models.size) %>
+No models were found in this application
+<% end %>
+<pre>
+<% @models.each do |model| %>
+<%= model.inspect.to_s %>
+
+<% end %>
+</pre>

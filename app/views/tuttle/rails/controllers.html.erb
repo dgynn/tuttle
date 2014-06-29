@@ -1,0 +1,10 @@
+<h2>Controllers and public instance methods</h2>
+<pre>
+<% @controllers.each do |controller| %>
+<%= controller.inspect %>
+<%- controller.action_methods.sort.each do |method| %>
+  <%= method.to_s %>
+<% end %>
+
+<% end %>
+</pre>
