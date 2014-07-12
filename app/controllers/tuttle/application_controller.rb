@@ -10,8 +10,10 @@ module Tuttle
         # Rails::Application::Finisher defines an initializer that *would* execute
         #   these two lines if eager_load were enabled
         # ActiveSupport.run_load_hooks(:before_eager_load, Rails.application)
-        Rails.configuration.eager_load_namespaces.each(&:eager_load!)
-        Tuttle::Engine.reload_needed = false
+        ActiveSupport::Notifications.instrument "tuttle.perform_eager_load" do
+          Rails.configuration.eager_load_namespaces.each(&:eager_load!)
+          Tuttle::Engine.reload_needed = false
+        end
       end
     end
 

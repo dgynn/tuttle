@@ -1,0 +1,22 @@
+<h1>Instrumentation</h1>
+
+<p>Events (<%= @events.size %>)</p>
+
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Time</th>
+    <th>Duration</th>
+    <th>Payload</th>
+    <th>TransactionID</th>
+  </tr>
+  <% @events.reverse.each do |event| -%>
+      <tr>
+        <td><%= event.name %></td>
+        <td><%= event.time.to_s(:db) %></td>
+        <td><%= number_with_precision(event.duration) %></td>
+        <td><%= truncate(event.payload.to_s, length: 250) %></td>
+        <td><%= event.transaction_id %></td>
+      </tr>
+  <% end -%>
+</table>

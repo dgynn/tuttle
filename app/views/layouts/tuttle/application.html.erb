@@ -39,6 +39,7 @@
             <li class="divider"></li>
             <li><%= link_to 'Controllers', rails_controllers_path %></li>
             <li><%= link_to 'Models', rails_models_path %></li>
+            <li><%= link_to 'Instrumentation', rails_instrumentation_path %></li>
           </ul>
         </li>
         <li><%= link_to 'Ruby', ruby_path %></li>
@@ -51,12 +52,12 @@
 
 <div class="container">
 <div class="row">
-  <%= yield %>
+<%= yield =%>
 </div>
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<%= javascript_include_tag "tuttle/application" %>
+<%= javascript_include_tag "tuttle/application" =%>
 </body>
 </html>

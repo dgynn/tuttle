@@ -24,5 +24,11 @@ module Tuttle
       @models = ActiveRecord::Base.descendants
       @models.sort_by!(&:name)
     end
+
+    def instrumentation
+      @events = Tuttle::Engine.events
+      @event_counts = Tuttle::Engine.event_counts
+    end
+
   end
 end

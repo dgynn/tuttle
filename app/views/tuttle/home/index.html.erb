@@ -1,3 +1,17 @@
 <h1>Welcome to Tuttle</h1>
 
 <p>Tuttle helps you ...</p>
+
+<div class="panel panel-default pull-right">
+  <div class="panel-heading">
+    <h3 class="panel-title">Events (<%= Tuttle::Engine.events.size %>)</h3>
+  </div>
+  <ul class="list-group">
+    <% @event_counts.sort.each do |name,val| -%>
+        <li class="list-group-item"><span class="badge"><%= val %></span><%= name %></li>
+    <% end -%>
+  </ul>
+  <div class="panel-body">
+    <%= link_to 'Details...', rails_instrumentation_path %>
+  </div>
+</div>
