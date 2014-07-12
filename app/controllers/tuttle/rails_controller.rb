@@ -4,6 +4,10 @@ module Tuttle
   class RailsController < ApplicationController
 
     def index
+      unless defined? Rails::Generators
+        require 'rails/generators'
+        Rails::Generators.lookup!
+      end
     end
 
     def controllers
