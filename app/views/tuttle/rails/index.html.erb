@@ -1,21 +1,41 @@
-<h1>Rails Configuration</h1>
+<h1>Rails Overview</h1>
 
-<h2>Config Settings</h2>
 <pre>
 Rails Version = <%= Rails::VERSION::STRING %>
+Environment = <%= Rails.env %>
+Root = <%= Rails.root %>
+Timezone = <%= Rails.configuration.time_zone %>
+Log Level = <%= Rails.configuration.log_level %>
 </pre>
 
-<dl class="dl-horizontal">
-  <%- Rails.configuration.instance_variables.sort.each do |symbol| %>
-    <dt><%= symbol %></dt>
-    <dd><samp><%= Rails.configuration.instance_variable_get(symbol) %></samp></dd>
-  <%- end %>
-</dl>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#config" role="tab" data-toggle="tab">Configuration</a></li>
+  <li><a href="#application" role="tab" data-toggle="tab">Application</a></li>
+  <li><a href="#initializers" role="tab" data-toggle="tab">Initializers</a></li>
+</ul>
 
-<h2>Application</h2>
-<dl class="dl-horizontal">
-  <%- Rails.application.instance_variables.sort.each do |symbol| %>
-      <dt><%= symbol %></dt>
-      <dd><samp><%= Rails.application.instance_variable_get(symbol) %></samp></dd>
-  <%- end %>
-</dl>
+<div class="tab-content">
+  <div class="tab-pane active" id="config">
+    <dl class="dl-horizontal">
+      <%- Rails.configuration.instance_variables.sort.each do |symbol| %>
+          <dt><%= symbol %></dt>
+          <dd><samp><%= Rails.configuration.instance_variable_get(symbol) %></samp></dd>
+      <%- end %>
+    </dl>
+  </div>
+  <div class="tab-pane" id="application">
+    <dl class="dl-horizontal">
+      <%- Rails.application.instance_variables.sort.each do |symbol| %>
+          <dt><%= symbol %></dt>
+          <dd><samp><%= Rails.application.instance_variable_get(symbol) %></samp></dd>
+      <%- end %>
+    </dl>
+  </div>
+  <div class="tab-pane" id="initializers">
+    <ol>
+      <%- Rails.application.initializers.each do |initializer| %>
+        <li><%= initializer.name %> - <%= initializer.instance_variable_get('@context').class.name %></dt>
+      <%- end %>
+    </ol>
+  </div>
+</div>

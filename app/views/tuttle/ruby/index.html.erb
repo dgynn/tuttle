@@ -1,34 +1,83 @@
 <h1>Ruby Configuration</h1>
 
-<h2>Gems</h2>
-<table class="table">
-  <tr>
-    <th>Name</th>
-    <th>Version</th>
-    <th>Summary</th>
-    <th>License</th>
-    <th>Homepage</th>
-  </tr>
-  <% Bundler.rubygems.all_specs.sort_by(&:name).each do |gemspec| %>
-      <tr>
-        <td class="text-nowrap"><%= gemspec.name %></td>
-        <td><%= gemspec.version.to_s %></td>
-        <td><%= gemspec.summary %></td>
-        <td><%= gemspec.licenses.join(', ') %></td>
-        <td><%= link_to gemspec.homepage, gemspec.homepage if !gemspec.homepage.blank? %></td>
-      </tr>
-  <% end %>
-</table>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#ruby" role="tab" data-toggle="tab">Ruby</a></li>
+  <li><a href="#environment" role="tab" data-toggle="tab">Environment</a></li>
+  <li><a href="#bundler" role="tab" data-toggle="tab">Bundler</a></li>
+  <li><a href="#gems" role="tab" data-toggle="tab">Gems</a></li>
+  <li><a href="#gc" role="tab" data-toggle="tab">Garbage Collection</a></li>
+</ul>
 
-<h2>Garbage Collection Stats</h2>
-<pre>
-<%= GC.stat %>
-</pre>
+<div class="tab-content">
+  <div class="tab-pane active" id="ruby">
+    <dl class="dl-horizontal">
+      <dt>RUBY_ENGINE</dt><dd><%= RUBY_ENGINE %></dd>
+      <dt>RUBY_VERSION</dt><dd><%= RUBY_VERSION %></dd>
+      <dt>RUBY_PATCHLEVEL</dt><dd><%= RUBY_PATCHLEVEL %></dd>
+      <dt>RUBY_RELEASE_DATE</dt><dd><%= RUBY_RELEASE_DATE %></dd>
+      <dt>RUBY_REVISION</dt><dd><%= RUBY_REVISION %></dd>
+      <dt>RUBY_PLATFORM</dt><dd><%= RUBY_PLATFORM %></dd>
+      <dt>RUBY_DESCRIPTION</dt><dd><%= RUBY_DESCRIPTION %></dd>
+      <dt>RUBY_COPYRIGHT</dt><dd><%= RUBY_COPYRIGHT %></dd>
+    </dl>
+  </div>
 
-<h2>Environment</h2>
+  <div class="tab-pane" id="environment">
 <pre>
 <% ENV.sort.each do |key, val| %>
 <%= key %> = <%= val %>
 <% end %>
 </pre>
+  </div>
 
+  <div class="tab-pane" id="bundler">
+
+    <h2>Configuration</h2>
+    <dl>
+
+      <dt>Version</dt><dd><%= ::Bundler::VERSION %></dd>
+      <dt>Local config file</dt><dd><%= Bundler.settings.send(:local_config_file) %></dd>
+      <dt>Global config file</dt><dd><%= Bundler.settings.send(:global_config_file) %></dd>
+      <dt>Require sudo?</dt><dd><%= Bundler.requires_sudo? %></dd>
+      <dt>Allow sudo?</dt><dd><%= Bundler.settings.allow_sudo? %></dd>
+    </dl>
+    <h2>Settings</h2>
+    <dl>
+      <% Bundler.settings.all.each do |key| %>
+          <dt><%= key %></dt>
+          <dd><%= Bundler.settings.pretty_values_for(key)[0] %></dd>
+      <% end %>
+    </dl>
+  </div>
+
+  <div class="tab-pane" id="gems">
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Version</th>
+        <th>Summary</th>
+        <th>License</th>
+        <th>Homepage</th>
+      </tr>
+      <% Bundler.rubygems.all_specs.sort_by(&:name).each do |gemspec| %>
+          <tr>
+            <td class="text-nowrap"><%= gemspec.name %></td>
+            <td><%= gemspec.version.to_s %></td>
+            <td><%= gemspec.summary %></td>
+            <td><%= gemspec.licenses.join(', ') %></td>
+            <td><%= link_to gemspec.homepage, gemspec.homepage if !gemspec.homepage.blank? %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+
+<div class="tab-pane" id="gc">
+<dl class="dl-horizontal">
+<%- GC.stat.each_pair do |key,val| %>
+  <dt><%= key %></dt>
+  <dd><%= val %></dd>
+<%- end %>
+</dl>
+</div>
+
+</div>
