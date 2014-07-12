@@ -4,7 +4,6 @@ module Tuttle
   class RailsController < ApplicationController
 
     def index
-      @config = Rails.configuration
     end
 
     def controllers
@@ -14,10 +13,12 @@ module Tuttle
       # @controllers = ObjectSpace.each_object(::Class).select {|klass| klass < ActionController::Base }
       @controllers = ActionController::Base.descendants
       @controllers.reject! {|controller| controller <= Tuttle::ApplicationController || controller.abstract?}
+      @controllers.sort_by!(&:name)
     end
 
     def models
       @models = ActiveRecord::Base.descendants
+      @models.sort_by!(&:name)
     end
   end
 end
