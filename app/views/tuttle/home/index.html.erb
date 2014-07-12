@@ -1,17 +1,81 @@
 <h1>Welcome to Tuttle</h1>
 
-<p>Tuttle helps you ...</p>
+<div class="row">
+  <div class="col-md-8">
 
-<div class="panel panel-default pull-right">
-  <div class="panel-heading">
-    <h3 class="panel-title">Events (<%= Tuttle::Engine.events.size %>)</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Tuttle</h3>
+      </div>
+      <div class="panel-body">
+        <p>Tuttle Version: <%= Tuttle::VERSION %></p>
+        <p>Session ID: <%= Tuttle::Engine.session_id %></p>
+        <p>Uptime: <%= time_ago_in_words(Tuttle::Engine.session_start) %> (<%= Tuttle::Engine.session_start.to_s(:db) %>)</p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Recommendations</h3>
+      </div>
+      <div class="panel-body">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-<%= ("constant" == defined?(BetterErrors)) ? 'success' : 'danger' %>">Install BetterErrors for improved development debugging</li>
+          <li class="list-group-item list-group-item-<%= ("constant" == defined?(Bullet)) ? 'success' : 'danger' %>">Install Bullet to track down N+1 problems</li>
+          <li class="list-group-item list-group-item-<%= (Rails::VERSION::STRING >= '4.1.2') ? 'success' : 'danger' %>">Run the latest version (4.1.2) of Rails</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Rails</h3>
+      </div>
+      <div class="panel-body">
+        <p>Version: <%= Rails::VERSION::STRING %></p>
+        <p>Environment: <%= Rails.env %></p>
+        <p>Root: <%= Rails.root %></p>
+        <p>Controllers: <%= ActionController::Base.descendants.size %></p>
+        <p>Models: <%= ActiveRecord::Base.descendants.size %></p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Gems Detected</h3>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-<%= ("constant" == defined?(CanCan)) ? 'success' : 'danger' %>">CanCan</li>
+        <li class="list-group-item list-group-item-<%= ("constant" == defined?(Mongo)) ? 'success' : 'danger' %>">Mongo</li>
+        <li class="list-group-item list-group-item-<%= ("constant" == defined?(Devise)) ? 'success' : 'danger' %>">Devise</li>
+      </ul>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Ruby</h3>
+      </div>
+      <div class="panel-body">
+        <p>Version: <%= RUBY_DESCRIPTION %></p>
+        <p>Gems: <%= Bundler.rubygems.all_specs.size %></p>
+      </div>
+    </div>
+
   </div>
-  <ul class="list-group">
-    <% @event_counts.sort.each do |name,val| -%>
-        <li class="list-group-item"><span class="badge"><%= val %></span><%= name %></li>
-    <% end -%>
-  </ul>
-  <div class="panel-body">
-    <%= link_to 'Details...', rails_instrumentation_path %>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Events (<%= Tuttle::Engine.events.size %>)</h3>
+      </div>
+      <ul class="list-group">
+        <% @event_counts.sort.each do |name,val| -%>
+            <li class="list-group-item"><span class="badge"><%= val %></span><%= name %></li>
+        <% end -%>
+      </ul>
+      <div class="panel-body">
+        <%= link_to 'Details...', rails_instrumentation_path %>
+      </div>
+    </div>
   </div>
+
 </div>

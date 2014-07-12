@@ -4,8 +4,14 @@ module Tuttle
 
     attr_accessor :reload_needed
     attr_accessor :events, :event_counts
+    attr_accessor :session_start, :session_id
 
-    initializer "tuttle.assets.precompile" do |app|
+    initializer :tuttle_startup do |app|
+      Tuttle::Engine.session_start = Time.now
+      Tuttle::Engine.session_id = SecureRandom.uuid
+    end
+
+    initializer :tuttle_assets_precompile do |app|
       app.config.assets.precompile += %w(tuttle/application.css tuttle/application.js )
     end
 
