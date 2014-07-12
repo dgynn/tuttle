@@ -6,6 +6,10 @@ Tuttle::Engine.routes.draw do
 
   get '/ruby' => 'ruby#index'
 
+  get '/devise' => 'devise#index'
+
+  get '/cancancan' => 'cancancan#index'
+
   root :to => 'home#index'
 
 end

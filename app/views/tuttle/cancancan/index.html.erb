@@ -1,0 +1,44 @@
+<h1>CanCanCan Configuration</h1>
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
+  <li><a href="#rules" role="tab" data-toggle="tab">Rules</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="overview">
+    <dl class="dl-horizontal">
+      <dt>CanCanCan Version</dt><dd><%= CanCan::VERSION %></dd>
+      <dt>Current User</dt><dd><%= truncate(@cancan_user.inspect, length: 100) %></dd>
+      <dt>Current Ability</dt><dd><%= truncate(@ability.inspect, length: 100) %></dd>
+      <dt>Aliased Actions</dt><dd><%= @ability.aliased_actions %></dd>
+    </dl>
+  </div>
+
+  <div class="tab-pane" id="rules">
+<table class="table table-striped">
+  <tr>
+    <th>Can?</th>
+    <th>Actions</th>
+    <th>Subject</th>
+    <th>Conditions</th>
+    <th>Block?</th>
+  </tr>
+<% @ability.instance_variable_get('@rules').each do |rule| %>
+    <tr>
+      <td><%= rule.base_behavior ? 'Can':'Cannot' %></td>
+      <td><%= rule.actions.inspect %></td>
+      <%- subjects = rule.instance_variable_get('@subjects') %>
+      <td>
+        <% subjects.each do |s| %>
+          <%= s.class <= Symbol ? s.to_s : s.name %>
+        <% end %>
+      </td>
+      <td><%= rule.conditions %></td>
+      <td><%= rule.instance_variable_get('@block').present? %></td>
+    </tr>
+<% end %>
+</table>
+  </div>
+
+</div>

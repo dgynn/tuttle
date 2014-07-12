@@ -18,5 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", ">= 3.2.18"
   s.add_development_dependency 'byebug'
+  s.add_development_dependency 'devise'
+  s.add_development_dependency 'cancancan'
 
 end

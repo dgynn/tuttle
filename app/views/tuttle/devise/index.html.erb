@@ -1,0 +1,84 @@
+<h1>Devise Configuration</h1>
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
+  <li><a href="#config" role="tab" data-toggle="tab">Config</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="overview">
+    <dl class="dl-horizontal">
+      <dt>Devise Version</dt><dd><%= Devise::VERSION %></dd>
+    </dl>
+<pre>
+  Devise::ALL = <%= Devise::ALL %>
+
+  Devise::CONTROLLERS = <%= Devise::CONTROLLERS %>
+
+  Devise::ROUTES = <%= Devise::ROUTES %>
+
+  Devise::STRATEGIES = <%= Devise::STRATEGIES %>
+
+  Devise::URL_HELPERS = <%= Devise::URL_HELPERS %>
+
+</pre>
+  </div>
+
+  <div class="tab-pane" id="config">
+<pre>
+
+rememberable_options = <%= Devise.rememberable_options %>
+stretches = <%= Devise.stretches %>
+http_authentication_key = <%= Devise.http_authentication_key %>
+authentication_keys = <%= Devise.authentication_keys %>
+request_keys = <%= Devise.request_keys %>
+case_insensitive_keys = <%= Devise.case_insensitive_keys %>
+strip_whitespace_keys = <%= Devise.strip_whitespace_keys %>
+http_authenticatable = <%= Devise.http_authenticatable %>
+http_authenticatable_on_xhr = <%= Devise.http_authenticatable_on_xhr %>
+params_authenticatable = <%= Devise.params_authenticatable %>
+http_authentication_realm = <%= Devise.http_authentication_realm %>
+email_regexp = <%= Devise.email_regexp %>
+password_length = <%= Devise.password_length %>
+remember_for = <%= Devise.remember_for %>
+extend_remember_period = <%= Devise.extend_remember_period %>
+allow_unconfirmed_access_for = <%= Devise.allow_unconfirmed_access_for %>
+confirm_within = <%= Devise.confirm_within %>
+confirmation_keys = <%= Devise.confirmation_keys %>
+reconfirmable = <%= Devise.reconfirmable %>
+timeout_in = <%= Devise.timeout_in %>
+expire_auth_token_on_timeout = <%= Devise.expire_auth_token_on_timeout %>
+pepper = <%= Devise.pepper %>
+scoped_views = <%= Devise.scoped_views %>
+lock_strategy = <%= Devise.lock_strategy %>
+unlock_keys = <%= Devise.unlock_keys %>
+unlock_strategy = <%= Devise.unlock_strategy %>
+maximum_attempts = <%= Devise.maximum_attempts %>
+unlock_in = <%= Devise.unlock_in %>
+reset_password_keys = <%= Devise.reset_password_keys %>
+reset_password_within = <%= Devise.reset_password_within %>
+default_scope = <%= Devise.default_scope %>
+mailer_sender = <%= Devise.mailer_sender %>
+skip_session_storage = <%= Devise.skip_session_storage %>
+navigational_formats = <%= Devise.navigational_formats %>
+sign_out_all_scopes = <%= Devise.sign_out_all_scopes %>
+sign_out_via = <%= Devise.sign_out_via %>
+parent_controller = <%= Devise.parent_controller %>
+parent_mailer = <%= Devise.parent_mailer %>
+router_name = <%= Devise.router_name %>
+omniauth_path_prefix = <%= Devise.omniauth_path_prefix %>
+clean_up_csrf_token_on_authentication = <%= Devise.clean_up_csrf_token_on_authentication %>
+mappings = <%= Devise.mappings %>
+omniauth_configs = <%= Devise.omniauth_configs %>
+helpers = <%= Devise.helpers %>
+warden_config = <%= Devise.warden_config %>
+paranoid = <%= Devise.paranoid %>
+last_attempt_warning = <%= Devise.last_attempt_warning %>
+token_generator = <%= Devise.token_generator %>
+
+omniauth_providers = <%= Devise.omniauth_providers %>
+available_router_name = <%= Devise.available_router_name %>
+</pre>
+</div>
+
+</div>
