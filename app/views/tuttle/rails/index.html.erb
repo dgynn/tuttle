@@ -12,7 +12,11 @@ Log Level = <%= Rails.configuration.log_level %>
   <li class="active"><a href="#config" role="tab" data-toggle="tab">Configuration</a></li>
   <li><a href="#application" role="tab" data-toggle="tab">Application</a></li>
   <li><a href="#initializers" role="tab" data-toggle="tab">Initializers</a></li>
+  <li><a href="#middleware" role="tab" data-toggle="tab">Middleware</a></li>
+  <li><a href="#railties" role="tab" data-toggle="tab">Railties</a></li>
+  <li><a href="#engines" role="tab" data-toggle="tab">Engines</a></li>
   <li><a href="#generators" role="tab" data-toggle="tab">Generators</a></li>
+  <li><a href="#timedate" role="tab" data-toggle="tab">Time and Date Formats</a></li>
 </ul>
 
 <div class="tab-content">
@@ -28,7 +32,7 @@ Log Level = <%= Rails.configuration.log_level %>
     <dl class="dl-horizontal">
       <%- Rails.application.instance_variables.sort.each do |symbol| %>
           <dt><%= symbol %></dt>
-          <dd><samp><%= Rails.application.instance_variable_get(symbol) %></samp></dd>
+          <dd><samp><%= Rails.application.instance_variable_get(symbol).class.name %></samp></dd>
       <%- end %>
     </dl>
   </div>
@@ -38,6 +42,76 @@ Log Level = <%= Rails.configuration.log_level %>
         <li><%= initializer.name %> - <%= initializer.instance_variable_get('@context').class.name %></li>
       <%- end %>
     </ol>
+  </div>
+  <div class="tab-pane" id="middleware">
+    <ol>
+      <%- Rails.application.middleware.each do |middleware| %>
+          <li><%= middleware.name %></li>
+      <%- end %>
+    </ol>
+  </div>
+  <div class="tab-pane" id="railties">
+    <p>
+      Rails configuration.railties_order = <%= Rails.configuration.railties_order %>
+    </p>
+    <ol>
+      <%- Rails.application.send(:ordered_railties).each do |railtie| %>
+          <li><%= railtie.railtie_name %> - <%= railtie.class.name %></li>
+      <%- end %>
+    </ol>
+  </div>
+  <div class="tab-pane" id="engines">
+    <ol>
+      <%- ::Rails::Engine.descendants.sort_by(&:name).each do |engine_class| %>
+          <%- next if engine_class.abstract_railtie? -%>
+          <%- engine = engine_class.instance %>
+          <li><%= engine.engine_name %> - <%= engine_class.name %> <%= engine_class.called_from %> <%= '<b>ISOLATED</b>'.html_safe if engine_class.isolated? %> </li>
+      <%- end %>
+    </ol>
+  </div>
+  <div class="tab-pane" id="timedate">
+    <% # http://www.foragoodstrftime.com/ %>
+    <%- today, now = Date.today, Time.now %>
+    <h3>Date Formats</h3>
+    <table class="table table-condensed">
+      <tr>
+        <th>Format</th>
+        <th>Example</th>
+        <th>Formatter</th>
+      </tr>
+      <tr>
+        <td><i>default</i></td>
+        <td><%= today.to_s %></td>
+        <td></td>
+      </tr>
+      <%- Date::DATE_FORMATS.sort.each do |format,formatter| %>
+          <tr>
+          <td>:<%= format %></td>
+          <td><%= today.to_s(format) %></td>
+          <td><%= formatter.respond_to?(:call) ? 'Dynamic Proc' : formatter %></td>
+          </tr>
+      <%- end %>
+    </table>
+    <h3>Time Formats</h3>
+    <table class="table table-condensed">
+      <tr>
+        <th>Format</th>
+        <th>Example</th>
+        <th>Formatter</th>
+      </tr>
+      <tr>
+        <td><i>default</i></td>
+        <td><%= now.to_s %></td>
+        <td></td>
+      </tr>
+      <%- Time::DATE_FORMATS.sort.each do |format,formatter| %>
+          <tr>
+            <td>:<%= format %></td>
+            <td><%= today.to_s(format) %></td>
+            <td><%= formatter.respond_to?(:call) ? 'Dynamic Proc' : formatter %></td>
+          </tr>
+      <%- end %>
+    </table>
   </div>
   <div class="tab-pane" id="generators">
     <h2>Configs</h2>
