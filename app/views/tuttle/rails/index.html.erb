@@ -21,6 +21,30 @@ Log Level = <%= Rails.configuration.log_level %>
 
 <div class="tab-content">
   <div class="tab-pane active" id="config">
+    <table class="table table-condensed">
+      <tr>
+        <th>Setting</th>
+        <th>Value</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>config.asset_host</td>
+        <td><%= Rails.configuration.asset_host %></td>
+        <td>
+           Sets the host for the assets. Useful when CDNs are used for hosting assets, or when you want to work around the concurrency constraints built-in in browsers using different domain aliases. Shorter version of config.action_controller.asset_host.
+        </td>
+      </tr>
+      <tr>
+        <td>config.beginning_of_week</td>
+        <td><%= Rails.configuration.beginning_of_week %></td>
+        <td>
+          Sets the default beginning of week for the application. Accepts a valid week day symbol (e.g. :monday).
+        </td>
+      </tr>
+    </table>
+
+    <h3>Instance Variables</h3>
+
     <dl class="dl-horizontal">
       <%- Rails.configuration.instance_variables.sort.each do |symbol| %>
           <dt><%= symbol %></dt>
