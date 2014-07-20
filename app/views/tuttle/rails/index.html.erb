@@ -21,6 +21,12 @@ Log Level = <%= Rails.configuration.log_level %>
 
 <div class="tab-content">
   <div class="tab-pane active" id="config">
+    <p>
+      Rails configuration is managed through the applications's config/application.rb, an environment-specific configuration file, and initializers from the config/initializers directory.
+    </p>
+    <p>
+      The combined results of these configurations are shown here:
+    </p>
     <table class="table table-condensed">
       <tr>
         <th>Setting</th>
@@ -43,24 +49,50 @@ Log Level = <%= Rails.configuration.log_level %>
       </tr>
     </table>
 
-    <h3>Instance Variables</h3>
-
-    <dl class="dl-horizontal">
-      <%- Rails.configuration.instance_variables.sort.each do |symbol| %>
-          <dt><%= symbol %></dt>
-          <dd><samp><%= Rails.configuration.instance_variable_get(symbol) %></samp></dd>
-      <%- end %>
-    </dl>
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title" data-toggle="collapse" data-target="#rails_config_instances">Instance Variables</h4>
+      </div>
+      <div id="rails_config_instances" class="panel-body collapse">
+        <dl class="dl-horizontal">
+          <%- Rails.configuration.instance_variables.sort.each do |symbol| %>
+              <dt><%= symbol %></dt>
+              <dd><samp><%= Rails.configuration.instance_variable_get(symbol) %></samp></dd>
+          <%- end %>
+        </dl>
+      </div>
+    </div>
   </div>
   <div class="tab-pane" id="application">
-    <dl class="dl-horizontal">
-      <%- Rails.application.instance_variables.sort.each do |symbol| %>
-          <dt><%= symbol %></dt>
-          <dd><samp><%= Rails.application.instance_variable_get(symbol).class.name %></samp></dd>
-      <%- end %>
-    </dl>
+    <p>
+      The fully-configured Rails Application object manages class loading and request routing.
+    </p>
+    <%- all_autoload_paths = Rails.application.instance_variable_get('@_all_autoload_paths') -%>
+    <%- all_load_paths = Rails.application.instance_variable_get('@_all_load_paths') -%>
+    <h3>Load Paths</h3>
+    <ol class="list-unstyled">
+    <% all_load_paths.each do |path| %>
+        <li><%= path %><%= ' *' unless all_autoload_paths.include?(path) %></li>
+    <% end %>
+    </ol>
+    <p>Paths marked with '*' are not autoload paths</p>
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title" data-toggle="collapse" data-target="#rails_app_instances">Instance Variables</h4>
+      </div>
+      <div id="rails_app_instances" class="panel-body collapse">
+        <dl class="dl-horizontal">
+          <%- Rails.application.instance_variables.sort.each do |symbol| %>
+              <dt><%= symbol %></dt>
+              <dd><samp><%= Rails.application.instance_variable_get(symbol).class.name %></samp></dd>
+          <%- end %>
+        </dl>
+      </div>
+    </div>
   </div>
   <div class="tab-pane" id="initializers">
+    <p>Rails initializers are blocks of code that run during application initialization.</p>
+    <p>Initializers can be provided by any Railtie, which includes Rails components themselves as well as many Gems.</p>
     <ol>
       <%- Rails.application.initializers.each do |initializer| %>
         <li><%= initializer.name %> - <%= initializer.instance_variable_get('@context').class.name %></li>
@@ -68,6 +100,7 @@ Log Level = <%= Rails.configuration.log_level %>
     </ol>
   </div>
   <div class="tab-pane" id="middleware">
+    <p>The Rack middleware configuration shows the modules in the Rack stack that will process the request and response.</p>
     <ol>
       <%- Rails.application.middleware.each do |middleware| %>
           <li><%= middleware.name %></li>
@@ -75,6 +108,12 @@ Log Level = <%= Rails.configuration.log_level %>
     </ol>
   </div>
   <div class="tab-pane" id="railties">
+    <p>
+      Railties are components of the Rails framework or any other component that needs to interact directly with the framework.
+    </p>
+    <p>
+      The configuration order of the Railties can be specified if necessary.
+    </p>
     <p>
       Rails configuration.railties_order = <%= Rails.configuration.railties_order %>
     </p>
@@ -85,6 +124,10 @@ Log Level = <%= Rails.configuration.log_level %>
     </ol>
   </div>
   <div class="tab-pane" id="engines">
+    <p>
+      Rails Engines are mini-applications that provide functionality to the host application.
+      An Engine is like a plugin module that can expose controllers, assets, rake tasks, etc.
+    </p>
     <ol>
       <%- ::Rails::Engine.descendants.sort_by(&:name).each do |engine_class| %>
           <%- next if engine_class.abstract_railtie? -%>
@@ -94,6 +137,12 @@ Log Level = <%= Rails.configuration.log_level %>
     </ol>
   </div>
   <div class="tab-pane" id="timedate">
+    <p>
+      Rails date and time formats are usually configured in a config/initializers/date_formats.rb file.
+    </p>
+    <p>
+      Here are the formats that have been configured for this application (including Rails' default formats).
+    </p>
     <% # http://www.foragoodstrftime.com/ %>
     <%- today, now = Date.today, Time.now %>
     <h3>Date Formats</h3>
@@ -138,7 +187,10 @@ Log Level = <%= Rails.configuration.log_level %>
     </table>
   </div>
   <div class="tab-pane" id="generators">
-    <h2>Configs</h2>
+    <p>Rails Generators are helpers for quickly creating new code that follows Rails standards and best practices.</p>
+    <p>Rails itself provides many generators as do other gems.</p>
+    <p>You can configure Rails Generators to generate files based on your project's preferences.</p>
+    <h2>Configuration Settings</h2>
     <dl>
       <dt>assets = <%= Rails::Generators.options[:rails][:assets] %></dt>
       <dd>allows to create assets on generating a scaffold. Defaults to true.</dd>
@@ -171,7 +223,7 @@ Log Level = <%= Rails.configuration.log_level %>
     <h2>Generators</h2>
     <ul>
       <% Rails::Generators.subclasses.each do |generator| %>
-        <li><%= generator.name %>
+        <li><%= generator.namespace %>
           <pre><%= generator.desc %></pre>
         </li>
       <% end %>
