@@ -25,6 +25,10 @@ module Tuttle
       @models.sort_by!(&:name)
     end
 
+    def database
+      @conn = ActiveRecord::Base.connection
+    end
+
     def instrumentation
       @events = Tuttle::Engine.events
       @event_counts = Tuttle::Engine.event_counts

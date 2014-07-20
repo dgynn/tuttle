@@ -1,0 +1,46 @@
+<h2>Database</h2>
+
+<h3>Connection Configuration</h3>
+<dl class="dl-horizontal">
+<%- ActiveRecord::Base.connection_config.each do |key,val| -%>
+  <dt><%= key %></dt><dd><%= 'password'==key.to_s ? '--FILTERED--' : val %></dd>
+<%- end -%>
+</dl>
+
+<h3>Current Connection</h3>
+<p>ActiveRecord::Migrator.current_version = <%= ActiveRecord::Migrator.current_version %></p>
+<p>Adapter Name = <%= @conn.adapter_name %></p>
+<p>Adapter Class = <%= @conn.class %></p>
+<p>Connected? = <%= ActiveRecord::Base.connected? %></p>
+<p>Pool size = <%= ActiveRecord::Base.connection_pool.size %></p>
+<p>Schema Cache size = <%= @conn.schema_cache.size %></p>
+
+<%- if defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter) && @conn.class <= ActiveRecord::ConnectionAdapters::PostgreSQLAdapter -%>
+<h3>PostgreSQL-only Info</h3>
+<p>Database = <%= @conn.current_database %></p>
+<p>Schema = <%= @conn.current_schema %></p>
+<p>Encoding = <%= @conn.encoding %></p>
+<p>Collation = <%= @conn.collation %></p>
+<p>Ctype = <%= @conn.ctype %></p>
+
+<h3>Extensions</h3>
+<ul class="dl-horizontal">
+  <%- if @conn.extensions.size==0 -%>
+      <li>None</li>
+  <%- end -%>
+  <%- @conn.extensions.each do |extension| -%>
+      <li><%= extension %></li>
+  <%- end -%>
+</ul>
+<%- end -%>
+
+<h3>Tables (<%= @conn.tables.size %>)</h3>
+<p><%= @conn.tables %></p>
+
+<h3>Native DB Types Supported</h3>
+<dl class="dl-horizontal">
+  <%- @conn.native_database_types.each do |key,val| -%>
+      <dt><%= key %></dt><dd><%= val %></dd>
+  <%- end -%>
+</dl>
+
