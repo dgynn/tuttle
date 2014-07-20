@@ -1,0 +1,31 @@
+
+<table class="table table-striped">
+  <tr>
+    <th>Relevant?</th>
+    <th>Pass?</th>
+    <th>Can?</th>
+    <th>Actions</th>
+    <th>Subject</th>
+    <th>Conditions</th>
+    <th>Block?</th>
+  </tr>
+  <%- relevant_rules = @ability.send(:relevant_rules_for_match, @action.to_sym, @subject) -%>
+  <% rules.each do |rule| %>
+      <tr>
+        <% relevant = @action && @subject && relevant_rules.include?(rule) -%>
+        <td><%= 'true' if relevant %></td>
+
+        <td><%= 'true' if relevant && rule.matches_conditions?(@action.to_sym, @subject, nil)  %></td>
+        <td><%= rule.base_behavior ? 'Can':'Cannot' %></td>
+        <td><%= rule.actions.inspect %></td>
+        <%- subjects = rule.instance_variable_get('@subjects') %>
+        <td>
+          <% subjects.each do |s| %>
+              <%= s.class <= Symbol ? s.to_s : s.name %>
+          <% end %>
+        </td>
+        <td><%= rule.conditions unless rule.conditions.empty? %></td>
+        <td><%= 'X' if rule.instance_variable_get('@block').present? %></td>
+      </tr>
+  <% end %>
+</table>

@@ -10,6 +10,7 @@ Tuttle::Engine.routes.draw do
   get '/devise' => 'devise#index'
 
   get '/cancancan' => 'cancancan#index'
+  get '/cancancan/rule_tester' => 'cancancan#rule_tester'
 
   root :to => 'home#index'
 
