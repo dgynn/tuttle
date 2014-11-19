@@ -118,7 +118,10 @@ Log Level = <%= Rails.configuration.log_level %>
       Rails configuration.railties_order = <%= Rails.configuration.railties_order %>
     </p>
     <ol>
-      <%- Rails.application.send(:ordered_railties).each do |railtie| %>
+      <%- # TODO: protected methods `ordered_railties` changed to return an array of arrays between rails 4.1.5 and 4.1.8. investigate and replace. -%>
+      <%- ordered_railties = Rails.application.send(:ordered_railties) -%>
+      <%- ordered_railties = ordered_railties[0] if ordered_railties.is_a?(Array) -%>
+      <%- ordered_railties.each do |railtie| %>
           <li><%= railtie.railtie_name %> - <%= railtie.class.name %></li>
       <%- end %>
     </ol>
