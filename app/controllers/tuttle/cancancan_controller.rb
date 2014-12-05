@@ -1,4 +1,4 @@
-require_dependency "tuttle/application_controller"
+require_dependency 'tuttle/application_controller'
 
 module Tuttle
   class CancancanController < ApplicationController

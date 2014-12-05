@@ -1,0 +1,31 @@
+AllCops:
+  RunRailsCops: true
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'test/dummy/**/*'
+
+Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 25
+
+Style/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Style/SpaceInsideBlockBraces:
+  Enabled: false
+  SpaceBeforeBlockParameters: false
+  EnforcedStyle: no_space
+
+Style/HashSyntax:
+  Enabled: false
+

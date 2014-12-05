@@ -6,7 +6,7 @@ module Tuttle
     attr_accessor :events, :event_counts
     attr_accessor :session_start, :session_id
 
-    initializer :tuttle_startup do |app|
+    initializer :tuttle_startup do
       Tuttle::Engine.session_start = Time.now
       Tuttle::Engine.session_id = SecureRandom.uuid
     end
@@ -29,10 +29,8 @@ module Tuttle
       ActiveSupport::Notifications.subscribe(/.*/) do |*args|
         event = ActiveSupport::Notifications::Event.new(*args)
         Tuttle::Engine.events << event
-        Tuttle::Engine.event_counts[event.name]+=1
+        Tuttle::Engine.event_counts[event.name] += 1
       end
     end
-
   end
-
 end

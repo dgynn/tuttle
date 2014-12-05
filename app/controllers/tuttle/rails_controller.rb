@@ -1,13 +1,12 @@
-require_dependency "tuttle/application_controller"
+require_dependency 'tuttle/application_controller'
 
 module Tuttle
   class RailsController < ApplicationController
 
     def index
-      unless defined? Rails::Generators
-        require 'rails/generators'
-        Rails::Generators.lookup!
-      end
+      return if defined? Rails::Generators
+      require 'rails/generators'
+      Rails::Generators.lookup!
     end
 
     def controllers

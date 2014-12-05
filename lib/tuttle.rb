@@ -1,4 +1,4 @@
-require "tuttle/engine"
+require 'tuttle/engine'
 
 module Tuttle
 end
