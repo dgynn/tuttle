@@ -28,6 +28,10 @@ module Tuttle
       @conn = ActiveRecord::Base.connection
     end
 
+    def helpers
+      @helpers = ::ApplicationController.send(:modules_for_helpers,[:all])
+    end
+
     def instrumentation
       @events = Tuttle::Engine.events
       @event_counts = Tuttle::Engine.event_counts

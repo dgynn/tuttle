@@ -1,0 +1,35 @@
+<h2>Helpers (<%= @helpers.size %>)</h2>
+
+helpers_path: <%= ::ApplicationController.helpers_path %><br/>
+include_all_helpers: <%= ::ApplicationController.include_all_helpers %><br/>
+
+<pre>
+<% @helpers.each do |helper| %>
+<%= helper.inspect %>
+<%- helper.instance_methods(false).sort.each do |method| %>
+  <%= method.to_s %>
+<% end %>
+<% end %>
+
+</pre>
+
+<h2>Rails Helpers</h2>
+<pre>
+<%- ActionView::Helpers.instance_methods(true).sort.each do |method| %>
+  <%= method.to_s %>
+<% end %>
+
+</pre>
+
+<h2>Rails Helpers by Module</h2>
+<pre>
+<%- ActionView::Helpers.included_modules.each do |module_obj| %>
+<%= module_obj.inspect %>
+  <%- module_obj.public_instance_methods(false).sort.each do |method| %>
+  <%= method.to_s %>
+  <%- # TODO: print method signatures -%>
+  <%- # ActionView::Helpers.instance_method(method).parameters %>
+<% end %>
+<% end %>
+
+</pre>
