@@ -4,6 +4,7 @@ Tuttle::Engine.routes.draw do
   get '/rails/controllers' => 'rails#controllers'
   get '/rails/models' => 'rails#models'
   get '/rails/helpers' => 'rails#helpers'
+  get '/rails/assets' => 'rails#assets'
   get '/rails/database' => 'rails#database'
   get '/rails/instrumentation' => 'rails#instrumentation'
 

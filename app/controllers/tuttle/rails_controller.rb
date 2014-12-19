@@ -32,6 +32,11 @@ module Tuttle
       @helpers = ::ApplicationController.send(:modules_for_helpers,[:all])
     end
 
+    def assets
+      @sprockets = Rails.application.assets
+      @engines = @sprockets.instance_variable_get(:@engines)
+    end
+
     def instrumentation
       @events = Tuttle::Engine.events
       @event_counts = Tuttle::Engine.event_counts
