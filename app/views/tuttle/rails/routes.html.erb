@@ -1,0 +1,37 @@
+<style>
+  table td { white-space: nowrap; }
+</style>
+<h2>Routes</h2>
+
+<table class="table table-striped table-condensed">
+  <tr>
+    <th>precedence</th>
+    <th>name</th>
+    <th>verb</th>
+    <th>path</th>
+    <th>endpoint/app</th>
+    <th>constraints</th>
+    <th>regexp</th>
+    <th>json_regexp</th>
+    <th>controller</th>
+    <th>action</th>
+    <th>internal?</th>
+    <th>engine?</th>
+  </tr>
+  <% @routes.each do |route| %>
+  <tr>
+    <td><%= route.precedence %></td>
+    <td><%= route.name %></td>
+    <td><%= route.verb %></td>
+    <td><%= route.path %></td>
+    <td><%= route.rack_app ? route.rack_app : route.endpoint  %></td>
+    <td><%= route.constraints %></td>
+    <td><%= route.regexp %></td>
+    <td><%= route.json_regexp %></td>
+    <td><%= route.controller unless route.rack_app %></td>
+    <td><%= route.action unless route.rack_app %></td>
+    <td><%= !!route.internal? %></td>
+    <td><%= !!route.engine? %></td>
+  </tr>
+  <% end %>
+</table>

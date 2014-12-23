@@ -37,6 +37,13 @@ module Tuttle
       @engines = @sprockets.instance_variable_get(:@engines)
     end
 
+    def routes
+      @routes = Rails.application.routes.routes.collect do |route|
+        ActionDispatch::Routing::RouteWrapper.new(route)
+      end
+      # TODO: include engine-mounted routes
+    end
+
     def instrumentation
       @events = Tuttle::Engine.events
       @event_counts = Tuttle::Engine.event_counts
