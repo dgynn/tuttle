@@ -19,3 +19,6 @@ gem 'sqlite3'
 
 gem 'devise'
 gem 'cancancan'
+
+gem 'appraisal'
+
