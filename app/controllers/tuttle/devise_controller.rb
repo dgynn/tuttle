@@ -5,6 +5,7 @@ module Tuttle
   class DeviseController < ApplicationController
 
     def index
+      render(plain: "Devise not installed") and return unless defined? ::Devise
     end
 
   end
