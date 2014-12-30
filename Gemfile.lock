@@ -118,5 +118,6 @@ DEPENDENCIES
   cancancan
   devise
   jquery-rails
+  rake
   sqlite3
   tuttle!
