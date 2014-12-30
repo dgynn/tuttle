@@ -1,3 +1,0 @@
-= Tuttle
-
-Tuttle is a developer tool for helping to build Rails applications
