@@ -7,6 +7,7 @@ gem "sqlite3"
 gem "devise"
 gem "cancancan"
 gem "appraisal"
+gem "codeclimate-test-reporter", :group => :test, :require => nil
 gem "rails", "~>4.2.0"
 
 gemspec :path => "../"
