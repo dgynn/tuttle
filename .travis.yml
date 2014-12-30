@@ -1,4 +1,5 @@
 language: ruby
+cache: bundler
 rvm:
   - 2.0.0
   - 2.1.0
@@ -6,5 +7,7 @@ rvm:
 gemfile:
   - gemfiles/rails_4.1.gemfile
   - gemfiles/rails_4.2.gemfile
-script: 'bundle exec rake test'
+before_script: "bundle update"
+script:
+  - RAILS_ENV=test bundle exec rake --trace db:migrate test
 
