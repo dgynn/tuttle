@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   s.summary     = 'Tuttle for Rails'
   s.description = 'Rails server inspector'
 
-  s.files = Dir['{app,config,db,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.rdoc']
+  s.files = Dir['{app,config,db,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
 
-  s.add_dependency 'rails', '>= 3.2.18'
+  s.add_dependency 'rails', '>= 4.1.8'
   # Temporarily make dev dependencies runtime dependencies for testing
   s.add_dependency 'byebug'
   s.add_dependency 'devise'

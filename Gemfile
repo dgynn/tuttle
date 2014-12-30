@@ -22,3 +22,4 @@ gem 'cancancan'
 
 gem 'appraisal'
 
+gem "codeclimate-test-reporter", group: :test, require: nil
