@@ -1,11 +1,11 @@
 language: ruby
+cache: bundler
 rvm:
   - 2.1
   - 2.2
 gemfile:
   - gemfiles/rails_4.1.gemfile
   - gemfiles/rails_4.2.gemfile
-before_install: "rm Gemfile Gemfile.lock"
+before_install: 'rm Gemfile Gemfile.lock'
 script:
   - RAILS_ENV=test bundle exec rake --trace db:migrate test
-
