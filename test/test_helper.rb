@@ -4,8 +4,10 @@ ENV['RAILS_ENV'] = 'test'
 require 'simplecov'
 SimpleCov.start 'rails'
 
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
+if ENV['CODECLIMATE_REPO_TOKEN']
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
+end
 
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 require 'rails/test_help'
