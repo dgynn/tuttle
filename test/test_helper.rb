@@ -24,4 +24,7 @@ end
 
 class ActionController::TestCase
   include Devise::TestHelpers
+  setup do
+    @routes = Tuttle::Engine.routes
+  end
 end
