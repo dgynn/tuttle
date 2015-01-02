@@ -9,9 +9,13 @@ Tuttle::Engine.routes.draw do
 
   get '/ruby' => 'ruby#index'
 
-  get '/devise' => 'devise#index'
+  if defined?(Devise)
+    get '/devise' => 'devise#index'
+  end
 
-  get '/cancancan' => 'cancancan#index'
-  get '/cancancan/rule_tester' => 'cancancan#rule_tester'
+  if defined?(CanCanCan)
+    get '/cancancan' => 'cancancan#index'
+    get '/cancancan/rule_tester' => 'cancancan#rule_tester'
+  end
 
 end
