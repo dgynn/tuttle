@@ -5,21 +5,17 @@ source 'https://rubygems.org'
 # development dependencies will be added by default to the :development group.
 gemspec
 
-# jquery-rails is used by the dummy application
-gem 'jquery-rails'
+group :development, :test do
+  # jquery-rails is used by the dummy application
+  gem 'jquery-rails'
 
-gem 'sqlite3'
-# Declare any dependencies that are still in development here instead of in
-# your gemspec. These might include edge Rails or gems from your path or
-# Git. Remember to move these dependencies to your gemspec before releasing
-# your gem to rubygems.org.
+  gem 'sqlite3'
 
-# To use debugger
-# gem 'debugger'
+  gem 'devise'
+  gem 'cancancan'
 
-gem 'devise'
-gem 'cancancan'
+  # To use debugger
+  # gem 'debugger'
 
-gem 'appraisal'
-
-gem "codeclimate-test-reporter", group: :test, require: nil
+  gem 'codeclimate-test-reporter', require: nil
+end

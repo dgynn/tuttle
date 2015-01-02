@@ -17,13 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir['test/**/*']
 
   s.add_dependency 'rails', '>= 4.1.8'
-  # Temporarily make dev dependencies runtime dependencies for testing
-  s.add_dependency 'byebug'
-  s.add_dependency 'devise'
-  s.add_dependency 'cancancan'
-  # s.add_development_dependency 'byebug'
-  # s.add_development_dependency 'devise'
-  # s.add_development_dependency 'cancancan'
   s.add_development_dependency 'rake'
+  s.add_development_dependency 'appraisal'
 
 end
