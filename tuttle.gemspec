@@ -12,8 +12,9 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/dgynn/tuttle'
   s.summary     = 'Tuttle for Rails'
   s.description = 'Rails server inspector'
+  s.license       = 'MIT'
 
-  s.files = Dir['{app,config,db,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md']
+  s.files = Dir['{app,config,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
 
   s.add_dependency 'rails', '>= 4.1.8'

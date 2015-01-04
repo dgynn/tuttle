@@ -3,6 +3,7 @@ Gemfile.lock
 gemfiles/*.lock
 log/*.log
 pkg/
+rdoc/
 coverage/
 test/dummy/db/*.sqlite3
 test/dummy/log/*.log
