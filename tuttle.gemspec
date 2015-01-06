@@ -17,7 +17,9 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*'] - Dir['test/**/*.{sqlite3,log}']
 
-  s.add_dependency 'rails', '>= 4.1.8'
+  s.required_ruby_version = '>= 1.9.3'
+
+  s.add_dependency 'rails', '>= 4.1.4'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'appraisal'
 
