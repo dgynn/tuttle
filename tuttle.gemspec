@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
 
   s.files = Dir['{app,config,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md']
-  s.test_files = Dir['test/**/*']
+  s.test_files = Dir['test/**/*'] - Dir['test/**/*.{sqlite3,log}']
 
   s.add_dependency 'rails', '>= 4.1.8'
   s.add_development_dependency 'rake'
