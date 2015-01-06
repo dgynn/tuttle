@@ -27,13 +27,14 @@ module Tuttle
       Tuttle::Engine.event_counts = Hash.new(0)
 
       # For now, only instrument non-production mode
-      return if Rails.env.production?
-
-      ActiveSupport::Notifications.subscribe(/.*/) do |*args|
-        event = ActiveSupport::Notifications::Event.new(*args)
-        Tuttle::Engine.events << event
-        Tuttle::Engine.event_counts[event.name] += 1
+      unless Rails.env.production?
+        ActiveSupport::Notifications.subscribe(/.*/) do |*args|
+          event = ActiveSupport::Notifications::Event.new(*args)
+          Tuttle::Engine.events << event
+          Tuttle::Engine.event_counts[event.name] += 1
+        end
       end
+
     end
   end
 end
