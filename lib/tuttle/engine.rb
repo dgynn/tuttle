@@ -36,5 +36,12 @@ module Tuttle
       end
 
     end
+
+    initializer :tuttle_automounter do
+      Rails.application.routes.append do
+        mount Tuttle::Engine, at: "tuttle"
+      end
+    end
+
   end
 end

@@ -15,8 +15,4 @@ Add tuttle to you Gemfile
 ```ruby
 gem 'tuttle', :github => 'dgynn/tuttle', :branch => 'develop'
 ```
-Add a route to the Tuttle engine
-```ruby
-mount Tuttle::Engine, at: "tuttle"
-```
 Browse to `/tuttle`
