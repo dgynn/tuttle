@@ -1,3 +1,3 @@
 Tuttle.setup do |config|
-  config.automount_engine = false
+  config.automount_engine = true
 end
