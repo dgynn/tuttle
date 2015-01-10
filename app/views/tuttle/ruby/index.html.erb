@@ -24,7 +24,7 @@
 
   <div class="tab-pane" id="environment">
 <pre>
-<% ENV.sort.each do |key, val| %>
+<% @filtered_env.each do |key, val| %>
 <%= key %> = <%= val %>
 <% end %>
 </pre>
