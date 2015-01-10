@@ -48,5 +48,15 @@ module Tuttle
       @event_counts = Tuttle::Engine.event_counts
     end
 
+    def inflectors
+      @test_word = params[:test_word] || ''
+
+      @plurals = ActiveSupport::Inflector.inflections.plurals
+      @singulars = ActiveSupport::Inflector.inflections.singulars
+      @uncountables = ActiveSupport::Inflector.inflections.uncountables
+      @humans = ActiveSupport::Inflector.inflections.humans
+      @acronyms = ActiveSupport::Inflector.inflections.acronyms
+    end
+
   end
 end
