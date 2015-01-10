@@ -38,8 +38,10 @@ module Tuttle
     end
 
     initializer :tuttle_automounter do
-      Rails.application.routes.append do
-        mount Tuttle::Engine, at: "tuttle"
+      if Tuttle.automount_engine
+        Rails.application.routes.append do
+          mount Tuttle::Engine, at: "tuttle"
+        end
       end
     end
 
