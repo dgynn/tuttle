@@ -58,5 +58,10 @@ module Tuttle
       @acronyms = ActiveSupport::Inflector.inflections.acronyms
     end
 
+    def cache
+      @cache = Rails.cache
+      @cache_events = Tuttle::Engine.events.select {|e| /cache_(read|write)\.active_support/ =~ e.name }
+    end
+
   end
 end

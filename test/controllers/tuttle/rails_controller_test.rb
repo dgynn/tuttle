@@ -59,6 +59,13 @@ module Tuttle
       assert_not_nil assigns(:plurals)
     end
 
+    test 'should get cache' do
+      get :cache
+      assert_response :success
+      assert_not_nil assigns(:cache)
+      assert_not_nil assigns(:cache_events)
+    end
+
   end
 
 end
