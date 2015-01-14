@@ -1,4 +1,4 @@
-### Unreleased
+### 0.0.2
 
 * features
   * Tuttle::Engine will now auto-mount routes

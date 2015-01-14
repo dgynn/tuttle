@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9.3'
 
-  s.add_dependency 'rails', '>= 4.1.4'
+  s.add_dependency 'rails', '>= 4.1.4', '< 5.0.0'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'appraisal'
 
