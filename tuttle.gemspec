@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.description = 'Rails server inspector'
   s.license       = 'MIT'
 
-  s.files = Dir['{app,config,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md']
+  s.files = Dir['{app,config,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
   s.test_files = Dir['test/**/*'] - Dir['test/**/*.{sqlite3,log}']
 
   s.required_ruby_version = '>= 1.9.3'
