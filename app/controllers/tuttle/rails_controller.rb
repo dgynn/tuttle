@@ -61,6 +61,7 @@ module Tuttle
     def cache
       @cache = Rails.cache
       @cache_events = Tuttle::Engine.events.select {|e| /cache_(read|write)\.active_support/ =~ e.name }
+      @tuttle_cache_events = Tuttle::Engine.cache_events
     end
 
   end

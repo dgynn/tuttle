@@ -3,7 +3,7 @@ module Tuttle
     isolate_namespace Tuttle
 
     attr_accessor :reload_needed
-    attr_accessor :events, :event_counts
+    attr_accessor :events, :event_counts, :cache_events
     attr_accessor :session_start, :session_id
 
     attr_reader :logger
@@ -39,6 +39,16 @@ module Tuttle
         end
       end
 
+      Tuttle::Engine.cache_events = []
+      ActiveSupport::Notifications.subscribe('cache_read.active_support') do |*args|
+        cache_call_location = caller_locations.detect { |cl| cl.path.start_with?("#{Rails.root}/app".freeze) }
+        event = ActiveSupport::Notifications::Event.new(*args)
+
+        Tuttle::Engine.logger.info("Cache Read called: #{cache_call_location.path} on line #{cache_call_location.lineno} :: #{event.payload.inspect}")
+
+        event.payload.merge!({:call_location_path => cache_call_location.path, :call_location_lineno => cache_call_location.lineno })
+        Tuttle::Engine.cache_events << event
+      end
     end
 
     initializer :tuttle_automounter do

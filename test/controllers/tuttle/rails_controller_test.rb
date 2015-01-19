@@ -64,6 +64,7 @@ module Tuttle
       assert_response :success
       assert_not_nil assigns(:cache)
       assert_not_nil assigns(:cache_events)
+      assert_not_nil assigns(:tuttle_cache_events)
     end
 
   end

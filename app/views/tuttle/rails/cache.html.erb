@@ -75,7 +75,33 @@ DalliStore options
   <% end -%>
 </table>
 
+<h3>Recent cache call locations</h3>
+
+<table class="table">
+  <tr>
+    <th>Action</th>
+    <th>File</th>
+    <th>Line</th>
+    <th>Key</th>
+    <th>Hit?</th>
+    <th>Options</th>
+    <th>Time</th>
+    <th>TransactionID</th>
+  </tr>
+  <% @tuttle_cache_events.reverse.each do |event| -%>
+    <tr >
+      <td>Read</td>
+      <td><%= event.payload[:call_location_path] %></td>
+      <td><%= event.payload[:call_location_lineno] %></td>
+      <td><%= event.payload[:key] %></td>
+      <td><%= event.payload[:hit] %></td>
+      <td><%= event.payload.reject {|k,_v| %i(key hit call_location_path call_location_lineno).include?(k) } %></td>
+      <td><%= event.time.to_s(:db) %></td>
+      <td><%= event.transaction_id %></td>
+    </tr>
+  <% end -%>
+</table>
+
 <%-
     # TODO: Track calls and record keys broken down by namespace
-    # TODO: Possibly track calls with backtrace to identify calling location
 -%>
