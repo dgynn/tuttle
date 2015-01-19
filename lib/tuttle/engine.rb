@@ -6,9 +6,13 @@ module Tuttle
     attr_accessor :events, :event_counts
     attr_accessor :session_start, :session_id
 
+    attr_reader :logger
+
     initializer :tuttle_startup do
       Tuttle::Engine.session_start = Time.now
       Tuttle::Engine.session_id = SecureRandom.uuid
+      @logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
+      @logger.info('Tuttle engine started')
     end
 
     initializer :tuttle_assets_precompile do |app|
@@ -17,7 +21,7 @@ module Tuttle
 
     initializer :tuttle_track_reloads, group: :all do
       ActionDispatch::Reloader.to_prepare do
-        Rails.logger.warn('Tuttle: ActionDispatch::Reloader called to_prepare')
+        Tuttle::Engine.logger.warn('Tuttle: ActionDispatch::Reloader called to_prepare')
         Tuttle::Engine.reload_needed = true
       end
     end
