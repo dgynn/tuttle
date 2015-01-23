@@ -21,7 +21,7 @@ module Tuttle
 
     initializer :tuttle_track_reloads, group: :all do
       ActionDispatch::Reloader.to_prepare do
-        Tuttle::Engine.logger.warn('Tuttle: ActionDispatch::Reloader called to_prepare')
+        Tuttle::Engine.logger.warn('ActionDispatch::Reloader called to_prepare') unless Tuttle::Engine.reload_needed.nil?
         Tuttle::Engine.reload_needed = true
       end
     end
