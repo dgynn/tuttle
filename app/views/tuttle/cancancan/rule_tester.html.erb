@@ -11,13 +11,13 @@
   <div class="form-group">
     <label for="action_name" class="col-sm-2 control-label">Action</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control typeahead" name="action_name" id="action_name" value="<%= params[:action_name] || 'read' %>">
+      <input type="text" class="form-control typeahead" name="action_name" id="action_name" value="<%= @action %>">
     </div>
   </div>
   <div class="form-group">
     <label for="subject_class" class="col-sm-2 control-label">Subject Class</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="subject_class" value="<%= @subject.try(:class) || params[:subject_class] %>">
+      <%= select_tag('subject_class',options_for_select(@models.collect(&:name).sort, params[:subject_class]),:include_blank=>true, :class => 'form-control') %>
     </div>
   </div>
   <div class="form-group">

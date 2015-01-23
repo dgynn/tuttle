@@ -9,12 +9,15 @@ module Tuttle
     end
 
     def rule_tester
+      @models = ActiveRecord::Base.descendants
       @action = params[:action_name] || 'read'
+
       subject_class = params[:subject_class]
       subject_id = params[:subject_id]
-      if subject_class
+
+      if !subject_class.blank? && Kernel.const_defined?(subject_class)
         begin
-          subject_klass = subject_class.constantize
+          subject_klass = Kernel.const_get(params[:subject_class])
           @subject = subject_klass.find(subject_id) unless subject_id.blank?
           @subject ||= subject_klass.new
         rescue
