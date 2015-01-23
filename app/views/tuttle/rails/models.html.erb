@@ -17,7 +17,7 @@ No models were found in this application
     <th>Scale</th>
   </tr>
 <% @models.each do |model| %>
-  <% next if model.abstract_class? %>
+  <% next if model.abstract_class? || ! model.table_exists? %>
 <tr>
   <th colspan="9"><%= model.name %> (<%= model.table_name %>)</th>
 </tr>
