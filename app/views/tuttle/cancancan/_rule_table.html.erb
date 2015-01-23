@@ -21,7 +21,7 @@
         <%- subjects = rule.instance_variable_get('@subjects') %>
         <td>
           <% subjects.each do |s| %>
-              <%= s.class <= Symbol ? s.to_s : s.name %>
+              <%= s %>
           <% end %>
         </td>
         <td><%= rule.conditions unless rule.conditions.empty? %></td>
