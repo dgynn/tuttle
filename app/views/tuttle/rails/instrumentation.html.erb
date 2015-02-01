@@ -15,7 +15,7 @@
         <td><%= event.name %></td>
         <td><%= event.time.to_s(:db) %></td>
         <td><%= number_with_precision(event.duration) %></td>
-        <td><%= truncate(event.payload.to_s, length: 250) %></td>
+        <td><%= truncate(event.payload.to_s, length: 250) rescue 'Payload not captured' %></td>
         <td><%= event.transaction_id %></td>
       </tr>
   <% end -%>
