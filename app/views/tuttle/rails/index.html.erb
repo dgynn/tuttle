@@ -93,11 +93,21 @@ Log Level = <%= Rails.configuration.log_level %>
   <div class="tab-pane" id="initializers">
     <p>Rails initializers are blocks of code that run during application initialization.</p>
     <p>Initializers can be provided by any Railtie, which includes Rails components themselves as well as many Gems.</p>
-    <ol>
-      <%- Rails.application.initializers.each do |initializer| %>
-        <li><%= initializer.name %> - <%= initializer.instance_variable_get('@context').class.name %></li>
-      <%- end %>
-    </ol>
+    <table class="table table-condensed">
+      <tr><th>#</th><th>Name</th><th>Context Class</th><th>Group</th><th>After</th><th>Before</th></tr>
+    <%- idx = 0 %>
+    <%- Rails.application.initializers.tsort_each do |initializer| %>
+      <%- options = initializer.instance_variable_get('@options') %>
+      <tr>
+        <td><%= idx+=1 %></td>
+        <td><%= initializer.name %></td>
+        <td><%= initializer.instance_variable_get('@context').class.name %></td>
+        <td><%= options.try(:[],:group) %></td>
+        <td><%= options.try(:[],:after) %></td>
+        <td><%= options.try(:[],:before) %></td>
+      </tr>
+    <%- end %>
+    </table>
   </div>
   <div class="tab-pane" id="middleware">
     <p>The Rack middleware configuration shows the modules in the Rack stack that will process the request and response.</p>
