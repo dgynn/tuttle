@@ -59,6 +59,11 @@ module Tuttle
     end
 
     def cache
+      # TODO: make cache instrumentation controllable - this will automatically turn in on in Rails < 4.2
+      # Instrumentation is always on in Rails 4.2+
+      if Rails::VERSION::STRING =~ /^4\.1\./ && !ActiveSupport::Cache::Store.instrument
+        ActiveSupport::Cache::Store.instrument=true
+      end
       @cache = Rails.cache
       @cache_events = Tuttle::Engine.events.select {|e| /cache_(read|write)\.active_support/ =~ e.name }
       @tuttle_cache_events = Tuttle::Engine.cache_events

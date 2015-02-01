@@ -40,6 +40,8 @@ module Tuttle
       end
 
       Tuttle::Engine.cache_events = []
+      # Note: For Rails < 4.2 instrumentation is not enabled by default. Hitting the cache inspector page will enable it for that session.
+      Tuttle::Engine.logger.info('Initializing cache_read subscriber')
       ActiveSupport::Notifications.subscribe('cache_read.active_support') do |*args|
         cache_call_location = caller_locations.detect { |cl| cl.path.start_with?("#{Rails.root}/app".freeze) }
         event = ActiveSupport::Notifications::Event.new(*args)
@@ -49,6 +51,10 @@ module Tuttle
         event.payload.merge!({:call_location_path => cache_call_location.path, :call_location_lineno => cache_call_location.lineno })
         Tuttle::Engine.cache_events << event
       end
+      ActiveSupport::Notifications.subscribe('cache_generate.active_support') do |*args|
+        Tuttle::Engine.logger.info('Cache Generate called')
+      end
+
     end
 
     initializer :tuttle_automounter do
