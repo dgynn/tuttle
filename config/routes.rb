@@ -9,6 +9,10 @@ Tuttle::Engine.routes.draw do
 
   get '/ruby' => 'ruby#index'
 
+  namespace :gems do
+    get :http_clients, :json, :other
+  end
+
   if defined?(Devise)
     get '/devise' => 'devise#index'
   end

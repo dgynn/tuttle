@@ -1,0 +1,31 @@
+<h1>JSON Gems</h1>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">JSON Libraries</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      There are a small number of libraries that are involved in JSON encoding and decoding.
+      Depending on the nature of the JSON you are decoding or objects you are encoding you may see a benefit by using the appropriate library.
+    </p>
+
+    <p>Libraries detected</p>
+    <ul>
+      <li>JSON Pure: <%= truth_label(defined?(JSON::Pure)) %></li>
+      <li>JSON: <%= truth_label(defined?(JSON) && !defined?(JSON::Pure)) %></li>
+      <li>Yajl: <%= truth_label(defined?(Yajl)) %></li>
+      <li>Oj: <%= truth_label(defined?(Oj)) %></li>
+      <li>
+        MultiJson: <%= truth_label(defined?(MultiJson)) %>
+        <%- if defined?(MultiJson) %>
+          &mdash; (Adapter: <%= MultiJson.adapter %>)
+        <%- end %>
+      </li>
+      <li>ActiveSupport::JSON: <%= truth_label(defined?(ActiveSupport::JSON)) %></li>
+    </ul>
+    <p></p>
+  </div>
+  <div class="panel-footer">
+  </div>
+</div>
