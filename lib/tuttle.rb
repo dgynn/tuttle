@@ -3,7 +3,7 @@ require 'tuttle/engine'
 module Tuttle
 
   mattr_accessor :automount_engine
-  @@automount_engine = true
+  mattr_accessor :enabled
 
   def self.setup
     yield self

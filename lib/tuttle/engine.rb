@@ -1,6 +1,9 @@
 module Tuttle
   class Engine < ::Rails::Engine
     isolate_namespace Tuttle
+    engine_name :tuttle
+
+    config.tuttle = ActiveSupport::OrderedOptions.new
 
     attr_accessor :reload_needed
     attr_accessor :events, :event_counts, :cache_events
@@ -8,18 +11,31 @@ module Tuttle
 
     attr_reader :logger
 
+    initializer :tuttle_assets_precompile do |app|
+      app.config.assets.precompile += %w(tuttle/application.css tuttle/application.js )
+    end
+
+    initializer :tuttle_set_configuration do |app|
+      app.config.tuttle.each do |k,v|
+        Tuttle.send("#{k}=", v)
+      end
+      # Tuttle will be automatically enabled in development if not configured explicitly
+      Tuttle.enabled= Rails.env.development? if Tuttle.enabled==nil
+      Tuttle.automount_engine= true if Tuttle.automount_engine==nil
+    end
+
     initializer :tuttle_startup do
+      next unless Tuttle.enabled
+
       Tuttle::Engine.session_start = Time.now
       Tuttle::Engine.session_id = SecureRandom.uuid
       @logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
       @logger.info('Tuttle engine started')
     end
 
-    initializer :tuttle_assets_precompile do |app|
-      app.config.assets.precompile += %w(tuttle/application.css tuttle/application.js )
-    end
-
     initializer :tuttle_track_reloads, group: :all do
+      next unless Tuttle.enabled
+
       ActionDispatch::Reloader.to_prepare do
         Tuttle::Engine.logger.warn('ActionDispatch::Reloader called to_prepare') unless Tuttle::Engine.reload_needed.nil?
         Tuttle::Engine.reload_needed = true
@@ -27,6 +43,8 @@ module Tuttle
     end
 
     initializer :tuttle_global_instrumenter, group: :all do
+      next unless Tuttle.enabled
+
       Tuttle::Engine.events = []
       Tuttle::Engine.event_counts = Hash.new(0)
 
@@ -58,8 +76,11 @@ module Tuttle
     end
 
     initializer :tuttle_automounter do
+      next unless Tuttle.enabled
+
       if Tuttle.automount_engine
         Rails.application.routes.append do
+          Tuttle::Engine.logger.info('Auto-mounting /tuttle routes')
           mount Tuttle::Engine, at: "tuttle"
         end
       end
