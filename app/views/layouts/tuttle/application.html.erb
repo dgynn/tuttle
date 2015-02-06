@@ -45,8 +45,12 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gems <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><%= link_to 'Devise', devise_path if defined?(Devise) %></li>
-            <li><%= link_to 'CanCanCan', cancancan_path if defined?(CanCanCan) %></li>
+            <%- if defined?(Devise) %>
+              <li><%= link_to 'Devise', devise_path %></li>
+            <%- end %>
+            <%- if defined?(CanCanCan) %>
+              <li><%= link_to 'CanCanCan', cancancan_path %></li>
+            <%- end %>
             <li><%= link_to 'HTTP Clients', gems_http_clients_path %></li>
             <li><%= link_to 'JSON', gems_json_path %></li>
             <li><%= link_to 'Other', gems_other_path %></li>
