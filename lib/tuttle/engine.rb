@@ -12,7 +12,7 @@ module Tuttle
     attr_reader :logger
 
     initializer :tuttle_assets_precompile do |app|
-      app.config.assets.precompile += %w(tuttle/application.css tuttle/application.js )
+      app.config.assets.precompile += %w(tuttle/application.css tuttle/application.js tuttle/favicon.ico)
     end
 
     initializer :tuttle_set_configuration do |app|
