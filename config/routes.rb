@@ -7,7 +7,10 @@ Tuttle::Engine.routes.draw do
     get :controllers, :models, :database, :helpers, :assets, :routes, :instrumentation, :inflectors, :cache
   end
 
-  get '/ruby' => 'ruby#index'
+  namespace :ruby do
+    get '', :action => :index
+    get :tuning, :miscellaneous
+  end
 
   namespace :gems do
     get :http_clients, :json, :other

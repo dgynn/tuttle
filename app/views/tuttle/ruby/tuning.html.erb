@@ -1,0 +1,112 @@
+<h2>Ruby Tuning</h2>
+
+<p>
+  Ruby can be tuned for different types of applications through the use of environment variables.
+</p>
+<p>
+  Different versions of Ruby support different variables so it is important to make sure that you are using
+  settings and environment variable names appropriate for your version of Ruby.
+</p>
+
+<h3>Global Method Cache</h3>
+<p>
+  Since Ruby 2.2, the method cache size is configurable using the <code>RUBY_GLOBAL_METHOD_CACHE_SIZE</code> environment variable.
+</p>
+<p>
+  The default value for this setting is 2048 entries which may be low for even a moderate-sized Rails application.
+</p>
+<pre>
+ENV['RUBY_GLOBAL_METHOD_CACHE_SIZE'] = <%= ENV.fetch('RUBY_GLOBAL_METHOD_CACHE_SIZE') { 'not configured'} %>
+</pre>
+<p>
+  For more information and a great story about how <a href="https://github.com/csfrancis">Scott Francis</a>
+  added this variable to Ruby
+  see <a href="http://www.shopify.com/technology/16777156-tuning-rubys-global-method-cache">his writeup</a>
+  on performance tuning the Shopify app.
+</p>
+
+<h3>Garbage Collection Internals</h3>
+<p>
+  Some of Ruby's Garbage Collection parameters are determined during by the runtime platform or compile-time configuration.
+  These values can't be changed by environment variables but are helpful for understanding how memory is being allocated and used.
+</p>
+<ul>
+  <% GC::INTERNAL_CONSTANTS.each do |key, value| %>
+    <li><%= key %> = <%= value %></li>
+  <% end %>
+</ul>
+
+<h3>Garbage Collection</h3>
+<p>
+  Ruby's garbage collection is highly-tunable through environment variables.
+  Determining the right configuration requires understanding how the GC is working
+  and how much memory is being allocated by requests to the application.
+</p>
+<h4>Controls</h4>
+<p>
+  Normally, the Garbage Collector runs as needed to free memory. You can also programmatically control the GC as well to stop it from running or to trigger a GC on demand.</code>
+</p>
+<p>
+  Is GC enabled? <%= truth_label(@gc_enabled) %>
+  <br/>
+  Is GC::Profiler enabled? <%= truth_label(GC::Profiler.enabled?) %>
+</p>
+
+<h4>Garbage Collection Statistics</h4>
+<table class='table table-condensed' style='width:auto;'>
+  <%- gcstat = GC.stat %>
+  <%- [:count, :major_gc_count, :minor_gc_count,
+       :heap_available_slots, :heap_live_slots, :heap_free_slots, :heap_final_slots, :heap_marked_slots, :heap_swept_slots,
+       :heap_sorted_length,
+       :total_allocated_pages, :total_freed_pages, :heap_allocatable_pages, :heap_allocated_pages, :heap_eden_pages, :heap_tomb_pages,
+       :total_allocated_objects, :total_freed_objects,
+       :old_objects, :old_objects_limit,
+       :remembered_wb_unprotected_objects, :remembered_wb_unprotected_objects_limit,
+       :malloc_increase_bytes, :malloc_increase_bytes_limit,
+       :oldmalloc_increase_bytes, :oldmalloc_increase_bytes_limit].each do |key| %>
+    <tr>
+      <th class="text-right"><%= key %></th>
+      <td><%= gcstat[key] %></td>
+    </tr>
+  <%- end %>
+</table>
+
+<h4>Latest GC info</h4>
+<%- dgtest = GC.latest_gc_info %>
+<dl class="dl-horizontal">
+  <%- dgtest.each do |key,val| %>
+    <dt><%= key %></dt>
+    <dd><%= val %></dd>
+  <%- end %>
+</dl>
+
+<h4>Configuration settings</h4>
+<p>
+  The following environment variables are available to be configured to tune the Garbage Collector in Ruby 2.2.
+</p>
+<p>
+  Some useful resources for understanding how these variables affect performance can be found here:
+  <ul>
+    <li><a href="https://github.com/tmm1">Aman Gupta's</a> post: <a href="http://tmm1.net/ruby21-rgengc/">Ruby 2.1: RGenGC</a></li>
+    <li><a href="https://github.com/mrnugget">Thorsten Ball's</a> post: <a href="http://thorstenball.com/blog/2014/03/12/watching-understanding-ruby-2.1-garbage-collector/">Watching and Understanding the Ruby 2.1 Garbage Collector at Work</a></li>
+  </ul>
+</p>
+<%
+   #
+   #
+%>
+<table class="table table-condensed">
+  <tr>
+    <th>ENV</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <%- @gc_params.each do |key, desc| %>
+    <tr>
+      <td><%= key %></td>
+      <td style="white-space: nowrap;"><%= ENV.fetch(key.to_s) { 'not configured'} %></td>
+      <td><%= desc %></td>
+    </tr>
+  <%- end %>
+</table>
+

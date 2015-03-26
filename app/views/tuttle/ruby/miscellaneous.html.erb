@@ -1,0 +1,12 @@
+<h2>Miscellaneous</h2>
+
+<h3>Reslov-Replace</h3>
+<p>
+  By default, Ruby network libraries use the system DNS lookup.
+  But the Ruby standard library also ships with a pure-Ruby implementation that causes the VM to not
+  lock while waiting for DNS lookups to happen. To enable this lookup just add <code>require 'resolv-replace'</code>
+  somewhere in your application, such as in an initializer.
+</p>
+<p>
+Does <code>resolv-replace</code> appear to be patched in? <%= truth_label(IPSocket.method(:getaddress).source_location.present?) %>
+</p>
