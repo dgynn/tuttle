@@ -74,14 +74,16 @@ ENV['RUBY_GLOBAL_METHOD_CACHE_SIZE'] = <%= ENV.fetch('RUBY_GLOBAL_METHOD_CACHE_S
   <%- end %>
 </table>
 
-<h4>Latest GC info</h4>
-<%- dgtest = GC.latest_gc_info %>
-<dl class="dl-horizontal">
-  <%- dgtest.each do |key,val| %>
-    <dt><%= key %></dt>
-    <dd><%= val %></dd>
-  <%- end %>
-</dl>
+<% if RUBY_VERSION.to_f >= 2.1 %>
+  <h4>Latest GC info</h4>
+  <%- dgtest = GC.latest_gc_info %>
+  <dl class="dl-horizontal">
+    <%- dgtest.each do |key,val| %>
+      <dt><%= key %></dt>
+      <dd><%= val %></dd>
+    <%- end %>
+  </dl>
+<% end %>
 
 <h4>Configuration settings</h4>
 <p>
