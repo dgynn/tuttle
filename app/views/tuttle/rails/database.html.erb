@@ -16,6 +16,27 @@
 <p>Schema Cache size = <%= @conn.schema_cache.size %></p>
 
 <%- if defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter) && @conn.class <= ActiveRecord::ConnectionAdapters::PostgreSQLAdapter -%>
+
+<%- statement_pool = @conn.instance_variable_get(:@statements) %>
+<%- if statement_pool.present? %>
+  <h3>Prepared Statement Pool</h3>
+    <p>Max = <%= statement_pool.instance_variable_get(:@max) %></p>
+    <p>Counter = <%= statement_pool.instance_variable_get(:@counter) %></p>
+    <h4>Cache</h4>
+    <ol>
+    <%- statement_pool.instance_variable_get(:@cache).each do |pid,cache| %>
+      <li>PID: <%= pid %>
+        <ol>
+          <%- cache.each do |k,v| %>
+            <li><%= v %> = <%= k %></li>
+          <%- end %>
+        </ol>
+      </li>
+    <%- end %>
+    </ol>
+<%- end %>
+
+
 <h3>PostgreSQL-only Info</h3>
 <p>Database = <%= @conn.current_database %></p>
 <p>Schema = <%= @conn.current_schema %></p>
