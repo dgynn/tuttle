@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
 
   s.files = Dir['{app,config,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
-  s.test_files = Dir['test/**/*'] - Dir['test/**/*.{sqlite3,log}']
 
   s.required_ruby_version = '>= 2.0.0'
 

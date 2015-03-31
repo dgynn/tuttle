@@ -1,6 +1,16 @@
+### 0.0.3
+
+* Features
+  * Rails caching instrumentation
+  * Improved initialization/configuration approach
+  * Gem detection and reporting for HTTP clients and JSON libraries
+  * Ruby GC tuning stats and advice
+  * Favicon!
+  * Experimental Postgres stored-procedure cache inspection
+
 ### 0.0.2
 
-* features
+* Features
   * Tuttle::Engine will now auto-mount routes
   * Engine configurable via initializer
   * ActiveSupport cache configuration inspection
@@ -8,7 +18,7 @@
 
 ### 0.0.1
 
-* features
+* Features
   * Initial engine implementation with instrumentation monitoring
   * Rails inspection for general configuration, controllers, models, assets, helpers
   * Ruby VM inspection
