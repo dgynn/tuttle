@@ -79,7 +79,7 @@ module Tuttle
       next unless Tuttle.enabled
 
       if Tuttle.automount_engine
-        Rails.application.routes.append do
+        Rails.application.routes.prepend do
           Tuttle::Engine.logger.info('Auto-mounting /tuttle routes')
           mount Tuttle::Engine, at: "tuttle"
         end
