@@ -43,10 +43,10 @@ module Tuttle
     end
 
     initializer :tuttle_global_instrumenter, group: :all do
-      next unless Tuttle.enabled
-
       Tuttle::Engine.events = []
       Tuttle::Engine.event_counts = Hash.new(0)
+      Tuttle::Engine.cache_events = []
+      next unless Tuttle.enabled && Tuttle.track_notifications
 
       # For now, only instrument non-production mode
       unless Rails.env.production?
@@ -57,7 +57,6 @@ module Tuttle
         end
       end
 
-      Tuttle::Engine.cache_events = []
       # Note: For Rails < 4.2 instrumentation is not enabled by default. Hitting the cache inspector page will enable it for that session.
       Tuttle::Engine.logger.info('Initializing cache_read subscriber')
       ActiveSupport::Notifications.subscribe('cache_read.active_support') do |*args|

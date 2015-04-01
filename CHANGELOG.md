@@ -1,3 +1,8 @@
+### Unreleased
+
+* Features
+  * Configuration control of notification_tracking
+
 ### 0.0.3
 
 * Features

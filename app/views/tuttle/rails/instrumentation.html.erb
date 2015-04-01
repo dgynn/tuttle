@@ -1,5 +1,10 @@
 <h1>Instrumentation</h1>
 
+<%- unless Tuttle.track_notifications %>
+  <div class="alert alert-warning" role="alert">
+    <p>Note: Tuttle cache instrumentation has not been enabled. Use <code>config.track_notifications=true</code> to enable.</p>
+  </div>
+<%- end %>
 <p>Events (<%= @events.size %>)</p>
 
 <table class="table">

@@ -49,6 +49,11 @@ DalliStore options
 -%>
 
 <h2>Monitoring/Instrumentation</h2>
+<%- unless Tuttle.track_notifications %>
+  <div class="alert alert-warning" role="alert">
+    <p>Note: Tuttle cache instrumentation has not been enabled. Use <code>config.track_notifications=true</code> to enable.</p>
+  </div>
+<%- end %>
 
 <h3>Recent cache interactions</h3>
 
