@@ -24,14 +24,14 @@
     <td><%= route.name %></td>
     <td><%= route.verb %></td>
     <td><%= route.path %></td>
-    <td><%= route.rack_app ? route.rack_app : route.endpoint  %></td>
+    <td><%= route.endpoint_or_app_name %></td>
     <td><%= route.constraints %></td>
     <td><%= route.regexp %></td>
     <td><%= route.json_regexp %></td>
-    <td><%= route.controller unless route.rack_app %></td>
-    <td><%= route.action unless route.rack_app %></td>
-    <td><%= !!route.internal? %></td>
-    <td><%= !!route.engine? %></td>
+    <td><%= route.controller %></td>
+    <td><%= route.action %></td>
+    <td><%= route.is_internal_to_rails? %></td>
+    <td><%= route.engine? %></td>
   </tr>
   <% end %>
 </table>

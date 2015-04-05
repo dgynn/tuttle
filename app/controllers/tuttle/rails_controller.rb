@@ -1,5 +1,6 @@
 require_dependency 'tuttle/application_controller'
 require 'rails/generators'
+require 'tuttle/presenters/action_dispatch/routing/route_wrapper'
 
 module Tuttle
   class RailsController < ApplicationController
@@ -38,7 +39,7 @@ module Tuttle
 
     def routes
       @routes = Rails.application.routes.routes.collect do |route|
-        ActionDispatch::Routing::RouteWrapper.new(route)
+        Tuttle::Presenters::ActionDispatch::Routing::RouteWrapper.new(route)
       end
       # TODO: include engine-mounted routes
     end
