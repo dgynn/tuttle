@@ -2,21 +2,27 @@
   table td { white-space: nowrap; }
 </style>
 <h2>Routes</h2>
+<p>
+  Rails routing is described in the <a href="http://guides.rubyonrails.org/routing.html">Rails
+  Routing from the Outside In</a> guide.
+</p>
+<p>
+  In addition to the routes defined in your <code>config/routes.rb</code> file,
+  Rails has internal routes and other Engines can contribute routes to the application.
+</p>
 
 <table class="table table-striped table-condensed">
   <tr>
-    <th>precedence</th>
-    <th>name</th>
-    <th>verb</th>
-    <th>path</th>
-    <th>endpoint/app</th>
-    <th>constraints</th>
-    <th>regexp</th>
-    <th>json_regexp</th>
-    <th>controller</th>
-    <th>action</th>
-    <th>internal?</th>
-    <th>engine?</th>
+    <th><span data-toggle="tooltip" title="Route paths are checked in the order they are defined.">Precedence</span></th>
+    <th><span data-toggle="tooltip" title="The route name is used to generate Named Helpers like myaction_path">Name</span></th>
+    <th><span data-toggle="tooltip" title="The HTTP method for this route">Verb</span></th>
+    <th><span data-toggle="tooltip" title="The URI for the route.">Path</span></th>
+    <th><span data-toggle="tooltip" title="Most routes will map to a Controller#Action but some will be handled by engines or Rails internals">Endpoint or App</span></th>
+    <th><span data-toggle="tooltip" title="Routes can be constrained to match parameters">Constraints</span></th>
+    <th><span data-toggle="tooltip" title="The Controller for the route">Controller</span></th>
+    <th><span data-toggle="tooltip" title="The Action for the route">Action</span></th>
+    <th><span data-toggle="tooltip" title="Internal routes are handle by Rails under the covers">Internal?</span></th>
+    <th><span data-toggle="tooltip" title="Some routes are handled my mounted engines">Engine?</span></th>
   </tr>
   <% @routes.each do |route| %>
   <tr>
@@ -26,8 +32,6 @@
     <td><%= route.path %></td>
     <td><%= route.endpoint_or_app_name %></td>
     <td><%= route.constraints %></td>
-    <td><%= route.regexp %></td>
-    <td><%= route.json_regexp %></td>
     <td><%= route.controller %></td>
     <td><%= route.action %></td>
     <td><%= route.is_internal_to_rails? %></td>

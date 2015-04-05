@@ -82,6 +82,11 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
 <%= javascript_include_tag "tuttle/application" =%>
+<script type="application/javascript">
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
 <%= content_for(:javascripts) =%>
 </body>
 </html>
