@@ -34,7 +34,7 @@ module Tuttle
 
     def assets
       @sprockets = Rails.application.assets
-      @engines = @sprockets.instance_variable_get(:@engines)
+      @engines = Sprockets::VERSION >= '3' ?  @sprockets.instance_variable_get(:@config)[:engines] : @sprockets.instance_variable_get(:@engines)
     end
 
     def routes

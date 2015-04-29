@@ -9,7 +9,9 @@ EJS version: <%= defined?(EJS) ? '1.1.1' : '-' %><br/>
 
 <h3>Configuration</h3>
 digest: <%= Rails.application.config.assets.digest %><br/>
+<%- if Sprockets::VERSION < '3' %>
 ** digest value: <%= @sprockets.digest %><br/>
+<%- end %>
 assets version: <%= Rails.application.config.assets.version %><br/>
 ** sprockets assets version: <%= @sprockets.version %><br/>
 assets prefix: <%= Rails.application.config.assets.prefix %><br/>
