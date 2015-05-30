@@ -1,0 +1,81 @@
+<h2>Database Schema Cache</h2>
+
+<p>
+  ActiveRecord maintains a cache of table, column, and primary key information
+  that it uses to build the SQL for queries.
+</p>
+
+<p>
+  This cache of information can either be built lazily as models are accessed
+  or can be loaded from a dump file during application startup.
+</p>
+
+<p>
+  Preloading the schema cache from the dump can greatly improve application
+  performance, especially with a large number of tables.
+</p>
+
+<h3>Schema Cache Dump</h3>
+<p>
+  The <code>schema_cache.dump</code> file is created using <code>rake db:schema:cache:dump</code>.
+  The dump file must match the version of the latest migration that has been run.
+</p>
+<ul>
+  <li>File location: <code><%= @schema_cache_filename %></code></li>
+  <li>File exists?: <%= truth_label(File.file?(@schema_cache_filename)) %></li>
+  <li>Cached DB Version: <code><%= @schema_cache.version %></code></li>
+  <li>Current DB version: <code><%= ActiveRecord::Migrator.current_version %></code></li>
+  <li>Size: <code><%= @schema_cache.version.present? ? @schema_cache.size : 0 %></code> (count of tables, columns, primary_keys, etc.)</li>
+</ul>
+
+<h3>Current Schema Cache</h3>
+<p>
+  The current schema cache includes any table definitions that have been loaded from the cache dump or lazily evaluated as queries are built.
+  The names of all tables are loaded very early. Primary keys, column names, or full column definitions are only loaded as the query builder requires them.
+</p>
+<p>
+  The schema cache contains <code><%= @connection_schema_cache.size %></code> entries and
+  <%= truth_label(@connection_schema_cache.version.present?,'DOES','DOES NOT') %>
+  appear to have been loaded from the schema cache dump.
+</p>
+<% if !Rails.application.config.cache_classes %>
+<p>Note: The schema cache is only loaded once on application startup. During development, with code reloading, it is likely to be reset.</p>
+<% end %>
+
+<% cached_tablenames = @connection_schema_cache.instance_variable_get(:@tables) %>
+<% cached_columns = @connection_schema_cache.instance_variable_get(:@columns) %>
+<% cached_columns_hash = @connection_schema_cache.instance_variable_get(:@columns_hash) %>
+<% cached_primary_keys = @connection_schema_cache.instance_variable_get(:@primary_keys) %>
+
+<table class="table table-striped table-condensed">
+  <tr>
+    <th>Table Name</th>
+    <th>Table Exists?</th>
+    <th>Primary Key</th>
+    <th>Columns Size</th>
+    <th>Columns Hash Size</th>
+    <th>Partial?</th>
+    <th>Full?</th>
+  </tr>
+  <% cached_tablenames.each do |key, value|%>
+    <tr>
+      <td><%= key %></td>
+      <td><%= truth_label(value) %></td>
+      <td><%= cached_primary_keys.fetch(key,'--')  %></td>
+      <td><%= cached_columns[key].try(:size) || '--' %></td>
+      <td><%= cached_columns_hash[key].try(:size) || '--' %></td>
+      <td><%= truth_label(cached_primary_keys.include?(key)||cached_columns.include?(key)||cached_columns_hash.include?(key)) %></td>
+      <td><%= truth_label(cached_primary_keys.include?(key)&&cached_columns.include?(key)&&cached_columns_hash.include?(key)) %></td>
+    </tr>
+  <% end %>
+  <% if cached_tablenames.blank? %>
+    <tr>
+      <td colspan="7" class="warning text-center">
+        No data exists in the schema cache
+        </br>
+        This most likely means that the connection has been reset either by
+        code reloading or some connection problem
+      </td>
+    </tr>
+  <% end %>
+</table>

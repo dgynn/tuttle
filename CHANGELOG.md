@@ -1,6 +1,7 @@
 ### Unreleased
 
 * Features
+  * ActiveRecord schema cache and schema_cache.dump inspection
   * Configuration control of notification_tracking
 
 ### 0.0.3

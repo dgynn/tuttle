@@ -26,6 +26,14 @@ module Tuttle
       assert_not_nil assigns(:conn)
     end
 
+    test 'should get schema_cache' do
+      get :schema_cache
+      assert_response :success
+      assert_not_nil assigns(:schema_cache_filename)
+      assert_not_nil assigns(:schema_cache)
+      assert_not_nil assigns(:connection_schema_cache)
+    end
+
     test 'should get helpers' do
       get :helpers
       assert_response :success

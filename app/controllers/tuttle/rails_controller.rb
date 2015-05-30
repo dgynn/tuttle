@@ -28,6 +28,24 @@ module Tuttle
       @conn = ActiveRecord::Base.connection
     end
 
+    def schema_cache
+      @schema_cache_filename = File.join(Rails.application.config.paths['db'].first, 'schema_cache.dump')
+      if File.file?(@schema_cache_filename)
+        @schema_cache = Marshal.load(File.binread(@schema_cache_filename))
+      end
+      # TODO: wrap in a facade and handle unloaded file
+      @schema_cache ||= ActiveRecord::ConnectionAdapters::SchemaCache.new(nil)
+
+      # TODO: consider allowing a schema cache clear!
+      # TODO: consider allowing a schema_cache.dump reload
+      # if @schema_cache.version && params[:reload_schema_cache_dump]
+      #   ActiveRecord::Base.connection.schema_cache = @schema_cache.dup
+      # end
+
+      @connection_schema_cache = ActiveRecord::Base.connection.schema_cache
+      # Note: Rails 5 should also support ActiveRecord::Base.connection_pool.respond_to?(:schema_cache)
+    end
+
     def helpers
       @helpers = ::ApplicationController.send(:modules_for_helpers,[:all])
     end
