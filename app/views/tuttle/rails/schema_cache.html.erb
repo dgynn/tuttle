@@ -61,9 +61,9 @@
     <tr>
       <td><%= key %></td>
       <td><%= truth_label(value) %></td>
-      <td><%= cached_primary_keys.fetch(key,'--')  %></td>
-      <td><%= cached_columns[key].try(:size) || '--' %></td>
-      <td><%= cached_columns_hash[key].try(:size) || '--' %></td>
+      <td><%= cached_primary_keys.fetch(key,'--'.freeze)  %></td>
+      <td><%= cached_columns[key].try(:size) || '--'.freeze %></td>
+      <td><%= cached_columns_hash[key].try(:size) || '--'.freeze %></td>
       <td><%= truth_label(cached_primary_keys.include?(key)||cached_columns.include?(key)||cached_columns_hash.include?(key)) %></td>
       <td><%= truth_label(cached_primary_keys.include?(key)&&cached_columns.include?(key)&&cached_columns_hash.include?(key)) %></td>
     </tr>
