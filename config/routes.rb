@@ -16,6 +16,10 @@ Tuttle::Engine.routes.draw do
     get :http_clients, :json, :other
   end
 
+  if defined?(Paperclip)
+    get '/paperclip' => 'paperclip#index'
+  end
+
   if defined?(Devise)
     get '/devise' => 'devise#index'
   end

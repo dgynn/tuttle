@@ -1,0 +1,65 @@
+<h1>Paperclip Configuration</h1>
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
+  <li><a href="#defaults" role="tab" data-toggle="tab">Defaults</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="overview">
+    <dl class="dl-horizontal">
+      <dt>Paperclip Version</dt><dd><%= Paperclip::VERSION %></dd>
+    </dl>
+
+    <h3>Paperclip Attachment Registry</h3>
+    <table class="table table-compact">
+      <tr>
+        <th>Class</th>
+        <th>Attachment</th>
+        <th>Options</th>
+      </tr>
+      <% Paperclip::AttachmentRegistry.each_definition do |klass, attachment, options| %>
+        <tr>
+          <td><%= klass %></td>
+          <td><%= attachment.inspect %></td>
+          <td>
+            <ul>
+            <% tuttle_redacted(options.sort.each) do |k,v|  %>
+              <li><%= k %>: <%= v %></li>
+            <% end %>
+            </ul>
+          </td>
+        </tr>
+      <% end %>
+     </table>
+  </div>
+
+  <div class="tab-pane" id="defaults">
+    <h3>Default Options</h3>
+    <table class="table table-compact">
+      <tr>
+        <th>Option</th>
+        <th>Default</th>
+        <!--
+        <th>Description</th>
+        -->
+      </tr>
+      <% tuttle_redacted(Paperclip::Attachment.default_options.each) do |k, v| %>
+        <tr>
+          <td>
+            <%= k %>
+          </td>
+          <td>
+            <%= v %>
+          </td>
+          <!--
+          <td>
+            Description goes here
+          </td>
+          -->
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+</div>
