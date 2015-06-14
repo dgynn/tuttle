@@ -1,4 +1,5 @@
 require 'tuttle/engine'
+require 'tuttle/version'
 
 module Tuttle
 
