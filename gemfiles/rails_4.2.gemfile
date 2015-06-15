@@ -7,7 +7,7 @@ gem "rails", "~>4.2.0"
 group :development, :test do
   gem "jquery-rails"
   gem "sqlite3"
-  gem "devise"
+  gem "devise", :github => "dgynn/devise", :branch => "rails5"
   gem "cancancan"
   gem "codeclimate-test-reporter", :require => nil
 end

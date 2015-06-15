@@ -11,7 +11,7 @@ group :development, :test do
 
   gem 'sqlite3'
 
-  gem 'devise'
+  gem 'devise', :github => 'dgynn/devise', :branch => 'rails5'
   gem 'cancancan'
 
   # To use debugger
