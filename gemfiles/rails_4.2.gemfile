@@ -2,12 +2,12 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~>4.2.0"
+gem "rails", "~> 4.2.0"
+gem "devise"
 
 group :development, :test do
   gem "jquery-rails"
   gem "sqlite3"
-  gem "devise", :github => "dgynn/devise", :branch => "rails5"
   gem "cancancan"
   gem "codeclimate-test-reporter", :require => nil
 end
