@@ -6,7 +6,7 @@ module Tuttle
     end
 
     def tuttle_redacted(enumarator)
-      enumarator.each do |key, value|
+      enumarator.collect do |key, value|
         yield key, redact_by_key(key, value)
       end
     end
