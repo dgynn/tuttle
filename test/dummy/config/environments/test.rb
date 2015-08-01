@@ -15,8 +15,6 @@ Dummy::Application.configure do
   config.eager_load = false
   config.active_support.test_order = :sorted
   config.secret_key_base = 'abcdefghihkl'
-  # Log error messages when you accidentally call methods on nil
-  config.whiny_nils = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
