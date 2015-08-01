@@ -4,7 +4,6 @@
   <li class="active"><a href="#ruby" role="tab" data-toggle="tab">Ruby</a></li>
   <li><a href="#environment" role="tab" data-toggle="tab">Environment</a></li>
   <li><a href="#bundler" role="tab" data-toggle="tab">Bundler</a></li>
-  <li><a href="#gems" role="tab" data-toggle="tab">Gems</a></li>
   <li><a href="#gc" role="tab" data-toggle="tab">Garbage Collection</a></li>
 </ul>
 
@@ -48,27 +47,6 @@
           <dd><%= Bundler.settings.pretty_values_for(key)[0] %></dd>
       <% end %>
     </dl>
-  </div>
-
-  <div class="tab-pane" id="gems">
-    <table class="table">
-      <tr>
-        <th>Name</th>
-        <th>Version</th>
-        <th>Summary</th>
-        <th>License</th>
-        <th>Homepage</th>
-      </tr>
-      <% Bundler.rubygems.all_specs.sort_by(&:name).each do |gemspec| %>
-          <tr>
-            <td class="text-nowrap"><%= gemspec.name %></td>
-            <td><%= gemspec.version.to_s %></td>
-            <td><%= gemspec.summary %></td>
-            <td><%= gemspec.licenses.join(', ') %></td>
-            <td><%= link_to gemspec.homepage, gemspec.homepage if !gemspec.homepage.blank? %></td>
-          </tr>
-      <% end %>
-    </table>
   </div>
 
 <div class="tab-pane" id="gc">

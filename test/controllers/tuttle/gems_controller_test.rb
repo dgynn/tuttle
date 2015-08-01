@@ -3,6 +3,11 @@ require 'test_helper'
 module Tuttle
   class GemsControllerTest < ActionController::TestCase
 
+    test 'should get index' do
+      get :index
+      assert_response :success
+    end
+
     test 'should get http_clients' do
       get :http_clients
       assert_response :success

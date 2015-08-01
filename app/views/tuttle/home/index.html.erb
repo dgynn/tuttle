@@ -21,11 +21,21 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Gems Detected</h3>
+        <h3 class="panel-title">Tuttle Gem Helper Tools</h3>
       </div>
       <ul class="list-group">
-        <li class="list-group-item list-group-item-<%= ("constant" == defined?(CanCan)) ? 'success' : 'danger' %>">CanCan</li>
-        <li class="list-group-item list-group-item-<%= ("constant" == defined?(Devise)) ? 'success' : 'danger' %>">Devise</li>
+        <%- if defined?(CanCanCan) %>
+          <li class="list-group-item"><%= link_to 'CanCan', cancancan_path %></li>
+        <%- end %>
+        <%- if defined?(Devise) %>
+          <li class="list-group-item"><%= link_to 'Devise', devise_path %></li>
+        <%- end %>
+        <%- if defined?(Paperclip) %>
+          <li class="list-group-item"><%= link_to 'Paperclip', paperclip_path %></li>
+        <%- end %>
+        <%- if !defined?(CanCanCan) && !defined?(Devise) && !defined?(Paperclip) %>
+          <li class="list-group-item list-group-item-warning">None</li>
+        <%- end %>
       </ul>
     </div>
 

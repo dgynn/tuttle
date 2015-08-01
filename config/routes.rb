@@ -13,6 +13,7 @@ Tuttle::Engine.routes.draw do
   end
 
   namespace :gems do
+    get '', :action => :index
     get :http_clients, :json, :other
   end
 
