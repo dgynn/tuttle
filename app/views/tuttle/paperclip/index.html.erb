@@ -3,6 +3,7 @@
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
   <li><a href="#defaults" role="tab" data-toggle="tab">Defaults</a></li>
+  <li><a href="#interpolations" role="tab" data-toggle="tab">Interpolations</a></li>
 </ul>
 
 <div class="tab-content">
@@ -62,4 +63,19 @@
     </table>
   </div>
 
+  <div class="tab-pane" id="interpolations">
+    <h3>Interpolations</h3>
+    <table class="table table-compact">
+      <tr>
+        <th>Option</th>
+      </tr>
+      <% Paperclip::Interpolations.all.each do |interpolation| %>
+        <tr>
+          <td>
+            :<%= interpolation %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
 </div>
