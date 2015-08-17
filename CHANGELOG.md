@@ -1,4 +1,4 @@
-### Unreleased
+### 0.0.4
 
 * Features
   * Experimental Rails5 support
