@@ -1,12 +1,68 @@
 <h1>Devise Configuration</h1>
 
-<ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
-  <li><a href="#config" role="tab" data-toggle="tab">Config</a></li>
-</ul>
+<nav>
+  <ul class="nav nav-pills">
+    <li role="presentation" class="active"><a href="#mappings" role="tab" data-toggle="pill">Mappings</a></li>
+    <li role="presentation"><a href="#overview" role="tab" data-toggle="pill">Overview</a></li>
+    <li role="presentation"><a href="#config" role="tab" data-toggle="pill">Config</a></li>
+  </ul>
+</nav>
 
 <div class="tab-content">
-  <div class="tab-pane active" id="overview">
+  <div role="tabpanel" class="tab-pane active" id="mappings">
+    <% Devise.mappings.each do |key, mapping| %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">:<%= key %> =&gt; <%= mapping.class_name %></h3>
+        </div>
+        <div class="panel-body">
+          <h3>Attributes</h3>
+          <table class="table table-condensed">
+            <tr>
+              <th>Attribute</th>
+              <th>Value</th>
+            </tr>
+            <% [:singular, :scoped_path, :path, :controllers, :path_names,
+                :class_name, :sign_out_via, :format, :used_routes, :used_helpers,
+                :failure_app, :router_name, :strategies, :authenticatable?].each do |attr| %>
+              <tr>
+                <td><%= attr %></td>
+                <td><%= mapping.send(attr) %></td>
+              </tr>
+          <% end %>
+          </table>
+          <h3>Enabled Modules</h3>
+          <table class="table table-condensed">
+            <tr>
+              <th>Module Name</th>
+              <th>Config Options</th>
+            </tr>
+          <% mapped_class = mapping.to
+             mapped_class.devise_modules.each do |devise_module| %>
+            <tr>
+              <td>:<%= devise_module %></td>
+              <td>
+                <%
+                  mod = Devise::Models.const_get(devise_module.to_s.classify)
+                  if mod.const_defined?(:ClassMethods)
+                    class_mod = mod.const_get(:ClassMethods)
+                    if class_mod.respond_to?(:available_configs)
+                      class_mod.available_configs.each do |config| %>
+                        <%= config %>:
+                        <code><%= mapped_class.send(config) %></code><br/>
+                <%    end
+                    end
+                  end
+                %>
+              </td>
+            </tr>
+          <% end %>
+          </table>
+      </div>
+    <% end %>
+    </div>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="overview">
     <dl class="dl-horizontal">
       <dt>Devise Version</dt><dd><%= Devise::VERSION %></dd>
     </dl>
@@ -23,10 +79,8 @@
 
 </pre>
   </div>
-
-  <div class="tab-pane" id="config">
+  <div role="tabpanel" class="tab-pane" id="config">
 <pre>
-
 rememberable_options = <%= Devise.rememberable_options %>
 stretches = <%= Devise.stretches %>
 http_authentication_key = <%= Devise.http_authentication_key %>
@@ -67,7 +121,6 @@ parent_mailer = <%= Devise.parent_mailer %>
 router_name = <%= Devise.router_name %>
 omniauth_path_prefix = <%= Devise.omniauth_path_prefix %>
 clean_up_csrf_token_on_authentication = <%= Devise.clean_up_csrf_token_on_authentication %>
-mappings = <%= Devise.mappings %>
 omniauth_configs = <%= Devise.omniauth_configs %>
 helpers = <%= Devise.helpers %>
 warden_config = <%= Devise.warden_config %>
