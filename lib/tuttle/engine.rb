@@ -1,3 +1,6 @@
+require 'rails'
+require 'rails/engine'
+
 module Tuttle
   class Engine < ::Rails::Engine
     isolate_namespace Tuttle
