@@ -8,48 +8,54 @@ module Tuttle
 
     config.tuttle = ActiveSupport::OrderedOptions.new
 
-    attr_accessor :reload_needed
-    attr_accessor :events, :event_counts, :cache_events
-    attr_accessor :session_start, :session_id
+    mattr_accessor :reload_needed
+    mattr_accessor :events, :event_counts, :cache_events
+    @@events = []
+    @@event_counts = Hash.new(0)
+    @@cache_events = []
 
-    attr_reader :logger
+    mattr_accessor :session_start, :session_id
 
-    initializer :tuttle_assets_precompile do |app|
+    mattr_reader :logger
+
+    initializer 'tuttle' do |app|
       app.config.assets.precompile += %w(tuttle/application.css tuttle/application.js tuttle/favicon.ico)
-    end
 
-    initializer :tuttle_set_configuration do |app|
-      app.config.tuttle.each do |k,v|
+      app.config.tuttle.each do |k, v|
         Tuttle.send("#{k}=", v)
       end
-      # Tuttle will be automatically enabled in development if not configured explicitly
-      Tuttle.enabled= Rails.env.development? if Tuttle.enabled==nil
-      Tuttle.automount_engine= true if Tuttle.automount_engine==nil
-    end
 
-    initializer :tuttle_startup do
+      # Tuttle will be automatically enabled in development if not configured explicitly
+      Tuttle.enabled = Rails.env.development? if Tuttle.enabled==nil
+
       next unless Tuttle.enabled
 
       Tuttle::Engine.session_start = Time.now
       Tuttle::Engine.session_id = SecureRandom.uuid
-      @logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
-      @logger.info('Tuttle engine started')
-    end
-
-    initializer :tuttle_track_reloads, group: :all do
-      next unless Tuttle.enabled
+      @@logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
+      self.logger.info('Tuttle engine started')
 
       ActionDispatch::Reloader.to_prepare do
         Tuttle::Engine.logger.warn('ActionDispatch::Reloader called to_prepare') unless Tuttle::Engine.reload_needed.nil?
         Tuttle::Engine.reload_needed = true
       end
+
+      Tuttle.automount_engine = true if Tuttle.automount_engine==nil
+
+      if Tuttle.automount_engine
+        Rails.application.routes.prepend do
+          Tuttle::Engine.logger.info('Auto-mounting /tuttle routes')
+          mount Tuttle::Engine, at: "tuttle"
+        end
+      end
+
+      initialize_tuttle_instrumenter if Tuttle.track_notifications
+
     end
 
-    initializer :tuttle_global_instrumenter, group: :all do
-      Tuttle::Engine.events = []
-      Tuttle::Engine.event_counts = Hash.new(0)
-      Tuttle::Engine.cache_events = []
-      next unless Tuttle.enabled && Tuttle.track_notifications
+    private
+
+    def initialize_tuttle_instrumenter
 
       # For now, only instrument non-production mode
       unless Rails.env.production?
@@ -75,17 +81,6 @@ module Tuttle
         Tuttle::Engine.logger.info('Cache Generate called')
       end
 
-    end
-
-    initializer :tuttle_automounter do
-      next unless Tuttle.enabled
-
-      if Tuttle.automount_engine
-        Rails.application.routes.prepend do
-          Tuttle::Engine.logger.info('Auto-mounting /tuttle routes')
-          mount Tuttle::Engine, at: "tuttle"
-        end
-      end
     end
 
   end
