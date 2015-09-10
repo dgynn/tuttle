@@ -52,7 +52,7 @@ module Tuttle
 
     def assets
       @sprockets = Rails.application.assets
-      @engines = Sprockets::VERSION >= '3' ?  @sprockets.instance_variable_get(:@config)[:engines] : @sprockets.instance_variable_get(:@engines)
+      # TODO: revisit detection of "engines" which are classified as processors, transformers, etc.
     end
 
     def routes

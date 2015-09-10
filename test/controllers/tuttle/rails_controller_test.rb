@@ -44,7 +44,6 @@ module Tuttle
       get :assets
       assert_response :success
       assert_not_nil assigns(:sprockets)
-      assert_not_nil assigns(:engines)
     end
 
     test 'should get routes' do
