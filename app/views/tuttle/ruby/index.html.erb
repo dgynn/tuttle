@@ -5,6 +5,8 @@
   <li><a href="#environment" role="tab" data-toggle="tab">Environment</a></li>
   <li><a href="#bundler" role="tab" data-toggle="tab">Bundler</a></li>
   <li><a href="#gc" role="tab" data-toggle="tab">Garbage Collection</a></li>
+  <li><a href="#loaded_features" role="tab" data-toggle="tab">Loaded Features</a></li>
+
 </ul>
 
 <div class="tab-content">
@@ -57,5 +59,14 @@
 <%- end %>
 </dl>
 </div>
+
+  <div class="tab-pane" id="loaded_features">
+    <p>The following <b><%= $LOADED_FEATURES.size %></b> files have been loaded via <code>require</code> at some point.</p>
+    <ul>
+      <%- $LOADED_FEATURES.each do |filename| %>
+        <li><%= filename %></li>
+      <%- end %>
+    </ul>
+  </div>
 
 </div>
