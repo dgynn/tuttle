@@ -7,7 +7,7 @@
 </ul>
 <br/>
 
-<form class="form-horizontal" role="form" metho="get">
+<form class="form-horizontal" role="form" method="get">
   <div class="form-group">
     <label for="action_name" class="col-sm-2 control-label">Action</label>
     <div class="col-sm-10">
@@ -47,22 +47,3 @@
 
 <h3>All Rules</h3>
 <%= render :partial => 'rule_table', :locals => {:rules => @ability.instance_variable_get('@rules') } =%>
-
-<%- action_list = @ability.instance_variable_get('@rules').collect(&:actions).flatten.uniq -%>
-
-<%- content_for(:javascripts) do -%>
-<script>
-var action_name_list = <%= action_list.as_json.to_s.html_safe =%>;
-var action_names = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-  local: $.map(action_name_list, function(name) { return { value: name }; })
-});
-
-action_names.initialize();
-
-$('#action_name.typeahead').typeahead({ hint: true, highlight: true, minLength: 1},
-  { name: 'action_names', displayKey: 'value', source: action_names.ttAdapter()
-});
-</script>
-<%- end -%>

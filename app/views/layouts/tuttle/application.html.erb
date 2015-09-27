@@ -7,9 +7,11 @@
   <title>Tuttle</title>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
-  <link rel="icon" href="<%= image_path 'tuttle/favicon.ico' %>">
-
-  <%= stylesheet_link_tag "tuttle/application", :media => "all" %>
+  <link rel="icon" href="//s3.amazonaws.com/tuttle-assets/images/favicon.ico">
+  <style>
+    html { overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+    body { padding-top: 50px; }
+  </style>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -86,8 +88,6 @@
 
 <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
-<%= javascript_include_tag "tuttle/application" =%>
 <script type="application/javascript">
   $(function () {
     $('[data-toggle="tooltip"]').tooltip();

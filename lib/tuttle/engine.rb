@@ -19,7 +19,6 @@ module Tuttle
     mattr_reader :logger
 
     initializer 'tuttle' do |app|
-      app.config.assets.precompile += %w(tuttle/application.css tuttle/application.js tuttle/favicon.ico)
 
       app.config.tuttle.each do |k, v|
         Tuttle.send("#{k}=", v)
