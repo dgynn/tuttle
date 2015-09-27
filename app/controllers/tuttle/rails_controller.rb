@@ -1,6 +1,6 @@
 require_dependency 'tuttle/application_controller'
-require 'rails/generators'
-require 'tuttle/presenters/action_dispatch/routing/route_wrapper'
+require_dependency 'rails/generators'
+require_dependency 'tuttle/presenters/action_dispatch/routing/route_wrapper'
 
 module Tuttle
   class RailsController < ApplicationController
