@@ -42,7 +42,9 @@
 <p>Note: The schema cache is only loaded once on application startup. During development, with code reloading, it is likely to be reset.</p>
 <% end %>
 
-<% cached_tablenames = @connection_schema_cache.instance_variable_get(:@tables) %>
+<%- # Rails 5.x switched to @data_sources from @tables for instance variable %>
+<% cached_tablenames = @connection_schema_cache.instance_variable_get(:@data_sources) ||
+                       @connection_schema_cache.instance_variable_get(:@tables) || [] %>
 <% cached_columns = @connection_schema_cache.instance_variable_get(:@columns) %>
 <% cached_columns_hash = @connection_schema_cache.instance_variable_get(:@columns_hash) %>
 <% cached_primary_keys = @connection_schema_cache.instance_variable_get(:@primary_keys) %>
