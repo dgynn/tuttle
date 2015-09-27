@@ -1,37 +1,41 @@
 <h2>Assets/Sprockets</h2>
 
-Sprockets version: <%= Sprockets::VERSION %><br/>
-Sprockets::Rails version: <%= Sprockets::Rails::VERSION %><br/>
-SASS version: <%= defined?(Sass::VERSION) ? Sass::VERSION : '-' %><br/>
-CoffeeScript version: <%= defined?(CoffeeScript) ? CoffeeScript::version : '-' %><br/>
-ECO version: <%= defined?(Eco) ? Eco::version : '-' %><br/>
-EJS version: <%= defined?(EJS) ? '1.1.1' : '-' %><br/>
+<%- if @sprockets %>
+  Sprockets version: <%= Sprockets::VERSION %><br/>
+  Sprockets::Rails version: <%= Sprockets::Rails::VERSION %><br/>
+  SASS version: <%= defined?(Sass::VERSION) ? Sass::VERSION : '-' %><br/>
+  CoffeeScript version: <%= defined?(CoffeeScript) ? CoffeeScript::version : '-' %><br/>
+  ECO version: <%= defined?(Eco) ? Eco::version : '-' %><br/>
+  EJS version: <%= defined?(EJS) ? '1.1.1' : '-' %><br/>
 
-<h3>Configuration</h3>
-digest: <%= Rails.application.config.assets.digest %><br/>
-<%- if Sprockets::VERSION < '3' %>
-** digest value: <%= @sprockets.digest %><br/>
+  <h3>Configuration</h3>
+  digest: <%= Rails.application.config.assets.digest %><br/>
+  <%- if Sprockets::VERSION < '3' %>
+  ** digest value: <%= @sprockets.digest %><br/>
+  <%- end %>
+  assets version: <%= Rails.application.config.assets.version %><br/>
+  ** sprockets assets version: <%= @sprockets.version %><br/>
+  assets prefix: <%= Rails.application.config.assets.prefix %><br/>
+  manifest: <%= Rails.application.config.assets.manifest || 'false' %><br/>
+  debug: <%= Rails.application.config.assets.debug %><br/>
+  compile: <%= Rails.application.config.assets.compile %><br/>
+  <%- # NOTE: only in Sprockets 2.x %>
+  raise_runtime_errors: <%= Rails.application.config.assets.raise_runtime_errors %><br/>
+  js_compressor: <%= Rails.application.config.assets.js_compressor %><br/>
+  css_compressor: <%= Rails.application.config.assets.css_compressor %><br/>
+
+  asset_host (for CDNs): <%= Rails.application.config.action_controller.asset_host %><br/>
+  static_cache_control (for CDNs): <%= Rails.application.config.static_cache_control %><br/>
+
+
+  <h3>Asset paths</h3>
+  <pre>
+  <% @sprockets.paths.each do |asset_path| %>
+  <%= asset_path.to_s %>
+  <% end %>
+
+  </pre>
+
+<%- else %>
+  <p>Sprockets does not appear to be enabled for this application.</p>
 <%- end %>
-assets version: <%= Rails.application.config.assets.version %><br/>
-** sprockets assets version: <%= @sprockets.version %><br/>
-assets prefix: <%= Rails.application.config.assets.prefix %><br/>
-manifest: <%= Rails.application.config.assets.manifest || 'false' %><br/>
-debug: <%= Rails.application.config.assets.debug %><br/>
-compile: <%= Rails.application.config.assets.compile %><br/>
-<%- # NOTE: only in Sprockets 2.x %>
-raise_runtime_errors: <%= Rails.application.config.assets.raise_runtime_errors %><br/>
-js_compressor: <%= Rails.application.config.assets.js_compressor %><br/>
-css_compressor: <%= Rails.application.config.assets.css_compressor %><br/>
-
-asset_host (for CDNs): <%= Rails.application.config.action_controller.asset_host %><br/>
-static_cache_control (for CDNs): <%= Rails.application.config.static_cache_control %><br/>
-
-
-<h3>Asset paths</h3>
-<pre>
-<% @sprockets.paths.each do |asset_path| %>
-<%= asset_path.to_s %>
-<% end %>
-
-</pre>
-
