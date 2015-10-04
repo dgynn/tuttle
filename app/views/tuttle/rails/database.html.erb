@@ -12,8 +12,8 @@
 <p>Adapter Name = <%= @conn.adapter_name %></p>
 <p>Adapter Class = <%= @conn.class %></p>
 <p>Connected? = <%= ActiveRecord::Base.connected? %></p>
-<p>Pool size = <%= ActiveRecord::Base.connection_pool.size %></p>
-<p>Schema Cache size = <%= @conn.schema_cache.size %></p>
+<p>Pool size = <%= ActiveRecord::Base.connection_pool.size rescue 'N/A' %></p>
+<p>Schema Cache size = <%= @conn.schema_cache.size rescue 'N/A' %></p>
 
 <%- if defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter) && @conn.class <= ActiveRecord::ConnectionAdapters::PostgreSQLAdapter -%>
 
