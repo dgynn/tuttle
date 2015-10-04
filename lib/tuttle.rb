@@ -1,8 +1,7 @@
+require 'tuttle/version'
 require 'tuttle/engine'
 
 module Tuttle
-
-  autoload :Version, 'tuttle/version'
 
   mattr_accessor :automount_engine
   mattr_accessor :enabled
