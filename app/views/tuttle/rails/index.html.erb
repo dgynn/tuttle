@@ -10,7 +10,7 @@ Log Level = <%= Rails.configuration.log_level %>
 
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#config" role="tab" data-toggle="tab">Configuration</a></li>
-  <li><a href="#application" role="tab" data-toggle="tab">Application</a></li>
+  <li><a href="#load_paths" role="tab" data-toggle="tab">Load Paths</a></li>
   <li><a href="#initializers" role="tab" data-toggle="tab">Initializers</a></li>
   <li><a href="#middleware" role="tab" data-toggle="tab">Middleware</a></li>
   <li><a href="#railties" role="tab" data-toggle="tab">Railties</a></li>
@@ -63,32 +63,66 @@ Log Level = <%= Rails.configuration.log_level %>
       </div>
     </div>
   </div>
-  <div class="tab-pane" id="application">
+  <div class="tab-pane" id="load_paths">
     <p>
-      The fully-configured Rails Application object manages class loading and request routing.
+      Rails will load code based on the configured load paths with the
+      help of ActiveSupport.
+      <ul>
+        <li>
+          Autoload - Files will be searched here to auto
+          load classes based on naming convention
+        </li>
+        <li>
+          Autoload Once - A subset of autoload that will not be reloaded
+          when class caching is disabled (default for development)
+        </li>
+        <li>
+          Eager Load - All classes here will be loaded when eager loading
+          is configured (default for production)
+        </li>
+      </ul>
+      The runtime load paths are determined by configuration (typically in
+      <code>application.rb</code>), Rails' default load paths
+      (e.g. <code>app/*</code>), paths contributed by Engines, and direct API
+      calls to <code>ActiveSupport::Dependecies</code>.
     </p>
-    <%- all_autoload_paths = Rails.application.instance_variable_get('@_all_autoload_paths') -%>
-    <%- all_load_paths = Rails.application.instance_variable_get('@_all_load_paths') -%>
+    <p>
+      <i>Ideally, all directories should exist.</i>
+    </p>
+
+    <%- all_load_paths = (Rails.application.send(:_all_load_paths) + ActiveSupport::Dependencies.autoload_paths).uniq -%>
+
+    <%- all_autoload_paths = Rails.application.send(:_all_autoload_paths) -%>
+    <%- all_autoload_once_paths = Rails.application.send(:_all_autoload_once_paths) -%>
+
+    <%- config_eager_load_paths = Rails.configuration.eager_load_paths -%>
+    <%- config_autoload_paths = Rails.configuration.autoload_paths -%>
+    <%- config_autoload_once_paths = Rails.configuration.autoload_once_paths -%>
+
     <h3>Load Paths</h3>
-    <ol class="list-unstyled">
-    <% all_load_paths.each do |path| %>
-        <li><%= path %><%= ' *' unless all_autoload_paths.include?(path) %></li>
-    <% end %>
-    </ol>
-    <p>Paths marked with '*' are not autoload paths</p>
-    <div class="panel panel-warning">
-      <div class="panel-heading">
-        <h4 class="panel-title" data-toggle="collapse" data-target="#rails_app_instances">Instance Variables</h4>
-      </div>
-      <div id="rails_app_instances" class="panel-body collapse">
-        <dl class="dl-horizontal">
-          <%- Rails.application.instance_variables.sort.each do |symbol| %>
-              <dt><%= symbol %></dt>
-              <dd><samp><%= Rails.application.instance_variable_get(symbol).class.name %></samp></dd>
-          <%- end %>
-        </dl>
-      </div>
-    </div>
+
+    <table class="table table-condensed">
+      <tr>
+        <th>Path</th>
+        <th>Autoload?</th>
+        <th>Autoload Once?</th>
+        <th>Eager Load?</th>
+        <th>Config Autoload?</th>
+        <th>Config Autoload Once?</th>
+        <th>Exists?</th>
+      </tr>
+      <% all_load_paths.each do |path| %>
+        <tr>
+          <td><%= path %></td>
+          <td><%= truth_label(all_autoload_paths.include?(path)) %></td>
+          <td><%= truth_label(all_autoload_once_paths.include?(path)) %></td>
+          <td><%= truth_label(config_eager_load_paths.include?(path)) %></td>
+          <td><%= truth_label(config_autoload_paths.include?(path)) %></td>
+          <td><%= truth_label(config_autoload_once_paths.include?(path)) %></td>
+          <td><%= truth_label(File.directory?(path)) %></td>
+        </tr>
+      <% end %>
+    </table>
   </div>
   <div class="tab-pane" id="initializers">
     <p>Rails initializers are blocks of code that run during application initialization.</p>
