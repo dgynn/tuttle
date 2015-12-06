@@ -4,7 +4,7 @@ Tuttle::Engine.routes.draw do
 
   namespace :rails do
     get '', :action => :index
-    get :controllers, :models, :database, :schema_cache, :helpers, :assets, :routes, :instrumentation, :inflectors, :cache
+    get :controllers, :models, :database, :schema_cache, :helpers, :assets, :routes, :instrumentation, :cache
   end
 
   namespace :ruby do
@@ -15,6 +15,11 @@ Tuttle::Engine.routes.draw do
   namespace :gems do
     get '', :action => :index
     get :http_clients, :json, :other
+  end
+
+  namespace :active_support do
+    get '', :action => :index
+    get :dependencies, :inflectors, :time_zones
   end
 
   get '/request' => 'request#index'

@@ -5,6 +5,7 @@
   <li><a href="#environment" role="tab" data-toggle="tab">Environment</a></li>
   <li><a href="#bundler" role="tab" data-toggle="tab">Bundler</a></li>
   <li><a href="#gc" role="tab" data-toggle="tab">Garbage Collection</a></li>
+  <li><a href="#load_path" role="tab" data-toggle="tab">Load Path</a></li>
   <li><a href="#loaded_features" role="tab" data-toggle="tab">Loaded Features</a></li>
 
 </ul>
@@ -59,6 +60,19 @@
 <%- end %>
 </dl>
 </div>
+
+  <div class="tab-pane" id="load_path">
+    <p>
+      The the <code>$LOAD_PATH</code> (<%= $LOAD_PATH.size %> entries) lists
+      the directories that will be searched when code is loaded with
+      <code>require</code> or <code>load</code>.
+    </p>
+    <ul>
+      <%- $LOAD_PATH.each do |dir_name| %>
+        <li><%= dir_name %></li>
+      <%- end %>
+    </ul>
+  </div>
 
   <div class="tab-pane" id="loaded_features">
     <p>The following <b><%= $LOADED_FEATURES.size %></b> files have been loaded via <code>require</code> at some point.</p>

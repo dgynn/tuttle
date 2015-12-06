@@ -59,13 +59,6 @@ module Tuttle
       assert_not_nil assigns(:event_counts)
     end
 
-    test 'should get inflectors' do
-      get :inflectors
-      assert_response :success
-      assert_not_nil assigns(:test_word)
-      assert_not_nil assigns(:plurals)
-    end
-
     test 'should get cache' do
       get :cache
       assert_response :success

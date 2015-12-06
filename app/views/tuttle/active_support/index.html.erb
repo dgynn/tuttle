@@ -1,0 +1,69 @@
+<h1>Active Support Overview</h1>
+
+<dl class="dl-horizontal">
+  <dt>Active Support Version</dt><dd><%= ActiveSupport::VERSION::STRING %></dd>
+</dl>
+
+<h3>Config Settings</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Setting</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>config.active_support</td>
+    <td><code><%= Rails.configuration.active_support %></code></td>
+    <td>All settings for config.active_support</td>
+  </tr>
+  <tr>
+    <td>config.active_support.bare</td>
+    <td><%= truth_label(Rails.configuration.active_support.bare) %></td>
+    <td>enables or disables the loading of active_support/all when booting Rails. Defaults to nil, which means active_support/all is loaded.</td>
+  </tr>
+  <tr>
+    <td>config.active_support.test_order</td>
+    <td><code><%= Rails.configuration.active_support.test_order %></code></td>
+    <td>sets the order that test cases are executed. Possible values are :sorted and :random. Currently defaults to :sorted. In Rails 5.0, the default will be changed to :random instead.</td>
+  </tr>
+  <tr>
+    <td>config.active_support.escape_html_entities_in_json</td>
+    <td><code><%= Rails.configuration.active_support.escape_html_entities_in_json %></code></td>
+    <td>enables or disables the escaping of HTML entities in JSON serialization. Defaults to false.</td>
+  </tr>
+  <tr>
+    <td>config.active_support.use_standard_json_time_format</td>
+    <td><code><%= Rails.configuration.active_support.use_standard_json_time_format %></code></td>
+    <td>enables or disables serializing dates to ISO 8601 format. Defaults to true.</td>
+  </tr>
+  <tr>
+    <td>config.active_support.time_precision</td>
+    <td><code><%= Rails.configuration.active_support.time_precision %></code></td>
+    <td>sets the precision of JSON encoded time values. Defaults to 3.</td>
+  </tr>
+  <tr>
+    <td>ActiveSupport::Logger.silencer</td>
+    <td><%= truth_label(ActiveSupport::Logger.silencer) %></td>
+    <td>set to false to disable the ability to silence logging in a block. The default is true.</td>
+  </tr>
+  <tr>
+    <td>ActiveSupport::Cache::Store.logger</td>
+    <td><code><%= ActiveSupport::Cache::Store.logger %></code></td>
+    <td>specifies the logger to use within cache store operations</td>
+  </tr>
+  <tr>
+    <td>ActiveSupport::Deprecation.silenced</td>
+    <td><%= truth_label(ActiveSupport::Deprecation.silenced) %></td>
+    <td>sets whether or not to display deprecation warnings</td>
+  </tr>
+  <tr>
+    <td>config.active_support.deprecation</td>
+    <td><code><%= Rails.configuration.active_support.deprecation %></code></td>
+    <td>specifies which deprecation method to use. the default values are <code><%= ActiveSupport::Deprecation::DEFAULT_BEHAVIORS.keys %></code></td>
+  </tr>
+  <tr>
+    <td>current deprecation behavior</td>
+    <td><code><%= ActiveSupport::Deprecation::DEFAULT_BEHAVIORS.key(ActiveSupport::Deprecation.behavior.first) || 'custom' %></code></td>
+    <td>The current runtime value of the depreaction behavior</td>
+  </tr>
+</table>

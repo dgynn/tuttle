@@ -1,0 +1,24 @@
+<h1>ActiveSupport Time Zones</h1>
+
+<!-- TODO: add information about how time zones are configured and possible options -->
+
+<h2>All TimeZones</h2>
+
+<table class="table table-striped  table-condensed">
+  <tr>
+    <th>Name</th>
+    <th>UTC Offset</th>
+    <th>to_s</th>
+    <th>Now</th>
+    <th>TZInfo</th>
+  </tr>
+  <% ActiveSupport::TimeZone.all.each do |tz| %>
+    <tr>
+      <td><%= tz.name %></td>
+      <td><%= tz.utc_offset %></td>
+      <td><%= tz.to_s %></td>
+      <td><%= tz.now %></td>
+      <td><%= tz.tzinfo %></td>
+    </tr>
+  <% end %>
+</table>

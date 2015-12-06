@@ -43,8 +43,17 @@
             <li><%= link_to 'Database', rails_database_path %></li>
             <li><%= link_to 'Schema Cache', rails_schema_cache_path %></li>
             <li><%= link_to 'Instrumentation', rails_instrumentation_path %></li>
-            <li><%= link_to 'Inflectors', rails_inflectors_path %></li>
             <li><%= link_to 'Caching', rails_cache_path %></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Active Support <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><%= link_to 'Overview', active_support_path %></li>
+            <li class="divider"></li>
+            <li><%= link_to 'Dependencies', active_support_dependencies_path %></li>
+            <li><%= link_to 'Inflectors', active_support_inflectors_path %></li>
+            <li><%= link_to 'Time Zones', active_support_time_zones_path %></li>
           </ul>
         </li>
         <li class="dropdown">
