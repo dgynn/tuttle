@@ -1,3 +1,10 @@
+### Unreleased
+
+* Features
+  * ActiveSupport inspection including Dependencies, TimeZones, and Deprecation
+  * Load path inspection (Ruby and Active Support autoloading)
+  * No longer requires asset pipeline
+
 ### 0.0.4
 
 * Features
