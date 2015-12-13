@@ -1,0 +1,74 @@
+<h2>Rails Generators</h2>
+
+<p>Rails Generators are helpers for quickly creating new code that follows Rails standards and best practices.</p>
+<p>Rails itself provides many generators as do other gems.</p>
+<p>You can configure Rails Generators to generate files based on your project's preferences.</p>
+<h2>Configuration Settings</h2>
+<dl>
+  <dt>assets = <%= Rails::Generators.options[:rails][:assets] %></dt>
+  <dd>allows to create assets on generating a scaffold. Defaults to true.</dd>
+  <dt>force_plural = <%= Rails::Generators.options[:rails][:force_plural] %></dt>
+  <dd>allows pluralized model names. Defaults to false.</dd>
+  <dt>helper = <%= Rails::Generators.options[:rails][:helper] %></dt>
+  <dd>defines whether or not to generate helpers. Defaults to true.</dd>
+  <dt>integration_tool = <%= Rails::Generators.options[:rails][:integration_tool] %></dt>
+  <dd>defines which integration tool to use. Defaults to nil.</dd>
+  <dt>javascripts = <%= Rails::Generators.options[:rails][:javascripts] %></dt>
+  <dd>turns on the hook for JavaScript files in generators. Used in Rails for when the scaffold generator is run. Defaults to true.</dd>
+  <dt>javascript_engine = <%= Rails::Generators.options[:rails][:javascript_engine] %></dt>
+  <dd>configures the engine to be used (for eg. coffee) when generating assets. Defaults to nil.</dd>
+
+  <dt>orm = <%= Rails::Generators.options[:rails][:orm] %></dt>
+  <dd>defines which orm to use. Defaults to false and will use Active Record by default.</dd>
+  <dt>resource_controller = <%= Rails::Generators.options[:rails][:resource_controller] %></dt>
+  <dd>defines which generator to use for generating a controller when using rails generate resource. Defaults to :controller.</dd>
+  <dt>scaffold_controller = <%= Rails::Generators.options[:rails][:scaffold_controller] %></dt>
+  <dd>different from resource_controller, defines which generator to use for generating a scaffolded controller when using rails generate scaffold. Defaults to :scaffold_controller.</dd>
+  <dt>stylesheets = <%= Rails::Generators.options[:rails][:stylesheets] %></dt>
+  <dd>turns on the hook for stylesheets in generators. Used in Rails for when the scaffold generator is run, but this hook can be used in other generates as well. Defaults to true.</dd>
+  <dt>stylesheet_engine = <%= Rails::Generators.options[:rails][:stylesheet_engine] %></dt>
+  <dd>configures the stylesheet engine (for eg. sass) to be used when generating assets. Defaults to :css.</dd>
+  <dt>test_framework = <%= Rails::Generators.options[:rails][:test_framework] %></dt>
+  <dd>defines which test framework to use. Defaults to false and will use Test::Unit by default.</dd>
+  <dt>template_engine = <%= Rails::Generators.options[:rails][:template_engine] %></dt>
+  <dd>defines which template engine to use, such as ERB or Haml. Defaults to :erb.</dd>
+ </dl>
+<h2>Generators</h2>
+<p><i>
+  Note: Generators marked as <span class="label label-warning">HIDDEN</span>
+  are typically invoked indirectly as a dependency of another generator.
+</i></p>
+
+<% @generators.each do |namespace, generators| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4><%= namespace %></h4>
+    </div>
+    <div class="panel-body">
+      <% generators.each do |generator| %>
+        <h5>
+          <%= generator.namespace %>
+          <% if Rails::Generators.hidden_namespaces.include?(generator.namespace) %>
+            <span class="label label-warning">HIDDEN</span>
+        <% end %>
+        </h5>
+        <p>Usage: <code><%= generator.banner %></code></p>
+        <pre><%= generator.desc %></pre>
+        <hr/>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<hr/>
+
+<div class="alert <%= @generators.empty? ? 'alert-warning' : 'alert-info' %>" role="alert">
+  <p>
+    Rails generators are not loaded by default.
+    If no generators are listed or some appear to be missing,
+    Tuttle may need to force load the generators.
+    <br/>
+    <%= link_to 'Load Generators', rails_generators_path(:load_all_generators=>true), :class => 'btn btn-default' %>
+  </p>
+</div>
+

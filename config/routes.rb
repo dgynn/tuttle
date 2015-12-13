@@ -4,7 +4,8 @@ Tuttle::Engine.routes.draw do
 
   namespace :rails do
     get '', :action => :index
-    get :controllers, :models, :database, :schema_cache, :helpers, :assets, :routes, :instrumentation, :cache
+    get :controllers, :models, :database, :schema_cache, :helpers, :assets,
+        :routes, :instrumentation, :cache, :generators, :engines
   end
 
   namespace :ruby do

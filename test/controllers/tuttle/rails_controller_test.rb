@@ -34,6 +34,18 @@ module Tuttle
       assert_not_nil assigns(:connection_schema_cache)
     end
 
+    test 'should get engines' do
+      get :engines
+      assert_response :success
+      assert_not_nil assigns(:engines)
+    end
+
+    test 'should get generators' do
+      get :generators
+      assert_response :success
+      assert_not_nil assigns(:generators)
+    end
+
     test 'should get helpers' do
       get :helpers
       assert_response :success

@@ -1,0 +1,40 @@
+<h2>Rails Engines</h2>
+
+<p>
+  Rails Engines are mini-applications that provide functionality to the host application.
+  An Engine is like a plugin module that can expose controllers, assets, rake tasks, etc.
+</p>
+
+<%- @engines.each do |engine| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4><%= engine.engine_name %> - <%= engine.class.name %> <%= '<span class="label label-success">ISOLATED</span>'.html_safe if engine.isolated? %></h4>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed" style="width: auto;">
+        <tr>
+          <th>Engine root path</th>
+          <td><%= engine.root %></td>
+        </tr>
+        <tr>
+          <th>Paths</th>
+          <td>
+              <% engine.paths.all_paths.each do |p| %>
+                <% current_path = p.instance_variable_get(:@current) %>
+                <% next if engine.paths[current_path].existent.empty? %>
+                <%= current_path %><br/>
+              <% end %>
+            </td>
+          </tr>
+        <tr>
+          <th>Routes</th>
+          <td><%= engine.routes.set.to_a.size %></td>
+        </tr>
+        <tr>
+          <th>Helpers</th>
+          <td><%= engine.helpers.instance_methods %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+<%- end %>

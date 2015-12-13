@@ -1,12 +1,11 @@
+require 'rails/generators'
 require_dependency 'tuttle/application_controller'
-require_dependency 'rails/generators'
 require_dependency 'tuttle/presenters/action_dispatch/routing/route_wrapper'
 
 module Tuttle
   class RailsController < ApplicationController
 
     def index
-      Rails::Generators.lookup! if Rails::Generators.subclasses.empty?
     end
 
     def controllers
@@ -17,6 +16,15 @@ module Tuttle
       @controllers = ActionController::Base.descendants
       @controllers.reject! {|controller| controller <= Tuttle::ApplicationController || controller.abstract?}
       @controllers.sort_by!(&:name)
+    end
+
+    def engines
+      @engines = Rails::Engine.subclasses.map(&:instance)
+    end
+
+    def generators
+      Rails::Generators.lookup! if 'true' == params[:load_all_generators]
+      @generators = Rails::Generators.subclasses.group_by(&:base_name)
     end
 
     def models
@@ -47,6 +55,10 @@ module Tuttle
     end
 
     def helpers
+      # TODO: Rails.application.helpers.instance_methods
+      # helper_symbol = Rails.application.helpers.instance_methods.first
+      # Rails.application.helpers.instance_method(helper_symbol).owner
+      # Rails.application.helpers.instance_method(helper_symbol).parameters
       @helpers = ::ApplicationController.send(:modules_for_helpers,[:all])
     end
 
