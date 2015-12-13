@@ -1,13 +1,18 @@
 module Tuttle
   class Instrumenter
 
+    mattr_accessor :events, :event_counts, :cache_events
+    @@events = []
+    @@event_counts = Hash.new(0)
+    @@cache_events = []
+
     def self.initialize_tuttle_instrumenter
       # For now, only instrument non-production mode
       unless Rails.env.production?
         ActiveSupport::Notifications.subscribe(/.*/) do |*args|
           event = ActiveSupport::Notifications::Event.new(*args)
-          Tuttle::Engine.events << event
-          Tuttle::Engine.event_counts[event.name] += 1
+          Tuttle::Instrumenter.events << event
+          Tuttle::Instrumenter.event_counts[event.name] += 1
         end
       end
 
@@ -20,7 +25,7 @@ module Tuttle
         Tuttle::Engine.logger.info("Cache Read called: #{cache_call_location.path} on line #{cache_call_location.lineno} :: #{event.payload.inspect}")
 
         event.payload.merge!({:call_location_path => cache_call_location.path, :call_location_lineno => cache_call_location.lineno })
-        Tuttle::Engine.cache_events << event
+        Tuttle::Instrumenter.cache_events << event
       end
 
       ActiveSupport::Notifications.subscribe('cache_generate.active_support') do |*args|

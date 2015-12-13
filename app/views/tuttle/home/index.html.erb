@@ -68,7 +68,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Events (<%= Tuttle::Engine.events.size %>)</h3>
+        <h3 class="panel-title">Events (<%= Tuttle::Instrumenter.events.size %>)</h3>
       </div>
       <ul class="list-group">
         <% @event_counts.sort.each do |name,val| -%>

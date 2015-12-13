@@ -8,11 +8,6 @@ module Tuttle
     config.tuttle = ActiveSupport::OrderedOptions.new
 
     mattr_accessor :reload_needed
-    mattr_accessor :events, :event_counts, :cache_events
-    @@events = []
-    @@event_counts = Hash.new(0)
-    @@cache_events = []
-
     mattr_accessor :session_start, :session_id
 
     mattr_reader :logger
@@ -20,6 +15,7 @@ module Tuttle
     initializer 'tuttle' do |app|
 
       app.config.tuttle.each do |k, v|
+        puts "Got tuttle key #{k}"
         Tuttle.send("#{k}=", v)
       end
 

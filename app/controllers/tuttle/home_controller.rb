@@ -5,7 +5,7 @@ module Tuttle
   class HomeController < ApplicationController
 
     def index
-      @event_counts = Tuttle::Engine.event_counts
+      @event_counts = Tuttle::Instrumenter.event_counts
     end
 
   end

@@ -75,8 +75,8 @@ module Tuttle
     end
 
     def instrumentation
-      @events = Tuttle::Engine.events
-      @event_counts = Tuttle::Engine.event_counts
+      @events = Tuttle::Instrumenter.events
+      @event_counts = Tuttle::Instrumenter.event_counts
     end
 
     def cache
@@ -86,8 +86,8 @@ module Tuttle
         ActiveSupport::Cache::Store.instrument=true
       end
       @cache = Rails.cache
-      @cache_events = Tuttle::Engine.events.select {|e| /cache_(read|write)\.active_support/ =~ e.name }
-      @tuttle_cache_events = Tuttle::Engine.cache_events
+      @cache_events = Tuttle::Instrumenter.events.select {|e| /cache_(read|write)\.active_support/ =~ e.name }
+      @tuttle_cache_events = Tuttle::Instrumenter.cache_events
     end
 
   end
