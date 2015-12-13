@@ -10,6 +10,8 @@ module Tuttle
   @@automount_engine = @@enabled = nil
   @@track_notifications = false
 
+  autoload :Instrumenter, 'tuttle/instrumenter'
+
   def self.setup
     yield self
   end
