@@ -15,6 +15,10 @@ module Tuttle
 
     end
 
+    def get_process_mem
+      require 'get_process_mem/version'
+    end
+
     def other
 
     end

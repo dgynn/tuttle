@@ -1,0 +1,92 @@
+<h2>Process and Memory</h2>
+GetProcessMem Version: <%= GetProcessMem::VERSION %>
+
+<h3>Ruby Process Information</h3>
+<table class="table table-condensed not-wide">
+  <tr>
+    <th>PID</th>
+    <td><%= $PID %></td>
+  </tr>
+  <tr>
+    <th>Parent PPID</th>
+    <td><%= Process.ppid %></td>
+  </tr>
+  <tr>
+    <th>Process EGID</th>
+    <td><%= Process.egid %></td>
+  </tr>
+  <tr>
+    <th>Process EUID</th>
+    <td><%= Process.euid %></td>
+  </tr>
+  <tr>
+    <th>Process pgrp</th>
+    <td><%= Process.getpgrp %></td>
+  </tr>
+  <tr>
+    <th>Process rlimit(Process::RLIMIT_CORE)</th>
+    <td><%= Process.getrlimit(Process::RLIMIT_CORE) %></td>
+  </tr>
+  <tr>
+    <th>Process rlimit(Process::RLIMIT_MEMLOCK)</th>
+    <td><%= Process.getrlimit(Process::RLIMIT_MEMLOCK) %></td>
+  </tr>
+  <tr>
+    <th>Process getsid</th>
+    <td><%= Process.getsid %></td>
+  </tr>
+  <tr>
+    <th>Process gid</th>
+    <td><%= Process.gid %></td>
+  </tr>
+  <tr>
+    <th>Process groups</th>
+    <td><%= Process.groups %></td>
+  </tr>
+  <tr>
+    <th>Process maxgroups</th>
+    <td><%= Process.maxgroups %></td>
+  </tr>
+</table>
+
+
+<% if defined?(GetProcessMem) %>
+  <% memory_self = GetProcessMem.new($PID) %>
+  <% memory_parent = GetProcessMem.new(Process.ppid) %>
+  <h3>GetProcessMem</h3>
+  <table class="table table-condensed not-wide">
+    <tr>
+      <th>Linux?</th>
+      <td><%= truth_label(memory_self.linux?) %></td>
+    </tr>
+    <tr>
+      <th>PID bytes</th>
+      <td><%= memory_self.bytes %></td>
+    </tr>
+    <tr>
+      <th>PID ps_memory</th>
+      <td><%= memory_self.send(:ps_memory) %></td>
+    </tr>
+    <% if memory_parent.respond_to?(:linux_status_memory) %>
+      <tr>
+        <th>PID status_memory</th>
+        <td><%= memory_self.linux_status_memory || '--Unknown--' %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th>PPID bytes</th>
+      <td><%= memory_parent.bytes %></td>
+    </tr>
+    <tr>
+      <th>PPID ps_memory</th>
+      <td><%= memory_parent.send(:ps_memory) %></td>
+    </tr>
+    <% if memory_parent.respond_to?(:linux_status_memory) %>
+      <tr>
+        <th>PPID status_memory</th>
+        <td><%= memory_parent.linux_status_memory || '--Unknown--' %></td>
+      </tr>
+    <% end %>
+  </table>
+
+<% end %>

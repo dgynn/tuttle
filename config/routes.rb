@@ -10,12 +10,12 @@ Tuttle::Engine.routes.draw do
 
   namespace :ruby do
     get '', :action => :index
-    get :tuning, :miscellaneous
+    get :miscellaneous, :tuning
   end
 
   namespace :gems do
     get '', :action => :index
-    get :http_clients, :json, :other
+    get :get_process_mem, :http_clients, :json, :other
   end
 
   namespace :active_support do
