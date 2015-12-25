@@ -3,6 +3,7 @@
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#ruby" role="tab" data-toggle="tab">Ruby</a></li>
   <li><a href="#environment" role="tab" data-toggle="tab">Environment</a></li>
+  <li><a href="#rbconfig" role="tab" data-toggle="tab">Ruby Config</a></li>
   <li><a href="#bundler" role="tab" data-toggle="tab">Bundler</a></li>
   <li><a href="#gc" role="tab" data-toggle="tab">Garbage Collection</a></li>
   <li><a href="#load_path" role="tab" data-toggle="tab">Load Path</a></li>
@@ -22,6 +23,45 @@
       <dt>RUBY_DESCRIPTION</dt><dd><%= RUBY_DESCRIPTION %></dd>
       <dt>RUBY_COPYRIGHT</dt><dd><%= RUBY_COPYRIGHT %></dd>
     </dl>
+    <h3>RUBYOPT</h3>
+    <p>The RUBYOPT environment variable can be set pass command line options to Ruby.</p>
+    <pre><%= ENV.fetch('RUBYOPT') { 'Not set'} %></pre>
+
+    <h3>RubyVM::DEFAULT_PARAMS</h3>
+    <p>The Ruby VM default parameters are the default values for this version of Ruby. They are not configurable.</p>
+    <table class="table table-condensed" style="width: auto;">
+      <tr>
+        <th>Setting</th>
+        <th>Value</th>
+      </tr>
+      <% RubyVM::DEFAULT_PARAMS.each do |k, v| %>
+        <tr>
+          <td><%= k.inspect %></td>
+          <td><%= v %></td>
+        </tr>
+      <% end %>
+    </table>
+
+    <h3>RubyVM::OPTS</h3>
+    <p>The RubyVM OPTS are build-time settings specified when Ruby is compiled.</p>
+    <pre><%= RubyVM::OPTS.inspect %></pre>
+  </div>
+
+  <div class="tab-pane" id="rbconfig">
+    <h3>RbConfig</h3>
+    <p>The RbConfig records the compile-time values of... </p>
+    <table class="table table-condensed" style="width: auto;">
+      <tr>
+        <th>Setting</th>
+        <th>Value</th>
+      </tr>
+      <% RbConfig::CONFIG.each do |k, v| %>
+        <tr>
+          <td><%= k %></td>
+          <td><code><%= v %></code></td>
+        </tr>
+      <% end %>
+    </table>
   </div>
 
   <div class="tab-pane" id="environment">
