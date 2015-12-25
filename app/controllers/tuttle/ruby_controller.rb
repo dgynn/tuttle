@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 require_dependency 'tuttle/application_controller'
 
 module Tuttle
