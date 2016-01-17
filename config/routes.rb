@@ -23,6 +23,8 @@ Tuttle::Engine.routes.draw do
     get :dependencies, :inflectors, :time_zones
   end
 
+  get '/performance_tuning' => 'performance_tuning#index'
+
   get '/request' => 'request#index'
 
   if defined?(ActiveModelSerializers)

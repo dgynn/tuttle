@@ -1,0 +1,79 @@
+<h1>Performance Tuning</h1>
+
+<dl class="dl-horizontal">
+  <dt>MiniProfiler Version</dt><dd><%= Rack::MiniProfiler::VERSION %></dd>
+  <dt>MiniProfiler Asset Version</dt><dd><%= Rack::MiniProfiler::ASSET_VERSION %></dd>
+</dl>
+
+<h3>Rack::MiniProfiler Global Settings</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Setting</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr><th colspan="3">Booleans</th></tr>
+  <% [:auto_inject, :disable_caching, :start_hidden, :skip_schema_queries, :disable_env_dump, :enabled].each do |setting_method| %>
+    <tr>
+      <td><%= setting_method %></td>
+      <td><%= truth_label(Rack::MiniProfiler.config.send(setting_method)) %></td>
+      <td></td>
+    </tr>
+  <% end %>
+  <tr><th colspan="3">Strings/Integers</th></tr>
+  <% [:position, :authorization_mode, :toggle_shortcut, :flamegraph_sample_rate,
+      :base_url_path, :backtrace_remove, :backtrace_includes, :backtrace_ignores, :backtrace_threshold_ms].each do |setting_method| %>
+    <tr>
+      <td><%= setting_method %></td>
+      <td><code><%= Rack::MiniProfiler.config.send(setting_method).inspect %></code></td>
+      <td></td>
+    </tr>
+  <% end %>
+  <tr><th colspan="3">Non-string</th></tr>
+  <% [ :storage, :storage_options, :storage_instance, :storage_failure, :user_provider, :pre_authorize_cb ].each do |setting_method| %>
+    <tr>
+      <td><%= setting_method %></td>
+      <td><code><%= Rack::MiniProfiler.config.send(setting_method).inspect %></code></td>
+      <td></td>
+    </tr>
+  <% end %>
+
+</table>
+
+<h3>Rack::MiniProfiler User Settings</h3>
+<p>
+  MiniProfiler uses a session cookie to store user overrides of configuration.
+</p>
+<p>
+  This is controlled by using the <code>pp=(enable|disable)</code>
+  or <code>pp=(no|full|disable)-backtrace</code> query parameters.
+</p>
+
+<table class="table table-condensed">
+  <tr>
+    <th>Setting</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>has_cookie?</td>
+    <td><%= truth_label(@mp_client_settings.has_cookie?) %></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Cookie Value</td>
+    <td><%= request.cookies[::Rack::MiniProfiler::ClientSettings::COOKIE_NAME].inspect %></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>disable_profiling?</td>
+    <td><%= truth_label(@mp_client_settings.disable_profiling?) %></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>backtrace_level</td>
+    <td><code><%= @mp_client_settings.backtrace_level %></code></td>
+    <td></td>
+  </tr>
+</table>
+

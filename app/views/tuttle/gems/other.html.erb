@@ -22,4 +22,8 @@
   <% if defined?(ActiveModel::Serializers) %>
   <li><%= link_to 'ActiveModel Serializers', '/tuttle/active_model_serializers' %> -  (0.9 and 0.10 support)</li>
   <% end %>
+  <% if defined?(Rack::MiniProfiler) %>
+    <li><%= link_to 'Rack::MiniProfiler', '/tuttle/performance_tuning' %></li>
+  <% end %>
+
 </ul>

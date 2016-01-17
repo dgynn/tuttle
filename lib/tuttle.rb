@@ -1,5 +1,8 @@
 require 'tuttle/version'
-require 'tuttle/engine'
+require 'tuttle/engine' if defined?(Rails)
+
+# TODO: clean this up so that mattr_accessor is not needed
+require 'active_support/core_ext/module/attribute_accessors'
 
 module Tuttle
 
