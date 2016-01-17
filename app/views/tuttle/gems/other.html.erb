@@ -14,3 +14,12 @@
   <div class="panel-footer">
   </div>
 </div>
+
+<h2>Work In Progress</h2>
+<p>Much of Tuttle is a work in progress. But these bits are still under development...</p>
+<ul>
+  <li><%= link_to 'Request Inspector', '/tuttle/request' %></li>
+  <% if defined?(ActiveModel::Serializers) %>
+  <li><%= link_to 'ActiveModel Serializers', '/tuttle/active_model_serializers' %> -  (0.9 and 0.10 support)</li>
+  <% end %>
+</ul>
