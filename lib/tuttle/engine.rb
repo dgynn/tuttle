@@ -10,12 +10,12 @@ module Tuttle
 
     config.tuttle = ActiveSupport::OrderedOptions.new
 
-    config.to_prepare do
-      Tuttle::Engine.reload_needed = true
+    config.before_configuration do
+      Tuttle::Engine.session_start = Time.now
+      Tuttle::Engine.session_id = SecureRandom.uuid
     end
 
     initializer 'tuttle' do |app|
-
       app.config.tuttle.each do |k, v|
         Tuttle.send("#{k}=", v)
       end
@@ -24,9 +24,6 @@ module Tuttle
       Tuttle.enabled = Rails.env.development? if Tuttle.enabled.nil?
 
       next unless Tuttle.enabled
-
-      Tuttle::Engine.session_start = Time.now
-      Tuttle::Engine.session_id = SecureRandom.uuid
 
       @@logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
       Tuttle::Engine.logger.info('Tuttle engine started')
@@ -44,6 +41,10 @@ module Tuttle
         Tuttle::Instrumenter.initialize_tuttle_instrumenter
       end
 
+    end
+
+    config.to_prepare do
+      Tuttle::Engine.reload_needed = true
     end
 
   end
