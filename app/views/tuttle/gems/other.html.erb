@@ -15,15 +15,105 @@
   </div>
 </div>
 
-<h2>Work In Progress</h2>
-<p>Much of Tuttle is a work in progress. But these bits are still under development...</p>
-<ul>
-  <li><%= link_to 'Request Inspector', '/tuttle/request' %></li>
-  <% if defined?(ActiveModel::Serializers) %>
-  <li><%= link_to 'ActiveModel Serializers', '/tuttle/active_model_serializers' %> -  (0.9 and 0.10 support)</li>
-  <% end %>
-  <% if defined?(Rack::MiniProfiler) %>
-    <li><%= link_to 'Rack::MiniProfiler', '/tuttle/performance_tuning' %></li>
-  <% end %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Work In Progress</h3>
+  </div>
+  <div class="panel-body">
+    <p>Much of Tuttle is a work in progress. But these bits are still under development...</p>
+    <ul>
+      <li><%= link_to 'Request Inspector', '/tuttle/request' %></li>
+      <% if defined?(ActiveModel::Serializers) %>
+      <li><%= link_to 'ActiveModel Serializers', '/tuttle/active_model_serializers' %> -  (0.9 and 0.10 support)</li>
+      <% end %>
+      <% if defined?(Rack::MiniProfiler) %>
+        <li><%= link_to 'Rack::MiniProfiler', '/tuttle/performance_tuning' %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="panel-footer">
+  </div>
+</div>
 
-</ul>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Experimental Request Profiler</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Tuttle includes an optional middleware (Tuttle::Middleware::RequestProfiler)
+      to assist with memory and CPU profiling using the
+      <code>memory_profiler</code> and <code>ruby-prof</code> gems.
+    </p>
+    <p>
+      This middleware provides the ability to profile individual requests on demand
+      and to vary the profiling options.
+    </p>
+    <p>
+      <em>Note: Ruby-prof also provides a middleware that saves profile results to a directory
+      on the server for every request. And RackMiniProfiler includes this same
+      capability but request RackMiniProfiler to be enabled, which impacts profiling.</em>
+    </p>
+    <p>
+      Middleware loaded? <%= truth_label(defined?(Tuttle::Middleware::RequestProfiler)) %>
+    </p>
+    <% if defined?(Tuttle::Middleware::RequestProfiler) && middleware_position = Rails.application.config.middleware.middlewares.index(Tuttle::Middleware::RequestProfiler) %>
+      <p>
+        Middleware stack position: <%= middleware_position + 1 %>
+      </p>
+      <p>
+        MemoryProfiler loaded? <%= truth_label(defined?(MemoryProfiler)) %>
+      </p>
+      <p>
+        RubyProf loaded? <%= truth_label(defined?(RubyProf)) %>
+      </p>
+      <p>
+        The middleware is triggered by passing a <code>mp=&lt;action&gt;</code> query string parameter
+        similar to RackMiniProfiler's <code>pp=&lt;action&gt;</code> parameter.
+      </p>
+      <p>
+        Actions include:
+      </p>
+      <ul>
+        <li>
+          <code>?mp=profile-memory</code> - Profile memory alloacation using <code>memory_profiler</code>
+          <br/>
+          Additional parameters can include:
+          <ul>
+            <li><code>memory_profiler_allow_files</code> - Regexp pattern for files to be included</li>
+            <li><code>memory_profiler_ignore_files</code> - Regexp pattern for files to be ignored</li>
+            <li><code>memory_profiler_top</code> - Number of lines to include in report (defaults to 50)</li>
+          </ul>
+        </li>
+        <li>
+          <code>?mp=profile-prof</code>
+          - Profile CPU usage with <code>ruby_prof</code>
+          <br/>Specify the profile type with a <code>mp_printer</code> parameter:
+          <ul>
+            <li><code>stack</code> - (Default) Visualization of the call hierarchy with time spent in each method</li>
+            <li><code>fast_stack</code> - Fast version of stack (requires fork of ruby-prof)</li>
+            <li><code>flat</code> - Overall time spent in each method</li>
+            <li><code>graph</code> - Time spent in each method and callers/callees</li>
+          </ul>
+        </li>
+      </ul>
+
+    <% else %>
+      <p>
+        You can include this middleware by configuring it in an initializer.
+        It can be put at the beginning of the stack to help profile the other middleware.
+        Or it can be put at the end of the stack to focus on memory from the application.
+      </p>
+      <pre>
+    require 'tuttle/middleware/request_profiler'
+    # Add memory profiler middleware at beginning of the stack
+    # Rails.application.config.middleware.insert(0, Tuttle::Middleware::RequestProfiler)
+
+    # Add memory profiler middleware at the end of the stack
+    Rails.application.config.middleware.use Tuttle::Middleware::RequestProfiler
+      </pre>
+    <% end %>
+  </div>
+  <div class="panel-footer">
+  </div>
+</div>
