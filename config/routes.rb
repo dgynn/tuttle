@@ -25,6 +25,12 @@ Tuttle::Engine.routes.draw do
 
   get '/request' => 'request#index'
 
+  if defined?(ActiveModelSerializers)
+    get '/active_model_serializers' => 'active_model_serializers#index' # 0.10.x?
+  elsif defined?(ActiveModel::Serializer)
+    get '/active_model_serializers' => 'active_model_serializers#index' # 0.9.x?
+  end
+
   if defined?(Paperclip)
     get '/paperclip' => 'paperclip#index'
   end

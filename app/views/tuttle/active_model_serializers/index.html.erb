@@ -1,0 +1,86 @@
+<h1>ActiveModelSerializers Configuration</h1>
+
+<dl class="dl-horizontal">
+  <dt>AMS Version</dt><dd><%= ActiveModel::Serializer::VERSION %></dd>
+</dl>
+
+<h3>Config Settings</h3>
+<table class="table table-condensed not-wide">
+  <tr>
+    <th>Setting</th>
+    <th>Value</th>
+  </tr>
+  <tr>
+    <td>ActiveModelSerializers.config.perform_caching</td>
+    <td><%= truth_label(ActiveModelSerializers.config.perform_caching) %></td>
+  </tr>
+  <tr>
+    <td>ActiveModelSerializers.config.cache_store</td>
+    <td><code><%= ActiveModelSerializers.config.cache_store.inspect %></code></td>
+  </tr>
+  <% [:collection_serializer, :serializer_lookup_enabled, :adapter, :schema_path,
+      :jsonapi_version, :jsonapi_resource_type, :jsonapi_toplevel_meta, :jsonapi_include_toplevel_object].each do |config_method| %>
+    <tr>
+      <td><%= config_method %></td>
+      <td><code><%= ActiveModel::Serializer.config.send(config_method).inspect %></code></td>
+    </tr>
+  <% end %>
+</table>
+
+<h3>Serializers</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Serializer</th>
+    <th>Configuration</th>
+  </tr>
+  <% @serializers.each do |serializer_class| %>
+    <tr>
+      <td><%= serializer_class %></td>
+      <td>
+        Attributes: <code><%= serializer_class._attributes_data.keys.inspect %></code><br/>
+        Links: <code><%= serializer_class._links.keys.inspect %></code><br/>
+        Reflections: <code><%= serializer_class._reflections.collect(&:name).inspect %></code><br/>
+        Type: <code><%= serializer_class._type.inspect %></code><br/>
+        Cached?: <%= truth_label(serializer_class._cache.present?) %><br/>
+        <% if serializer_class._cache.present? %>
+          Cache Key: <code><%= serializer_class._cache_key.inspect %></code><br/>
+          Cache Only: <code><%= serializer_class._cache_only.inspect %></code><br/>
+          Cache Except: <code><%= serializer_class._cache_except.inspect %></code><br/>
+          Cache Options: <code><%= serializer_class._cache_options.inspect %></code><br/>
+        <% end %>
+        Instance Methods: <code><%= serializer_class.instance_methods(false).inspect %></code><br/>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<h3>Adapters</h3>
+<table class="table table-condensed not-wide">
+  <tr>
+    <th>Name</th>
+    <th>Adapter</th>
+  </tr>
+  <% ActiveModel::Serializer::Adapter.const_get(:ADAPTER_MAP).each do |k, v| %>
+    <tr>
+      <td><%= k %></td>
+      <td><%= v.inspect %></td>
+    </tr>
+  <% end %>
+</table>
+
+<h3>Active Record Models</h3>
+<table class="table table-condensed not-wide">
+  <tr>
+    <th>Name</th>
+    <th>Adapter</th>
+  </tr>
+  <%
+    @models.each do |ar_model|
+      model_serializer = ActiveModel::Serializer.get_serializer_for(ar_model)
+  %>
+    <tr>
+      <td><%= ar_model %></td>
+      <td><%= model_serializer.inspect %></td>
+    </tr>
+  <% end %>
+</table>

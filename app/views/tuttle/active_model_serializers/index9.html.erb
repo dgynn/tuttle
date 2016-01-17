@@ -1,0 +1,68 @@
+<h1>ActiveModelSerializers Configuration</h1>
+
+<dl class="dl-horizontal">
+  <dt>AMS Version</dt><dd><%= ActiveModel::Serializer::VERSION %></dd>
+</dl>
+
+<h3>Config Settings</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Setting</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <% ActiveModel::Serializer::CONFIG.each do |k, v| %>
+    <tr>
+      <td><%= k %></td>
+      <td><code><%= v.inspect %></code></td>
+      <td></td>
+    </tr>
+  <% end %>
+</table>
+
+<h3>Serializers</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Serializer</th>
+    <th>Configuration</th>
+  </tr>
+  <% @serializers.each do |serializer_class| %>
+    <tr>
+      <td><%= serializer_class %></td>
+      <td>
+        Root: <code><%= serializer_class._root.inspect %></code><br/>
+        Attributes: <code><%= serializer_class._attributes.inspect %></code><br/>
+        Associations: <code><%= serializer_class._associations.keys.inspect %></code><br/>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<h3>Active Record Models with Serializers</h3>
+<p>Note: Models do not need to have an assoicated Serializer to be rendered with a serializer.</p>
+<table class="table table-condensed not-wide">
+  <tr>
+    <th>Model</th>
+    <th>Serializer</th>
+  </tr>
+  <%
+    @models.each do |ar_model|
+      begin
+        next if ar_model.abstract_class?
+        ar_instance = ar_model.new rescue nil
+        next unless ar_instance
+        model_serializer = ActiveModel::Serializer.serializer_for(ar_instance)
+        next unless model_serializer
+  %>
+    <tr>
+      <td><%= ar_model %></td>
+      <td><%= model_serializer.inspect %></td>
+    </tr>
+
+  <%
+      rescue
+        # ignore models that cause exceptions
+      end
+    end
+  %>
+</table>
