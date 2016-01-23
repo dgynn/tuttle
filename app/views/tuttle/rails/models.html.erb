@@ -47,6 +47,21 @@ No models were found in this application
     Save callbacks = <%= model.send('_save_callbacks').count %><br/>
     Associations = <%= model.reflect_on_all_associations.count %><br/>
     Reflections = <%= model.reflections.keys.sort!.to_s %><br/>
+    Validators:<br/>
+    <table class="table table-compact">
+      <tr>
+        <th>Kind</th>
+        <th>Attributes</th>
+        <th>Options</th>
+      </tr>
+      <% model.validators.each do |validator| %>
+        <tr>
+          <td><%= validator.kind %></td>
+          <td><%= validator.attributes if validator.respond_to?(:attributes) %></td>
+          <td><%= validator.options %></td>
+        </tr>
+      <% end %>
+    </table>
 
     <% next if model.abstract_class? || ! model.table_exists? %>
     <% if model.respond_to?(:find_by_statement_cache) %>
