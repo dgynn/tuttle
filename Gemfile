@@ -17,4 +17,10 @@ group :development, :test do
   # gem 'debugger'
 
   gem 'codeclimate-test-reporter', require: nil
+
+  gem 'memory_profiler'
+
+  # This fork of ruby-prof is required for the middleware tests only
+  gem 'ruby-prof', :github => 'dgynn/ruby-prof', :branch => 'performance_tuning_experiments'
+
 end

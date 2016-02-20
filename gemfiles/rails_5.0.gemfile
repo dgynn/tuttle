@@ -13,6 +13,8 @@ group :development, :test do
   gem "sqlite3"
   gem "cancancan"
   gem "codeclimate-test-reporter", :require => nil
+  gem "memory_profiler"
+  gem "ruby-prof", :github => "dgynn/ruby-prof", :branch => "performance_tuning_experiments"
 end
 
 gemspec :path => "../"

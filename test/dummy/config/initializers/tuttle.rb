@@ -6,3 +6,6 @@ Tuttle.setup do |config|
   config.automount_engine = true
   config.track_notifications = true
 end
+
+require 'tuttle/middleware/request_profiler'
+Rails.application.config.middleware.use Tuttle::Middleware::RequestProfiler
