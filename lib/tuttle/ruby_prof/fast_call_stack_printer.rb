@@ -76,15 +76,18 @@ module Tuttle
 
       def print_stack(call_info, parent_time)
         total_time = call_info.total_time
-        percent_parent = (total_time/parent_time)*100
         percent_total = (total_time/@overall_time)*100
         return unless percent_total > min_percent
-        color = self.color(percent_total)
-        kids = call_info.children
-        visible = percent_total >= threshold
+
+        percent_parent = (total_time/parent_time)*100
+        if percent_total < threshold
+          @output.write "<li style=\"display:none;\">".freeze
+        else
+          @output.write "<li>".freeze
+        end
+
         expanded = percent_total >= expansion
-        display = visible ? "block".freeze : "none".freeze
-        @output.write "<li class=\"color#{color}\" style=\"display:#{display}\">"
+        kids = call_info.children
 
         toggle_href = if kids.empty? || kids.none?{|ci| (ci.total_time/@overall_time)*100 >= threshold}
                         "<a href=\"#\" class=\"toggle empty\" ></a>".freeze
@@ -137,17 +140,12 @@ module Tuttle
         "[#{call_info.called} calls, #{method.called} total]"
       end
 
-      def color(p)
-        i = p.to_i
-        if i < 5
-          "01".freeze
-        elsif i < 10
-          "05".freeze
-        elsif i == 100
-          "9".freeze
-        else
-          "#{i/10}"
-        end
+      def threshold
+        @threshold ||= super
+      end
+
+      def expansion
+        @expansion ||= super
       end
 
       def application
@@ -161,6 +159,17 @@ Call tree for application <b>#{h application} #{h arguments}</b><br/>
 Generated on #{Time.now} with options #{h @options.inspect}<br/>
 </div>
 end_title_bar
+      end
+
+      def print_css
+        super
+        @output.puts <<-CSS_OVERRIDE
+<style type="text/css">
+<!--
+ul li { background-color: white; }
+-->
+</style>
+CSS_OVERRIDE
       end
 
     end
