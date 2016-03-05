@@ -2,8 +2,7 @@ require 'ruby-prof/printers/call_stack_printer'
 
 # This is a modified version of the RubyProf::CallStackPrinter
 # It has been sped up by removing most link generation and
-# to use the forked, experimental version of ruby-prof at
-# https://github.com/dgynn/ruby-prof/tree/performance_tuning_experiments
+# expensive HTML formatting (like coloring)
 
 module Tuttle
   module RubyProf
@@ -47,10 +46,9 @@ module Tuttle
           val += thread.total_time
         end
 
-        @method_link_cache = Hash.new.compare_by_identity
+        @method_full_name_cache = Hash.new.compare_by_identity
 
         @result.threads.each do |thread|
-          @current_thread_id = thread.fiber_id.to_s
           @overall_time = thread.total_time
           thread_info = "Thread: #{thread.id}"
           thread_info << ", Fiber: #{thread.fiber_id}" unless thread.id == thread.fiber_id
@@ -68,7 +66,7 @@ module Tuttle
           @output.print "</ul>"
         end
 
-        @method_link_cache = nil
+        @method_full_name_cache = nil
 
         print_footer
 
@@ -101,9 +99,9 @@ module Tuttle
         @output.write toggle_href
 
         method = call_info.target
-        @output.printf "<span> %4.2f%% (%4.2f%%) %s %s</span>\n".freeze,
+        @output.printf "<span>%4.2f%% (%4.2f%%) %s [%d calls, %d total]</span>\n".freeze,
                        percent_total, percent_parent,
-                       link(method), graph_link(call_info, method)
+                       method_full_name(method), call_info.called, method.called
         unless kids.empty?
           if expanded
             @output.write "<ul>".freeze
@@ -123,21 +121,8 @@ module Tuttle
         method.full_name
       end
 
-      def link(method)
-        @method_link_cache[method] ||= begin
-          file = method.memoized_source_file
-          if file == 'ruby_runtime'.freeze
-            h(method.full_name)
-          else
-            # file = source_file # File.expand_path(source_file)
-            # @link_template % [file, method.line, h(method.full_name)]    - disabled all file-open HREFs. not appropriate for web.
-            h(method.full_name)
-          end
-        end
-      end
-
-      def graph_link(call_info, method)
-        "[#{call_info.called} calls, #{method.called} total]"
+      def method_full_name(method)
+        @method_full_name_cache[method] ||= h(method.full_name)
       end
 
       def threshold
