@@ -60,7 +60,7 @@
     <th>Name</th>
     <th>Adapter</th>
   </tr>
-  <% ActiveModel::Serializer::Adapter.const_get(:ADAPTER_MAP).each do |k, v| %>
+  <% @adapter_map.each do |k, v| %>
     <tr>
       <td><%= k %></td>
       <td><%= v.inspect %></td>
