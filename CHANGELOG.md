@@ -1,4 +1,4 @@
-### Unreleased
+### 0.0.5
 
 * Features
   * Request profiling middleware for ruby-prof and memory_profiler
