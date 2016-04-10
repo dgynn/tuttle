@@ -1,8 +1,5 @@
 source 'https://rubygems.org'
 
-# Declare your gem's dependencies in tuttle.gemspec.
-# Bundler will treat runtime dependencies like base dependencies, and
-# development dependencies will be added by default to the :development group.
 gemspec
 
 group :development, :test do
@@ -13,14 +10,10 @@ group :development, :test do
 
   gem 'cancancan'
 
-  # To use debugger
-  # gem 'debugger'
-
   gem 'codeclimate-test-reporter', require: nil
 
-  gem 'memory_profiler'
+  gem 'memory_profiler', :github => 'SamSaffron/memory_profiler', :branch => 'master'
 
-  # This fork of ruby-prof is required for the middleware tests only
-  gem 'ruby-prof', :github => 'dgynn/ruby-prof', :branch => 'performance_tuning_experiments'
+  gem 'ruby-prof'
 
 end

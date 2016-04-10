@@ -3,16 +3,16 @@
 source "https://rubygems.org"
 
 gem "rails", :github => "rails/rails", :branch => "master"
-gem "rails-controller-testing", :github => "rails/rails-controller-testing", :branch => "master"
-gem "devise", ">= 4.0.0.rc1"
+gem "rails-controller-testing"
+gem "devise", ">= 4.0.0.rc2"
 
 group :development, :test do
   gem "jquery-rails"
   gem "sqlite3"
   gem "cancancan"
   gem "codeclimate-test-reporter", :require => nil
-  gem "memory_profiler"
-  gem "ruby-prof", :github => "dgynn/ruby-prof", :branch => "performance_tuning_experiments"
+  gem "memory_profiler", :github => "SamSaffron/memory_profiler", :branch => "master"
+  gem "ruby-prof"
 end
 
 gemspec :path => "../"

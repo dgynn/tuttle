@@ -1,7 +1,7 @@
 appraise 'rails-5.0' do
   gem 'rails', :github => 'rails/rails', :branch => 'master'
-  gem 'rails-controller-testing', :github => 'rails/rails-controller-testing', :branch => 'master'
-  gem 'devise', '>= 4.0.0.rc1'
+  gem 'rails-controller-testing'
+  gem 'devise', '>= 4.0.0.rc2'
 end
 
 appraise 'rails-4.2' do
