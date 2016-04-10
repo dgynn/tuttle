@@ -14,11 +14,6 @@
     <td>Should we turn on Ruby warnings on the first load of dependent files?</td>
   </tr>
   <tr>
-    <td>log_activity</td>
-    <td><%= truth_label(ActiveSupport::Dependencies.log_activity) %></td>
-    <td>Set to +true+ to enable logging of const_missing and file loads.</td>
-  </tr>
-  <tr>
     <td>mechanism</td>
     <td><code><%= ActiveSupport::Dependencies.mechanism %></code></td>
     <td>Should we load files or require them?</td>

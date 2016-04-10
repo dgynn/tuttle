@@ -9,8 +9,13 @@ Dummy::Application.configure do
 
   # Configure static asset server for tests with Cache-Control for performance
   #config.serve_static_assets = true
-  config.serve_static_files = true
-  config.static_cache_control = 'public, max-age=3600'
+  if Rails::VERSION::STRING < '5'
+    config.serve_static_files = true
+    config.static_cache_control = 'public, max-age=3600'
+  else
+    config.public_file_server.enabled = true
+    config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
+  end
 
   config.eager_load = false
   config.active_support.test_order = :sorted
