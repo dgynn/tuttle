@@ -11,6 +11,7 @@ module Tuttle
     def rule_tester
       @models = ActiveRecord::Base.descendants
       @action = params[:action_name] || 'read'
+      @subject = nil
 
       subject_class = params[:subject_class]
       subject_id = params[:subject_id]
