@@ -11,6 +11,14 @@ module Tuttle
       end
     end
 
+    def main_app_root_path
+      main_app.respond_to?(:root_path) ? main_app.root_path : "/"
+    end
+
+    def main_app_root_url
+      main_app.respond_to?(:root_url) ? main_app.root_url : "/"
+    end
+
     private
 
     def redact_by_key(key, value)

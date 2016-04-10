@@ -49,11 +49,7 @@
       This middleware provides the ability to profile individual requests on demand
       and to vary the profiling options.
     </p>
-    <p>
-      <em>Note: Ruby-prof also provides a middleware that saves profile results to a directory
-      on the server for every request. And RackMiniProfiler includes this same
-      capability but request RackMiniProfiler to be enabled, which impacts profiling.</em>
-    </p>
+    <h4>Middleware Installation</h4>
     <p>
       Middleware loaded? <%= truth_label(defined?(Tuttle::Middleware::RequestProfiler)) %>
     </p>
@@ -61,42 +57,37 @@
       <p>
         Middleware stack position: <%= middleware_position + 1 %>
       </p>
+      <br/>
+
+      <h4>Memory Profiling <%= truth_label(defined?(MemoryProfiler), 'available', 'not available') %></h4>
+      <p>Profile memory allocation using <code>memory_profiler</code> with <code>tuttle-profiler=memory_profiler</code> query param.</p>
       <p>
-        MemoryProfiler loaded? <%= truth_label(defined?(MemoryProfiler)) %>
+        Additional parameters can include:
+        <ul>
+          <li><code>memory_profiler_allow_files</code> - Regexp pattern for files to be included</li>
+          <li><code>memory_profiler_ignore_files</code> - Regexp pattern for files to be ignored</li>
+          <li><code>memory_profiler_top</code> - Number of lines to include in report (defaults to 50)</li>
+        </ul>
       </p>
+      <p>Example:
+        <% example_url = main_app_root_url + '?tuttle-profiler=memory_profiler' %>
+        <%= link_to example_url, example_url %></p>
+      <br/>
+
+      <h4>CPU Profiling <%= truth_label(defined?(RubyProf), 'available', 'not available') %></h4>
+      <p>Profile CPU usage using <code>ruby-prof</code> with <code>tuttle-profiler=ruby-prof</code> query param.</p>
       <p>
-        RubyProf loaded? <%= truth_label(defined?(RubyProf)) %>
+        Specify the profile type with a <code>ruby-prof_printer</code> parameter:
+        <ul>
+          <li><code>stack</code> - (Default) Visualization of the call hierarchy with time spent in each method</li>
+          <li><code>fast_stack</code> - Fast version of stack (without colors or links)</li>
+          <li><code>flat</code> - Overall time spent in each method</li>
+          <li><code>graph</code> - Time spent in each method and callers/callees</li>
+        </ul>
+      <p>Example:
+        <% example_url = main_app_root_url + '?tuttle-profiler=ruby-prof&ruby-prof_printer=fast_stack' %>
+        <%= link_to example_url, example_url %></p>
       </p>
-      <p>
-        The middleware is triggered by passing a <code>mp=&lt;action&gt;</code> query string parameter
-        similar to RackMiniProfiler's <code>pp=&lt;action&gt;</code> parameter.
-      </p>
-      <p>
-        Actions include:
-      </p>
-      <ul>
-        <li>
-          <code>?mp=profile-memory</code> - Profile memory alloacation using <code>memory_profiler</code>
-          <br/>
-          Additional parameters can include:
-          <ul>
-            <li><code>memory_profiler_allow_files</code> - Regexp pattern for files to be included</li>
-            <li><code>memory_profiler_ignore_files</code> - Regexp pattern for files to be ignored</li>
-            <li><code>memory_profiler_top</code> - Number of lines to include in report (defaults to 50)</li>
-          </ul>
-        </li>
-        <li>
-          <code>?mp=profile-prof</code>
-          - Profile CPU usage with <code>ruby_prof</code>
-          <br/>Specify the profile type with a <code>mp_printer</code> parameter:
-          <ul>
-            <li><code>stack</code> - (Default) Visualization of the call hierarchy with time spent in each method</li>
-            <li><code>fast_stack</code> - Fast version of stack (requires fork of ruby-prof)</li>
-            <li><code>flat</code> - Overall time spent in each method</li>
-            <li><code>graph</code> - Time spent in each method and callers/callees</li>
-          </ul>
-        </li>
-      </ul>
 
     <% else %>
       <p>
@@ -113,6 +104,14 @@
     Rails.application.config.middleware.use Tuttle::Middleware::RequestProfiler
       </pre>
     <% end %>
+
+    <br/>
+    <p>
+      <em>Note: Ruby-prof also provides a middleware that saves profile results to a directory
+        on the server for every request. And RackMiniProfiler includes this same
+        memory_profiler capability but requires RackMiniProfiler to be enabled,
+        which has an impact on profiling.</em>
+    </p>
   </div>
   <div class="panel-footer">
   </div>

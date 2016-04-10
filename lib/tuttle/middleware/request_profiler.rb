@@ -11,12 +11,12 @@ module Tuttle
       def call(env)
         query_string = env['QUERY_STRING']
 
-        mp_action = /mp=([\w\-]*)/.match(query_string) { $1.to_sym }
+        tuttle_profiler_action = /tuttle\-profiler=([\w\-]*)/.match(query_string) { $1.to_sym }
 
-        case mp_action
-        when :'profile-memory'
+        case tuttle_profiler_action
+        when :'memory_profiler', :'memory'
           profile_memory(env, query_string)
-        when :'profile-prof', :'profile-cpu'
+        when :'ruby-prof', :'cpu'
           profile_cpu(env, query_string)
         else
           @app.call(env)
@@ -56,10 +56,10 @@ module Tuttle
         end
 
         result = StringIO.new
-        mp_printer    = /mp_printer=([\w]*)/.match(query_string) { $1.to_sym }
+        rubyprof_printer    = /ruby\-prof_printer=([\w]*)/.match(query_string) { $1.to_sym }
         content_type = 'text/html'
 
-        case mp_printer
+        case rubyprof_printer
         when :flat
           ::RubyProf::FlatPrinter.new(data).print(result)
           content_type = 'text/plain'

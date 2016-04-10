@@ -1,9 +1,11 @@
 ### Unreleased
 
 * Features
+  * Request profiling middleware for ruby-prof and memory_profiler
   * ActiveSupport inspection including Dependencies, TimeZones, and Deprecation
   * Load path inspection (Ruby and Active Support autoloading)
   * No longer requires asset pipeline
+  * Experimental inspector for Rack MiniProfiler and ActiveModelSerializers
 
 ### 0.0.4
 
