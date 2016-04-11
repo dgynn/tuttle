@@ -14,7 +14,7 @@ module Tuttle
         tuttle_profiler_action = /tuttle\-profiler=([\w\-]*)/.match(query_string) { |m| m[1].to_sym }
 
         case tuttle_profiler_action
-        when :'memory_profiler', :memory
+        when :memory_profiler, :memory
           profile_memory(env, query_string)
         when :'ruby-prof', :cpu
           profile_cpu(env, query_string)
