@@ -11,17 +11,16 @@ module Tuttle
       def call(env)
         query_string = env['QUERY_STRING']
 
-        tuttle_profiler_action = /tuttle\-profiler=([\w\-]*)/.match(query_string) { $1.to_sym }
+        tuttle_profiler_action = /tuttle\-profiler=([\w\-]*)/.match(query_string) { |m| m[1].to_sym }
 
         case tuttle_profiler_action
-        when :'memory_profiler', :'memory'
+        when :'memory_profiler', :memory
           profile_memory(env, query_string)
-        when :'ruby-prof', :'cpu'
+        when :'ruby-prof', :cpu
           profile_cpu(env, query_string)
         else
           @app.call(env)
         end
-
       end
 
       private
@@ -31,14 +30,14 @@ module Tuttle
 
         query_params = Rack::Utils.parse_nested_query(query_string)
         options = {
-            :ignore_files => query_params['memory_profiler_ignore_files'],
-            :allow_files => query_params['memory_profiler_allow_files'],
+          :ignore_files => query_params['memory_profiler_ignore_files'],
+          :allow_files => query_params['memory_profiler_allow_files']
         }
-        options[:top]= Integer(query_params['memory_profiler_top']) if query_params.key?('memory_profiler_top')
+        options[:top] = Integer(query_params['memory_profiler_top']) if query_params.key?('memory_profiler_top')
 
         report = MemoryProfiler.report(options) do
-          _,_,body = @app.call(env)
-          body.close if body.respond_to? :close
+          _, _, body = @app.call(env)
+          body.close if body.respond_to?(:close)
         end
 
         result = StringIO.new
@@ -56,7 +55,7 @@ module Tuttle
         end
 
         result = StringIO.new
-        rubyprof_printer    = /ruby\-prof_printer=([\w]*)/.match(query_string) { $1.to_sym }
+        rubyprof_printer = /ruby\-prof_printer=([\w]*)/.match(query_string) { |m| m[1].to_sym }
         content_type = 'text/html'
 
         case rubyprof_printer
@@ -67,7 +66,7 @@ module Tuttle
           ::RubyProf::GraphHtmlPrinter.new(data).print(result)
         when :fast_stack
           require 'tuttle/ruby_prof/fast_call_stack_printer'
-          ::Tuttle::RubyProf::FastCallStackPrinter.new(data).print(result, { :application => env['REQUEST_URI']})
+          ::Tuttle::RubyProf::FastCallStackPrinter.new(data).print(result, :application => env['REQUEST_URI'])
         else
           ::RubyProf::CallStackPrinter.new(data).print(result)
         end

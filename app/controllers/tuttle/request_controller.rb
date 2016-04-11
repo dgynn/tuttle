@@ -10,7 +10,3 @@ module Tuttle
 
   end
 end
-
-
-
-

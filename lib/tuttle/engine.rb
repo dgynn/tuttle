@@ -11,7 +11,7 @@ module Tuttle
     config.tuttle = ActiveSupport::OrderedOptions.new
 
     config.before_configuration do
-      Tuttle::Engine.session_start = Time.now
+      Tuttle::Engine.session_start = Time.current
       Tuttle::Engine.session_id = SecureRandom.uuid
     end
 
@@ -28,19 +28,18 @@ module Tuttle
       @@logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
       Tuttle::Engine.logger.info('Tuttle engine started')
 
-      Tuttle.automount_engine = true if Tuttle.automount_engine == nil
+      Tuttle.automount_engine = true if Tuttle.automount_engine.nil?
 
       if Tuttle.automount_engine
         Rails.application.routes.prepend do
           Tuttle::Engine.logger.info('Auto-mounting /tuttle routes')
-          mount Tuttle::Engine, at: "tuttle"
+          mount Tuttle::Engine, at: 'tuttle'
         end
       end
 
       if Tuttle.track_notifications
         Tuttle::Instrumenter.initialize_tuttle_instrumenter
       end
-
     end
 
     config.to_prepare do

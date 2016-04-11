@@ -22,7 +22,7 @@ module Tuttle
     end
 
     test 'should get rule_tester with subject' do
-      get :rule_tester, { :action_name => 'manage', :subject_class => 'User' }
+      get :rule_tester, :action_name => 'manage', :subject_class => 'User'
 
       assert_response :success
 
@@ -33,7 +33,7 @@ module Tuttle
     end
 
     test 'should get rule_tester with subject and subject_id' do
-      get :rule_tester, { :action_name => 'manage', :subject_class => 'User', :subject_id => 1 }
+      get :rule_tester, :action_name => 'manage', :subject_class => 'User', :subject_id => 1
 
       assert_response :success
 
@@ -45,7 +45,7 @@ module Tuttle
 
     test 'should get rule_tester with invalid subject' do
 
-      get :rule_tester, { :action_name => 'manage', :subject_class => 'ClassDoesNotExist' }
+      get :rule_tester, :action_name => 'manage', :subject_class => 'ClassDoesNotExist'
 
       assert_response :success
 
@@ -56,5 +56,4 @@ module Tuttle
     end
 
   end
-
 end

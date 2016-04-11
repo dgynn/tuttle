@@ -43,18 +43,18 @@ module Tuttle
         print_header
 
         @overall_threads_time = @result.threads.inject(0) do |val, thread|
-          val += thread.total_time
+          val + thread.total_time
         end
 
-        @method_full_name_cache = Hash.new.compare_by_identity
+        @method_full_name_cache = {}.compare_by_identity
 
         @result.threads.each do |thread|
           @overall_time = thread.total_time
           thread_info = "Thread: #{thread.id}"
           thread_info << ", Fiber: #{thread.fiber_id}" unless thread.id == thread.fiber_id
-          thread_info << " (#{"%4.2f%%" % ((@overall_time/@overall_threads_time)*100)} ~ #{@overall_time})"
+          thread_info << " (#{'%4.2f%%' % ((@overall_time / @overall_threads_time) * 100)} ~ #{@overall_time})"
           @output.print "<div class=\"thread\">#{thread_info}</div>"
-          @output.print "<ul name=\"thread\">"
+          @output.print '<ul name="thread">'
           thread.methods.each do |m|
             # $stderr.print m.dump
             next unless m.root?
@@ -63,38 +63,35 @@ module Tuttle
               print_stack ci, @overall_time
             end
           end
-          @output.print "</ul>"
+          @output.print '</ul>'
         end
 
         @method_full_name_cache = nil
 
         print_footer
-
       end
 
       def print_stack(call_info, parent_time)
         total_time = call_info.total_time
-        percent_total = (total_time/@overall_time)*100
+        percent_total = (total_time / @overall_time) * 100
         return unless percent_total > min_percent
 
-        percent_parent = (total_time/parent_time)*100
+        percent_parent = (total_time / parent_time) * 100
         if percent_total < threshold
-          @output.write "<li style=\"display:none;\">".freeze
+          @output.write '<li style="display:none;">'.freeze
         else
-          @output.write "<li>".freeze
+          @output.write '<li>'.freeze
         end
 
         expanded = percent_total >= expansion
         kids = call_info.children
 
-        toggle_href = if kids.empty? || kids.none?{|ci| (ci.total_time/@overall_time)*100 >= threshold}
-                        "<a href=\"#\" class=\"toggle empty\" ></a>".freeze
+        toggle_href = if kids.empty? || kids.none? {|ci| (ci.total_time / @overall_time) * 100 >= threshold}
+                        '<a href="#" class="toggle empty"></a>'.freeze
+                      elsif expanded
+                        '<a href="#" class="toggle minus"></a>'.freeze
                       else
-                        if expanded
-                          "<a href=\"#\" class=\"toggle minus\" ></a>".freeze
-                        else
-                          "<a href=\"#\" class=\"toggle plus\" ></a>".freeze
-                        end
+                        '<a href="#" class="toggle plus"></a>'.freeze
                       end
         @output.write toggle_href
 
@@ -104,16 +101,16 @@ module Tuttle
                        method_full_name(method), call_info.called, method.called
         unless kids.empty?
           if expanded
-            @output.write "<ul>".freeze
+            @output.write '<ul>'.freeze
           else
             @output.write '<ul style="display:none">'.freeze
           end
           kids.sort_by!(&:total_time).reverse_each do |callinfo|
             print_stack callinfo, total_time
           end
-          @output.write "</ul>".freeze
+          @output.write '</ul>'.freeze
         end
-        @output.write "</li>".freeze
+        @output.write '</li>'.freeze
       end
 
       def name(call_info)
@@ -141,7 +138,7 @@ module Tuttle
         @output.puts <<-"end_title_bar"
 <div id="titlebar">
 Call tree for application <b>#{h application} #{h arguments}</b><br/>
-Generated on #{Time.now} with options #{h @options.inspect}<br/>
+Generated on #{Time.current} with options #{h @options.inspect}<br/>
 </div>
 end_title_bar
       end
@@ -159,6 +156,4 @@ CSS_OVERRIDE
 
     end
   end
-
 end
-

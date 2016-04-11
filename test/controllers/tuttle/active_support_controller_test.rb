@@ -26,5 +26,4 @@ module Tuttle
     end
 
   end
-
 end

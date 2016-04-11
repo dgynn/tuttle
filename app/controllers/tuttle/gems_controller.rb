@@ -4,15 +4,12 @@ module Tuttle
   class GemsController < ApplicationController
 
     def index
-
     end
 
     def http_clients
-
     end
 
     def json
-
     end
 
     def get_process_mem
@@ -20,7 +17,6 @@ module Tuttle
     end
 
     def other
-
     end
 
   end

@@ -59,7 +59,7 @@ module Tuttle
       # helper_symbol = Rails.application.helpers.instance_methods.first
       # Rails.application.helpers.instance_method(helper_symbol).owner
       # Rails.application.helpers.instance_method(helper_symbol).parameters
-      @helpers = ::ApplicationController.send(:modules_for_helpers,[:all])
+      @helpers = ::ApplicationController.send(:modules_for_helpers, [:all])
     end
 
     def assets
@@ -83,7 +83,7 @@ module Tuttle
       # TODO: make cache instrumentation controllable - this will automatically turn in on in Rails < 4.2
       # Instrumentation is always on in Rails 4.2+
       if Rails::VERSION::STRING =~ /^4\.1\./ && !ActiveSupport::Cache::Store.instrument
-        ActiveSupport::Cache::Store.instrument=true
+        ActiveSupport::Cache::Store.instrument = true
       end
       @cache = Rails.cache
       @cache_events = Tuttle::Instrumenter.events.select {|e| /cache_(read|write)\.active_support/ =~ e.name }

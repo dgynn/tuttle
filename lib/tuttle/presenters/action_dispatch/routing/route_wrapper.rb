@@ -5,7 +5,11 @@ module Tuttle
         class RouteWrapper < ::ActionDispatch::Routing::RouteWrapper
 
           def endpoint_or_app_name
-            uses_dispatcher? ? endpoint : (rack_app.is_a?(Class) ? rack_app : rack_app.class)
+            if uses_dispatcher?
+              endpoint
+            else
+              rack_app.is_a?(Class) ? rack_app : rack_app.class
+            end
           end
 
           def controller
@@ -20,7 +24,7 @@ module Tuttle
             rack_app.respond_to?(:dispatcher?)
           end
 
-          def is_internal_to_rails?
+          def internal_to_rails?
             !!internal?
           end
 

@@ -9,7 +9,7 @@ if ENV['CODECLIMATE_REPO_TOKEN']
   CodeClimate::TestReporter.start
 end
 
-require File.expand_path('../dummy/config/environment.rb',  __FILE__)
+require File.expand_path('../dummy/config/environment.rb', __FILE__)
 require 'rails/test_help'
 
 Rails.backtrace_cleaner.remove_silencers!

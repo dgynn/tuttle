@@ -1,10 +1,12 @@
 AllCops:
-  RunRailsCops: true
   Exclude:
     - 'db/**/*'
     - 'config/**/*'
     - 'script/**/*'
     - 'test/dummy/**/*'
+
+Rails:
+  Enabled: true
 
 Documentation:
   Enabled: false

@@ -10,10 +10,11 @@ group :development, :test do
 
   gem 'cancancan'
 
-  gem 'codeclimate-test-reporter', require: nil
+  gem 'codeclimate-test-reporter', require: false
 
   gem 'memory_profiler', :github => 'SamSaffron/memory_profiler', :branch => 'master'
 
   gem 'ruby-prof'
 
+  gem 'rubocop', require: false
 end

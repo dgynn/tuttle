@@ -5,7 +5,6 @@ require 'tuttle/engine' if defined?(Rails)
 require 'active_support/core_ext/module/attribute_accessors'
 
 module Tuttle
-
   mattr_accessor :automount_engine
   mattr_accessor :enabled
   mattr_accessor :track_notifications
@@ -18,5 +17,4 @@ module Tuttle
   def self.setup
     yield self
   end
-
 end

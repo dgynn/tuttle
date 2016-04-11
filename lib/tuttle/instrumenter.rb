@@ -24,14 +24,13 @@ module Tuttle
 
         Tuttle::Engine.logger.info("Cache Read called: #{cache_call_location.path} on line #{cache_call_location.lineno} :: #{event.payload.inspect}")
 
-        event.payload.merge!({:call_location_path => cache_call_location.path, :call_location_lineno => cache_call_location.lineno })
+        event.payload.merge!(:call_location_path => cache_call_location.path, :call_location_lineno => cache_call_location.lineno)
         Tuttle::Instrumenter.cache_events << event
       end
 
-      ActiveSupport::Notifications.subscribe('cache_generate.active_support') do |*args|
+      ActiveSupport::Notifications.subscribe('cache_generate.active_support') do
         Tuttle::Engine.logger.info('Cache Generate called')
       end
-
     end
 
   end
