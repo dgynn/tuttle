@@ -1,5 +1,5 @@
 require_dependency 'tuttle/application_controller'
-require 'paperclip/version'
+require 'paperclip/version' if defined?(Paperclip)
 
 module Tuttle
   class PaperclipController < ApplicationController
