@@ -176,7 +176,7 @@ Log Level = <%= Rails.configuration.log_level %>
       Here are the formats that have been configured for this application (including Rails' default formats).
     </p>
     <% # http://www.foragoodstrftime.com/ %>
-    <%- today, now = Date.today, Time.now %>
+    <%- today, now = Date.current, Time.current %>
     <h3>Date Formats</h3>
     <table class="table table-condensed">
       <tr>
@@ -189,7 +189,7 @@ Log Level = <%= Rails.configuration.log_level %>
         <td><%= today.to_s %></td>
         <td></td>
       </tr>
-      <%- Date::DATE_FORMATS.sort.each do |format,formatter| %>
+      <%- Date::DATE_FORMATS.sort.each do |format, formatter| %>
           <tr>
           <td>:<%= format %></td>
           <td><%= today.to_s(format) %></td>
@@ -209,10 +209,10 @@ Log Level = <%= Rails.configuration.log_level %>
         <td><%= now.to_s %></td>
         <td></td>
       </tr>
-      <%- Time::DATE_FORMATS.sort.each do |format,formatter| %>
+      <%- Time::DATE_FORMATS.sort.each do |format, formatter| %>
           <tr>
             <td>:<%= format %></td>
-            <td><%= today.to_s(format) %></td>
+            <td><%= now.to_s(format) %></td>
             <td><%= formatter.respond_to?(:call) ? 'Dynamic Proc'.freeze : formatter %></td>
           </tr>
       <%- end %>
