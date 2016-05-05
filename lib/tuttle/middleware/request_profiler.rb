@@ -11,12 +11,12 @@ module Tuttle
       def call(env)
         query_string = env['QUERY_STRING']
 
-        tuttle_profiler_action = /tuttle\-profiler=([\w\-]*)/.match(query_string) { |m| m[1].to_sym }
+        tuttle_profiler_action = /tuttle\-profiler=([\w\-]*)/.match(query_string) { |m| m[1] }
 
         case tuttle_profiler_action
-        when :memory_profiler, :memory
+        when 'memory_profiler', 'memory'
           profile_memory(env, query_string)
-        when :'ruby-prof', :cpu
+        when 'ruby-prof', 'cpu'
           profile_cpu(env, query_string)
         else
           @app.call(env)
@@ -49,26 +49,31 @@ module Tuttle
       def profile_cpu(env, query_string)
         require 'ruby-prof'
 
+        query_params = Rack::Utils.parse_nested_query(query_string)
+        options = {}
+        options[:threshold] = Float(query_params['ruby-prof_threshold']) if query_params.key?('ruby-prof_threshold')
+        rubyprof_printer = /ruby\-prof_printer=([\w]*)/.match(query_string) { |m| m[1] }
+
         data = ::RubyProf::Profile.profile do
           _, _, body = @app.call(env)
           body.close if body.respond_to? :close
         end
 
         result = StringIO.new
-        rubyprof_printer = /ruby\-prof_printer=([\w]*)/.match(query_string) { |m| m[1].to_sym }
         content_type = 'text/html'
 
         case rubyprof_printer
-        when :flat
-          ::RubyProf::FlatPrinter.new(data).print(result)
+        when 'flat'
+          ::RubyProf::FlatPrinter.new(data).print(result, options)
           content_type = 'text/plain'
-        when :graph
-          ::RubyProf::GraphHtmlPrinter.new(data).print(result)
-        when :fast_stack
-          require 'tuttle/ruby_prof/fast_call_stack_printer'
-          ::Tuttle::RubyProf::FastCallStackPrinter.new(data).print(result, :application => env['REQUEST_URI'])
+        when 'graph'
+          ::RubyProf::GraphHtmlPrinter.new(data).print(result, options)
+        when 'stack', 'call_stack'
+          ::RubyProf::CallStackPrinter.new(data).print(result, options)
         else
-          ::RubyProf::CallStackPrinter.new(data).print(result)
+          require 'tuttle/ruby_prof/fast_call_stack_printer'
+          options[:application] = env['REQUEST_URI']
+          ::Tuttle::RubyProf::FastCallStackPrinter.new(data).print(result, options)
         end
 
         [200, { 'Content-Type' => content_type }, [result.string]]
