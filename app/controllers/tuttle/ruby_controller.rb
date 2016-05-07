@@ -14,6 +14,7 @@ module Tuttle
       @gc_enabled = (GC.disable ? false : GC.enable)
 
       # taken verbatim from the ruby 2.2 man page
+      # rubocop:disable Metrics/LineLength
       @gc_params = {
         'RUBY_GC_HEAP_INIT_SLOTS' =>               'Initial allocation slots.  Introduced in Ruby 2.1, default: 10000.',
         'RUBY_GC_HEAP_FREE_SLOTS' =>               'Prepare at least this amount of slots after GC. Allocate this number slots if there are not enough slots.  Introduced in Ruby 2.1, default: 4096',

@@ -12,6 +12,7 @@ module Tuttle
     def json
     end
 
+    # rubocop:disable Style/AccessorMethodName
     def get_process_mem
       require 'get_process_mem/version'
     end
