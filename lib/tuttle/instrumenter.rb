@@ -2,9 +2,9 @@ module Tuttle
   class Instrumenter
 
     mattr_accessor :events, :event_counts, :cache_events
-    @@events = []
-    @@event_counts = Hash.new(0)
-    @@cache_events = []
+    self.events = []
+    self.event_counts = Hash.new(0)
+    self.cache_events = []
 
     def self.initialize_tuttle_instrumenter
       # For now, only instrument non-production mode

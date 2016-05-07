@@ -9,9 +9,6 @@ module Tuttle
   mattr_accessor :enabled
   mattr_accessor :track_notifications
 
-  @@automount_engine = @@enabled = nil
-  @@track_notifications = false
-
   autoload :Instrumenter, 'tuttle/instrumenter'
 
   def self.setup

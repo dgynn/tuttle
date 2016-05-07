@@ -4,9 +4,9 @@ module Tuttle
   class Engine < ::Rails::Engine
     isolate_namespace Tuttle
 
-    mattr_accessor :reload_needed, :session_start, :session_id
+    attr_accessor :reload_needed, :session_start, :session_id
 
-    mattr_reader :logger
+    attr_reader :logger
 
     config.tuttle = ActiveSupport::OrderedOptions.new
 
@@ -25,7 +25,7 @@ module Tuttle
 
       next unless Tuttle.enabled
 
-      @@logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
+      @logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
       Tuttle::Engine.logger.info('Tuttle engine started')
 
       Tuttle.automount_engine = true if Tuttle.automount_engine.nil?
