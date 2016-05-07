@@ -1,4 +1,5 @@
 # frozen-string-literal: true
+require 'tuttle/ruby_prof/fast_call_stack_printer'
 
 module Tuttle
   module Middleware
@@ -62,19 +63,20 @@ module Tuttle
         result = StringIO.new
         content_type = 'text/html'
 
-        case rubyprof_printer
-        when 'flat'
-          ::RubyProf::FlatPrinter.new(data).print(result, options)
-          content_type = 'text/plain'
-        when 'graph'
-          ::RubyProf::GraphHtmlPrinter.new(data).print(result, options)
-        when 'stack', 'call_stack'
-          ::RubyProf::CallStackPrinter.new(data).print(result, options)
-        else
-          require 'tuttle/ruby_prof/fast_call_stack_printer'
-          options[:application] = env['REQUEST_URI']
-          ::Tuttle::RubyProf::FastCallStackPrinter.new(data).print(result, options)
-        end
+        profiler = case rubyprof_printer
+                   when 'flat'
+                     content_type = 'text/plain'
+                     ::RubyProf::FlatPrinter
+                   when 'graph'
+                     ::RubyProf::GraphHtmlPrinter
+                   when 'stack', 'call_stack'
+                     ::RubyProf::CallStackPrinter
+                   else
+                     options[:application] = env['REQUEST_URI']
+                     ::Tuttle::RubyProf::FastCallStackPrinter
+                   end
+
+        profiler.new(data).print(result, options)
 
         [200, { 'Content-Type' => content_type }, [result.string]]
       end
