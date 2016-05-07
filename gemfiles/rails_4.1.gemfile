@@ -3,12 +3,12 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 4.1.0"
-gem "devise"
 
 group :development, :test do
   gem "jquery-rails"
   gem "sqlite3"
   gem "cancancan"
+  gem "devise"
   gem "codeclimate-test-reporter", :require => false
   gem "memory_profiler", :github => "SamSaffron/memory_profiler", :branch => "master"
   gem "ruby-prof"

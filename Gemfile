@@ -9,6 +9,7 @@ group :development, :test do
   gem 'sqlite3'
 
   gem 'cancancan'
+  gem 'devise'
 
   gem 'codeclimate-test-reporter', require: false
 
