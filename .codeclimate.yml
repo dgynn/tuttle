@@ -1,4 +1,3 @@
----
 engines:
   brakeman:
     enabled: true
@@ -8,10 +7,6 @@ engines:
       languages:
       - ruby
       - javascript
-      - python
-      - php
-  fixme:
-    enabled: true
   rubocop:
     enabled: true
 ratings:
@@ -20,15 +15,11 @@ ratings:
   - "**.erb"
   - "**.haml"
   - "**.rb"
-  - "**.rhtml"
-  - "**.slim"
-  - "**.inc"
   - "**.js"
   - "**.jsx"
-  - "**.module"
-  - "**.php"
-  - "**.py"
 exclude_paths:
 - config/
+- coverage/
+- gemfiles/
 - script/
 - test/

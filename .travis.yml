@@ -14,3 +14,7 @@ gemfile:
 before_install: 'rm Gemfile'
 script:
   - RAILS_ENV=test bundle exec rake --trace app:db:setup test
+
+addons:
+  code_climate:
+    repo_token: 4f26543d90e08f0a1dd093467b6e7cf71136050011235d05238b120e480341f0
