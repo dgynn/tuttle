@@ -119,7 +119,12 @@ module Tuttle
       end
 
       def method_full_name(method)
-        @method_full_name_cache[method] ||= h(method.full_name)
+        @method_full_name_cache[method] ||= begin
+          # Use ruby-prof klass_name only for non-Classes or klasses that do not report a name
+          # This prevents klass.inspect from being used which prints complex names for ActiveRecord classes
+          klass_name = method.klass && method.klass.class == Class && method.klass.name || method.klass_name
+          h("#{klass_name}##{method.method_name}")
+        end
       end
 
       def threshold
