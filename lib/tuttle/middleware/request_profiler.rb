@@ -1,6 +1,4 @@
 # frozen-string-literal: true
-require 'tuttle/ruby_prof/fast_call_stack_printer'
-
 module Tuttle
   module Middleware
     class RequestProfiler
@@ -49,6 +47,7 @@ module Tuttle
 
       def profile_cpu(env, query_string)
         require 'ruby-prof'
+        require 'tuttle/ruby_prof/fast_call_stack_printer'
 
         query_params = Rack::Utils.parse_nested_query(query_string)
         options = {}
