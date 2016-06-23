@@ -1,4 +1,5 @@
-# frozen-string-literal: true
+# frozen_string_literal: true
+
 module Tuttle
   module Middleware
     class RequestProfiler
