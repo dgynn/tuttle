@@ -1,4 +1,4 @@
-<h1>Performance Tuning</h1>
+<h1>Rack MiniProfiler</h1>
 
 <dl class="dl-horizontal">
   <dt>MiniProfiler Version</dt><dd><%= Rack::MiniProfiler::VERSION %></dd>
@@ -16,7 +16,7 @@
   <% [:auto_inject, :disable_caching, :start_hidden, :skip_schema_queries, :disable_env_dump, :enabled].each do |setting_method| %>
     <tr>
       <td><%= setting_method %></td>
-      <td><%= truth_label(Rack::MiniProfiler.config.send(setting_method)) %></td>
+      <td><%= truth_label(@mp_config.send(setting_method)) %></td>
       <td></td>
     </tr>
   <% end %>
@@ -25,7 +25,7 @@
       :base_url_path, :backtrace_remove, :backtrace_includes, :backtrace_ignores, :backtrace_threshold_ms].each do |setting_method| %>
     <tr>
       <td><%= setting_method %></td>
-      <td><code><%= Rack::MiniProfiler.config.send(setting_method).inspect %></code></td>
+      <td><code><%= @mp_config.send(setting_method).inspect %></code></td>
       <td></td>
     </tr>
   <% end %>
@@ -33,7 +33,7 @@
   <% [ :storage, :storage_options, :storage_instance, :storage_failure, :user_provider, :pre_authorize_cb ].each do |setting_method| %>
     <tr>
       <td><%= setting_method %></td>
-      <td><code><%= Rack::MiniProfiler.config.send(setting_method).inspect %></code></td>
+      <td><code><%= @mp_config.send(setting_method).inspect %></code></td>
       <td></td>
     </tr>
   <% end %>
@@ -56,8 +56,8 @@
     <th>Description</th>
   </tr>
   <tr>
-    <td>has_cookie?</td>
-    <td><%= truth_label(@mp_client_settings.has_cookie?) %></td>
+    <td><%= @mp_client_settings.tuttle_check_cookie_method %></td>
+    <td><%= truth_label(@mp_client_settings.tuttle_check_cookie) %></td>
     <td></td>
   </tr>
   <tr>

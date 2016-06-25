@@ -23,7 +23,7 @@ Tuttle::Engine.routes.draw do
     get :dependencies, :inflectors, :time_zones
   end
 
-  get '/performance_tuning' => 'performance_tuning#index'
+  get '/rack_mini_profiler' => 'rack_mini_profiler#index'
 
   get '/request' => 'request#index'
 
