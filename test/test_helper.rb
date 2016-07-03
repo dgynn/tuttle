@@ -29,8 +29,14 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 end
 
+require 'devise/version'
 class ActionController::TestCase
-  include Devise::TestHelpers
+  if Devise::VERSION < '4.2'
+    include Devise::TestHelpers
+  else
+    include Devise::Test::ControllerHelpers
+  end
+
   setup do
     @routes = Tuttle::Engine.routes
   end

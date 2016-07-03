@@ -22,7 +22,12 @@ module Tuttle
     end
 
     test 'should get rule_tester with subject' do
-      get :rule_tester, :action_name => 'manage', :subject_class => 'User'
+      params = { :action_name => 'manage', :subject_class => 'User' }
+      if Rails.version < '5'
+        get :rule_tester, params
+      else
+        get :rule_tester, :params => params
+      end
 
       assert_response :success
 
@@ -33,7 +38,12 @@ module Tuttle
     end
 
     test 'should get rule_tester with subject and subject_id' do
-      get :rule_tester, :action_name => 'manage', :subject_class => 'User', :subject_id => 1
+      params = { :action_name => 'manage', :subject_class => 'User', :subject_id => 1 }
+      if Rails.version < '5'
+        get :rule_tester, params
+      else
+        get :rule_tester, :params => params
+      end
 
       assert_response :success
 
@@ -44,8 +54,12 @@ module Tuttle
     end
 
     test 'should get rule_tester with invalid subject' do
-
-      get :rule_tester, :action_name => 'manage', :subject_class => 'ClassDoesNotExist'
+      params = { :action_name => 'manage', :subject_class => 'ClassDoesNotExist' }
+      if Rails.version < '5'
+        get :rule_tester, params
+      else
+        get :rule_tester, :params => params
+      end
 
       assert_response :success
 
