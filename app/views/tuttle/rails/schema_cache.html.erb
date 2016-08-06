@@ -43,7 +43,8 @@
 <% end %>
 
 <%- # Rails 5.x switched to @data_sources from @tables for instance variable %>
-<% cached_tablenames = @connection_schema_cache.instance_variable_defined?(:@data_sources) && instance_variable_get(:@data_sources) ||
+<% cached_tablenames = @connection_schema_cache.instance_variable_defined?(:@data_sources) &&
+                         @connection_schema_cache.instance_variable_get(:@data_sources) ||
                        @connection_schema_cache.instance_variable_get(:@tables) || [] %>
 <% cached_columns = @connection_schema_cache.instance_variable_get(:@columns) %>
 <% cached_columns_hash = @connection_schema_cache.instance_variable_get(:@columns_hash) %>
