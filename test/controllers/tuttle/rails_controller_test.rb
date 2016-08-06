@@ -24,6 +24,7 @@ module Tuttle
       get :database
       assert_response :success
       assert_not_nil assigns(:conn)
+      assert_not_nil assigns(:data_sources)
     end
 
     test 'should get schema_cache' do

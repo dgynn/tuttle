@@ -34,6 +34,7 @@ module Tuttle
 
     def database
       @conn = ActiveRecord::Base.connection
+      @data_sources = @conn.respond_to?(:data_sources) ? @conn.data_sources : @conn.tables
     end
 
     def schema_cache
