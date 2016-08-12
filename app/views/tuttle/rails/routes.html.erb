@@ -2,40 +2,78 @@
   table td { white-space: nowrap; }
 </style>
 <h2>Routes</h2>
-<p>
-  Rails routing is described in the <a href="http://guides.rubyonrails.org/routing.html">Rails
-  Routing from the Outside In</a> guide.
-</p>
-<p>
-  In addition to the routes defined in your <code>config/routes.rb</code> file,
-  Rails has internal routes and other Engines can contribute routes to the application.
-</p>
 
-<table class="table table-striped table-condensed">
-  <tr>
-    <th><span data-toggle="tooltip" title="Route paths are checked in the order they are defined.">Precedence</span></th>
-    <th><span data-toggle="tooltip" title="The route name is used to generate Named Helpers like myaction_path">Name</span></th>
-    <th><span data-toggle="tooltip" title="The HTTP method for this route">Verb</span></th>
-    <th><span data-toggle="tooltip" title="The URI for the route.">Path</span></th>
-    <th><span data-toggle="tooltip" title="Most routes will map to a Controller#Action but some will be handled by engines or Rails internals">Endpoint or App</span></th>
-    <th><span data-toggle="tooltip" title="Routes can be constrained to match parameters">Constraints</span></th>
-    <th><span data-toggle="tooltip" title="The Controller for the route">Controller</span></th>
-    <th><span data-toggle="tooltip" title="The Action for the route">Action</span></th>
-    <th><span data-toggle="tooltip" title="Internal routes are handle by Rails under the covers">Internal?</span></th>
-    <th><span data-toggle="tooltip" title="Some routes are handled my mounted engines">Engine?</span></th>
-  </tr>
-  <% @routes.each do |route| %>
-  <tr>
-    <td><%= route.precedence %></td>
-    <td><%= route.name %></td>
-    <td><%= route.verb %></td>
-    <td><%= route.path %></td>
-    <td><%= route.endpoint_or_app_name %></td>
-    <td><%= route.constraints %></td>
-    <td><%= route.controller %></td>
-    <td><%= route.action %></td>
-    <td><%= route.internal_to_rails? %></td>
-    <td><%= route.engine? %></td>
-  </tr>
-  <% end %>
-</table>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="<%= 'active' unless @recognized_path %>"><a href="#routes" role="tab" data-toggle="tab">Routes</a></li>
+  <li class="<%= 'active' if @recognized_path %>"><a href="#route_tester" role="tab" data-toggle="tab">Recognize Path</a></li>
+</ul>
+<br>
+
+<div class="tab-content">
+  <div class="tab-pane <%= 'active' unless @recognized_path %>" id="routes">
+    <p>
+      Rails routing is described in the <a href="http://guides.rubyonrails.org/routing.html">Rails
+      Routing from the Outside In</a> guide.
+    </p>
+    <p>
+      In addition to the routes defined in your <code>config/routes.rb</code> file,
+      Rails has internal routes and other Engines can contribute routes to the application.
+    </p>
+
+    <table class="table table-striped table-condensed">
+      <tr>
+        <th><span data-toggle="tooltip" title="Route paths are checked in the order they are defined.">Precedence</span></th>
+        <th><span data-toggle="tooltip" title="The route name is used to generate Named Helpers like myaction_path">Name</span></th>
+        <th><span data-toggle="tooltip" title="The HTTP method for this route">Verb</span></th>
+        <th><span data-toggle="tooltip" title="The URI for the route.">Path</span></th>
+        <th><span data-toggle="tooltip" title="Most routes will map to a Controller#Action but some will be handled by engines or Rails internals">Endpoint or App</span></th>
+        <th><span data-toggle="tooltip" title="Routes can be constrained to match parameters">Constraints</span></th>
+        <th><span data-toggle="tooltip" title="The Controller for the route">Controller</span></th>
+        <th><span data-toggle="tooltip" title="The Action for the route">Action</span></th>
+        <th><span data-toggle="tooltip" title="Internal routes are handle by Rails under the covers">Internal?</span></th>
+        <th><span data-toggle="tooltip" title="Some routes are handled my mounted engines">Engine?</span></th>
+      </tr>
+      <% @routes.each do |route| %>
+      <tr>
+        <td><%= route.precedence %></td>
+        <td><%= route.name %></td>
+        <td><%= route.verb %></td>
+        <td><%= route.path %></td>
+        <td><%= route.endpoint_or_app_name %></td>
+        <td><%= route.constraints %></td>
+        <td><%= route.controller %></td>
+        <td><%= route.action %></td>
+        <td><%= route.internal_to_rails? %></td>
+        <td><%= route.engine? %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+  
+  <div class="tab-pane <%= 'active' if @recognized_path %>" id="route_tester">
+    <p>Paste a URL from your application to quickly get the corresponding controller/action</p>
+    <form class="form-horizontal" role="form" method="get">
+      <div class="form-group">
+        <label for="recognize_path" class="col-sm-2 control-label">URL / Path</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control typeahead" name="recognize_path" id="recognize_path" value="<%= @path_to_recognize %>">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-default">Check</button>
+        </div>
+      </div>
+      <hr>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="text-success">
+            <%= @recognized_path %>
+          </div>
+        </div>
+      </div>
+    </form>
+    
+  </div>
+</div>
+  

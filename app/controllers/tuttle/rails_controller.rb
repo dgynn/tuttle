@@ -72,6 +72,10 @@ module Tuttle
       @routes = Rails.application.routes.routes.collect do |route|
         Tuttle::Presenters::ActionDispatch::Routing::RouteWrapper.new(route)
       end
+      if params[:recognize_path]
+        @path_to_recognize = params[:recognize_path]
+        @recognized_path = recognize_path(params[:recognize_path])
+      end
       # TODO: include engine-mounted routes
     end
 
@@ -89,6 +93,12 @@ module Tuttle
       @cache = Rails.cache
       @cache_events = Tuttle::Instrumenter.events.select {|e| /cache_(read|write)\.active_support/ =~ e.name }
       @tuttle_cache_events = Tuttle::Instrumenter.cache_events
+    end
+
+  private
+
+    def recognize_path(path, environment = { :method => 'GET', :extras => {} })
+      Rails.application.routes.recognize_path(path, environment)
     end
 
   end
