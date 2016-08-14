@@ -9,6 +9,11 @@ if ENV['CODECLIMATE_REPO_TOKEN']
   CodeClimate::TestReporter.start
 end
 
+if ENV['CODACY_PROJECT_TOKEN']
+  require 'codacy-coverage'
+  Codacy::Reporter.start
+end
+
 require File.expand_path('../dummy/config/environment.rb', __FILE__)
 require 'rails/test_help'
 

@@ -12,6 +12,7 @@ group :development, :test do
   gem 'devise'
 
   gem 'codeclimate-test-reporter', require: false
+  gem 'codacy-coverage', :require => false
 
   gem 'memory_profiler', :github => 'SamSaffron/memory_profiler', :branch => 'master'
 
