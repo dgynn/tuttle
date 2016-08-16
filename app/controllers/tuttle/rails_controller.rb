@@ -112,7 +112,6 @@ module Tuttle
     rescue ActionController::RoutingError => exception
       # The main app didn't recognize the path, try the engines...
       Rails::Engine.subclasses.each do |engine|
-        puts engine
         engine_instance = engine.instance
         engine_class = engine_instance.class
         begin
