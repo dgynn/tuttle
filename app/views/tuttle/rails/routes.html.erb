@@ -4,13 +4,13 @@
 <h2>Routes</h2>
 
 <ul class="nav nav-tabs" role="tablist">
-  <li class="<%= 'active' unless @recognized_path %>"><a href="#routes" role="tab" data-toggle="tab">Routes</a></li>
-  <li class="<%= 'active' if @recognized_path %>"><a href="#route_tester" role="tab" data-toggle="tab">Recognize Path</a></li>
+  <li class="<%= 'active' if @recognized_paths.blank? %>"><a href="#routes" role="tab" data-toggle="tab">Routes</a></li>
+  <li class="<%= 'active' unless @recognized_paths.blank? %>"><a href="#route_tester" role="tab" data-toggle="tab">Recognize Path</a></li>
 </ul>
 <br>
 
 <div class="tab-content">
-  <div class="tab-pane <%= 'active' unless @recognized_path %>" id="routes">
+  <div class="tab-pane <%= 'active' if @recognized_paths.blank? %>" id="routes">
     <p>
       Rails routing is described in the <a href="http://guides.rubyonrails.org/routing.html">Rails
       Routing from the Outside In</a> guide.
@@ -50,7 +50,7 @@
     </table>
   </div>
   
-  <div class="tab-pane <%= 'active' if @recognized_path %>" id="route_tester">
+  <div class="tab-pane <%= 'active' unless @recognized_paths.blank? %>" id="route_tester">
     <p>Paste a URL from your application to quickly get the corresponding controller/action</p>
     <form class="form-horizontal" role="form" method="get">
       <div class="form-group">
@@ -65,13 +65,22 @@
         </div>
       </div>
       <hr>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <div class="text-success">
-            <%= @recognized_path %>
+      <% if !@recognized_paths.blank? %>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <table class="table table-striped">
+              <% @recognized_paths.each do |key, value| %>
+                <% value.each do |route| %>
+                  <tr class="<%= 'success' unless route[:error] %>">
+                    <td><%= key.to_s.upcase %></td>
+                    <td><%= route[:error] ? route[:error] : route %>
+                  </tr>
+                <% end %>
+              <% end %>
+            </table>
           </div>
         </div>
-      </div>
+      <% end %>
     </form>
     
   </div>

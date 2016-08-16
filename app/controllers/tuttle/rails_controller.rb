@@ -74,7 +74,7 @@ module Tuttle
       end
       if params[:recognize_path]
         @path_to_recognize = params[:recognize_path]
-        @recognized_path = recognize_path(params[:recognize_path])
+        @recognized_paths = recognize_paths(params[:recognize_path])
       end
       # TODO: include engine-mounted routes
     end
@@ -97,8 +97,35 @@ module Tuttle
 
   private
 
-    def recognize_path(path, environment = { :method => 'GET', :extras => {} })
-      Rails.application.routes.recognize_path(path, environment)
+    def recognize_paths(path)
+      results = {}
+      [:get, :post, :put, :delete, :patch].each {|method| results[method] = recognize_path(path, {method: method})}
+      results
+    end
+    
+    # a version that handles engines - based on https://gist.github.com/jtanium/6114632
+    # it's possible that multiple engines could handle a particular path.  So we will
+    # capture each of them
+    def recognize_path(path, options)
+      recognized_paths = []
+      recognized_paths << Rails.application.routes.recognize_path(path, options)
+    rescue ActionController::RoutingError => exception
+      # The main app didn't recognize the path, try the engines...
+      Rails::Engine.subclasses.each do |engine|
+        puts engine
+        engine_instance = engine.instance
+        engine_class = engine_instance.class
+        begin
+          recognized_path = engine_instance.routes.recognize_path(path, options)
+          recognized_path[:engine] = engine_class
+          recognized_paths << recognized_path
+          # return recognized_path
+        rescue ActionController::RoutingError => e
+          # recognized_path = {error: e.message}
+        end
+      end
+
+      recognized_paths.empty? ? [{error: exception.message}] : recognized_paths
     end
 
   end
