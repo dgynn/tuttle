@@ -119,9 +119,7 @@ module Tuttle
           recognized_path = engine_instance.routes.recognize_path(path, options)
           recognized_path[:engine] = engine_class
           recognized_paths << recognized_path
-          # return recognized_path
-        rescue ActionController::RoutingError => e
-          # recognized_path = {error: e.message}
+        rescue ActionController::RoutingError
         end
       end
 
