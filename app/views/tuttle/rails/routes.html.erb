@@ -1,3 +1,8 @@
+<%- content_for(:javascripts) do -%>
+  <%= javascript_tag do -%>
+    $(function () { $('[data-toggle="tooltip"]').tooltip(); });
+  <% end -%>
+<%- end %>
 <style>
   table td { white-space: nowrap; }
 </style>
