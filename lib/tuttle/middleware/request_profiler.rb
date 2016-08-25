@@ -11,7 +11,7 @@ module Tuttle
       def call(env)
         query_string = env['QUERY_STRING']
 
-        tuttle_profiler_action = /tuttle\-profiler=([\w\-]*)/.match(query_string) { |m| m[1] }
+        tuttle_profiler_action = /(^|[&?])tuttle\-profiler=([\w\-]*)/.match(query_string) { |m| m[2] }
 
         case tuttle_profiler_action
         when 'memory_profiler', 'memory'
