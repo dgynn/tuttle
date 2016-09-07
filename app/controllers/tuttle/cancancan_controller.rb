@@ -17,14 +17,10 @@ module Tuttle
     end
 
     private
+
     def find_subject(subject_class, subject_id)
       subject_klass = @models.detect { |x| x.name == subject_class } if subject_class.present?
-      if subject_klass
-        subject_klass.find_or_initialize_by(:id => subject_id)
-      else
-        nil
-      end
+      subject_klass.find_or_initialize_by(:id => subject_id) if subject_klass
     end
   end
-
 end

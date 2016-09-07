@@ -11,30 +11,7 @@ module Tuttle
 
       # Specify print options.
       #
-      # options - Hash table
-      #   :min_percent - Number 0 to 100 that specifes the minimum
-      #                  %self (the methods self time divided by the
-      #                  overall total time) that a method must take
-      #                  for it to be printed out in the report.
-      #                  Default value is 0.
-      #
-      #   :print_file  - True or false. Specifies if a method's source
-      #                  file should be printed.  Default value if false.
-      #
-      #   :threshold   - a float from 0 to 100 that sets the threshold of
-      #                  results displayed.
-      #                  Default value is 1.0
-      #
-      #   :title       - a String to overide the default "ruby-prof call tree"
-      #                  title of the report.
-      #
-      #   :expansion   - a float from 0 to 100 that sets the threshold of
-      #                  results that are expanded, if the percent_total
-      #                  exceeds it.
-      #                  Default value is 10.0
-      #
-      #   :application - a String to overide the name of the application,
-      #                  as it appears on the report.
+      # options - See CallStackPrinter for based options
       #
       def print(output = STDOUT, options = {})
         @output = output
@@ -52,7 +29,8 @@ module Tuttle
           @overall_time = thread.total_time
           thread_info = "Thread: #{thread.id}"
           thread_info << ", Fiber: #{thread.fiber_id}" unless thread.id == thread.fiber_id
-          thread_info << " (#{'%4.2f%%' % ((@overall_time / @overall_threads_time) * 100)} ~ #{@overall_time})"
+          thread_info << format(' (%4.2f%% ~ %f)', (@overall_time / @overall_threads_time) * 100, @overall_time)
+
           @output.print "<div class=\"thread\">#{thread_info}</div>"
           @output.print '<ul name="thread">'
           thread.methods.each do |m|
@@ -111,11 +89,6 @@ module Tuttle
           @output.write '</ul>'.freeze
         end
         @output.write '</li>'.freeze
-      end
-
-      def name(call_info)
-        method = call_info.target
-        method.full_name
       end
 
       def method_full_name(method)

@@ -95,14 +95,14 @@ module Tuttle
       @tuttle_cache_events = Tuttle::Instrumenter.cache_events
     end
 
-  private
+    private
 
     def recognize_paths(path)
       results = {}
-      [:get, :post, :put, :delete, :patch].each {|method| results[method] = recognize_path(path, {method: method})}
+      [:get, :post, :put, :delete, :patch].each {|method| results[method] = recognize_path(path, method: method)}
       results
     end
-    
+
     # a version that handles engines - based on https://gist.github.com/jtanium/6114632
     # it's possible that multiple engines could handle a particular path.  So we will
     # capture each of them
@@ -122,7 +122,7 @@ module Tuttle
         end
       end
 
-      recognized_paths.empty? ? [{error: exception.message}] : recognized_paths
+      recognized_paths.empty? ? [{ error: exception.message }] : recognized_paths
     end
 
   end

@@ -25,7 +25,7 @@ module Tuttle
           end
 
           def internal_to_rails?
-            !!internal?
+            true == internal?
           end
 
         end

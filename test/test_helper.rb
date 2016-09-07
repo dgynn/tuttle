@@ -27,6 +27,7 @@ if ActiveSupport::TestCase.method_defined?(:fixture_path=)
   ActiveSupport::TestCase.fixture_path = File.expand_path('../fixtures', __FILE__)
 end
 
+# rubocop:disable Style/ClassAndModuleChildren
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
@@ -46,3 +47,4 @@ class ActionController::TestCase
     @routes = Tuttle::Engine.routes
   end
 end
+# rubocop:enable Style/ClassAndModuleChildren

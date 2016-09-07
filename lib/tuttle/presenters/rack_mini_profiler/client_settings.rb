@@ -5,7 +5,7 @@ module Tuttle
 
         def initialize(env)
           rmp_cs_args = [env]
-          rmp_cs_args += [::Rack::MiniProfiler.config.storage_instance, Time.now] if version_10?
+          rmp_cs_args += [::Rack::MiniProfiler.config.storage_instance, Time.current] if version_10?
           super(::Rack::MiniProfiler::ClientSettings.new(*rmp_cs_args))
         end
 

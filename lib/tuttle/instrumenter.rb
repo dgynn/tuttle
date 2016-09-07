@@ -16,7 +16,8 @@ module Tuttle
         end
       end
 
-      # Note: For Rails < 4.2 instrumentation is not enabled by default. Hitting the cache inspector page will enable it for that session.
+      # Note: For Rails < 4.2 instrumentation is not enabled by default.
+      # Hitting the cache inspector page will enable it for that session.
       Tuttle::Engine.logger.info('Initializing cache_read subscriber')
       ActiveSupport::Notifications.subscribe('cache_read.active_support') do |*args|
         cache_call_location = caller_locations.detect { |cl| cl.path.start_with?("#{Rails.root}/app".freeze) }
