@@ -4,6 +4,8 @@ module Tuttle
 
     before_action :check_reload_status
 
+    private
+
     def check_reload_status
       return unless Tuttle::Engine.reload_needed && !Rails.configuration.eager_load
       Tuttle::Engine.logger.warn('Eager-loading application')
