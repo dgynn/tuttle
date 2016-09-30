@@ -116,3 +116,31 @@
   <div class="panel-footer">
   </div>
 </div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Facter</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      <a href="https://github.com/puppetlabs/facter">Facter</a> is a gem that will collect and display system facts.
+      It is typically used by Puppet separately from your application.
+      If the gem is available, those facts will be reported here by Tuttle.
+    </p>
+
+    <% if defined?(Facter) %>
+      <p>Facter has collected the following information:</p>
+      <dl class="dl-horizontal">
+        <% Facter.to_hash.sort.each do |k, v| %>
+          <dt><%= k %></dt><dd><%= v.inspect %></dd>
+        <% end %>
+      </dl>
+    <% else %>
+      <p class="alert alert-warning">
+        <a href="https://github.com/puppetlabs/facter">Facter</a> is not available
+      </p>
+      <p>You can optionally require this gem (even if you do not use Puppet) by adding the following to your Gemfile.</p>
+      <pre><code class="ruby">gem 'facter'</code></pre>
+    <% end %>
+  </div>
+</div>
