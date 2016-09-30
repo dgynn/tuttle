@@ -23,7 +23,7 @@
     <p>Much of Tuttle is a work in progress. But these bits are still under development...</p>
     <ul>
       <li><%= link_to 'Request Inspector', '/tuttle/request' %></li>
-      <% if defined?(ActiveModel::Serializers) %>
+      <% if defined?(ActiveModel::Serializer) || defined?(ActiveModelSerializers) %>
       <li><%= link_to 'ActiveModel Serializers', '/tuttle/active_model_serializers' %> -  (0.9 and 0.10 support)</li>
       <% end %>
       <% if defined?(::Rack::MiniProfiler::ClientSettings) %>
