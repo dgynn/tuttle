@@ -7,11 +7,14 @@
   <title>Tuttle</title>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <%= stylesheet_link_tag "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css" %>
+  <%= content_for(:stylesheets) -%>
   <link rel="icon" href="//s3.amazonaws.com/tuttle-assets/images/favicon.ico">
   <style>
     html { overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
     body { padding-top: 50px; }
     table.not-wide { width: auto; }
+    pre code.hljs { background-color: #f5f5f5; }
   </style>
   <%= csrf_meta_tags %>
 </head>
@@ -103,6 +106,8 @@
 
 <script src="//code.jquery.com/jquery-2.2.4.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js" %>
 <%= content_for(:javascripts) -%>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
