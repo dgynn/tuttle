@@ -14,21 +14,20 @@
     <p>Libraries detected and loaded</p>
     <ul>
       <li>Net::HTTP (core ruby) <%= truth_label(defined?(Net::HTTP)) %></li>
-      <li>Excon: <%= truth_label(defined?(Excon)) %></li>
-      <li>HTTPI: <%= truth_label(defined?(HTTPI)) %></li>
-      <li>httpclient: <%= truth_label(defined?(HTTPClient)) %></li>
-      <li>Typhoeus: <%= truth_label(defined?(Typhoeus)) %></li>
-      <li>Faraday: <%= truth_label(defined?(Faraday)) %>
+      <li><a href="https://github.com/excon/excon">Excon</a>: <%= truth_label(defined?(Excon)) %></li>
+      <li><a href="https://github.com/savonrb/httpi">HTTPI</a>: <%= truth_label(defined?(HTTPI)) %></li>
+      <li><a href="https://github.com/nahi/httpclient">httpclient</a>: <%= truth_label(defined?(HTTPClient)) %></li>
+      <li><a href="https://github.com/typhoeus/typhoeus">Typhoeus</a>: <%= truth_label(defined?(Typhoeus)) %></li>
+      <li><a href="https://github.com/lostisland/faraday">Faraday</a>: <%= truth_label(defined?(Faraday)) %>
         <%- if defined?(Faraday) %>
           &mdash; (Default adapter: <%= Faraday.default_adapter %>)
         <%- end %>
       </li>
-      <li>Net::HTTP::Post::Multipart: <%= truth_label(defined?(Net::HTTP::Post::Multipart)) %></li>
-      <li>Patron: <%= truth_label(defined?(Patron::Session)) %></li>
-      <li>Savon: <%= truth_label(defined?(Savon)) %></li>
-      <li>Event Machine HttpRequest: <%= truth_label(defined?(EventMachine::HttpRequest)) %></li>
+      <li><a href="https://github.com/nicksieger/multipart-post">multipart-post</a>: <%= truth_label(defined?(Net::HTTP::Post::Multipart)) %></li>
+      <li><a href="https://github.com/toland/patron">Patron</a>: <%= truth_label(defined?(Patron::Session)) %></li>
+      <li><a href="https://github.com/savonrb/savon">Savon</a>: <%= truth_label(defined?(Savon)) %></li>
+      <li><a href="https://github.com/igrigorik/em-http-request">Event Machine HttpRequest</a>: <%= truth_label(defined?(EventMachine::HttpRequest)) %></li>
     </ul>
-    <p></p>
   </div>
   <div class="panel-footer">
   </div>

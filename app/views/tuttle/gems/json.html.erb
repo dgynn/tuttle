@@ -14,10 +14,10 @@
     <ul>
       <li>JSON Pure: <%= truth_label(defined?(JSON::Pure)) %></li>
       <li>JSON: <%= truth_label(defined?(JSON) && !defined?(JSON::Pure)) %></li>
-      <li>Yajl: <%= truth_label(defined?(Yajl)) %></li>
-      <li>Oj: <%= truth_label(defined?(Oj)) %></li>
+      <li><a href="https://github.com/brianmario/yajl-ruby">Yajl</a>: <%= truth_label(defined?(Yajl)) %></li>
+      <li><a href="https://github.com/ohler55/oj">Oj</a>: <%= truth_label(defined?(Oj)) %></li>
       <li>
-        MultiJson: <%= truth_label(defined?(MultiJson)) %>
+        <a href="https://github.com/intridea/multi_json">MultiJson</a>: <%= truth_label(defined?(MultiJson)) %>
         <%- if defined?(MultiJson) %>
           &mdash; (Adapter: <%= MultiJson.adapter %>)
         <%- end %>
