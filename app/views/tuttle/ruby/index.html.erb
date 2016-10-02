@@ -5,7 +5,6 @@
   <li><a href="#environment" role="tab" data-toggle="tab">Environment</a></li>
   <li><a href="#rbconfig" role="tab" data-toggle="tab">Ruby Config</a></li>
   <li><a href="#bundler" role="tab" data-toggle="tab">Bundler</a></li>
-  <li><a href="#gc" role="tab" data-toggle="tab">Garbage Collection</a></li>
   <li><a href="#load_path" role="tab" data-toggle="tab">Load Path</a></li>
   <li><a href="#loaded_features" role="tab" data-toggle="tab">Loaded Features</a></li>
 
@@ -91,15 +90,6 @@
       <% end %>
     </dl>
   </div>
-
-<div class="tab-pane" id="gc">
-<dl class="dl-horizontal">
-<%- GC.stat.each_pair do |key,val| %>
-  <dt><%= key %></dt>
-  <dd><%= val %></dd>
-<%- end %>
-</dl>
-</div>
 
   <div class="tab-pane" id="load_path">
     <p>
