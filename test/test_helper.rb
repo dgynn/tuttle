@@ -4,11 +4,6 @@ ENV['RAILS_ENV'] = 'test'
 require 'simplecov'
 SimpleCov.start 'rails'
 
-if ENV['CODECLIMATE_REPO_TOKEN']
-  require 'codeclimate-test-reporter'
-  CodeClimate::TestReporter.start
-end
-
 if ENV['CODACY_PROJECT_TOKEN']
   require 'codacy-coverage'
   Codacy::Reporter.start
