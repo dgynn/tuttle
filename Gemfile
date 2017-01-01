@@ -9,7 +9,12 @@ group :development, :test do
   gem 'sqlite3'
 
   gem 'cancancan'
+  gem 'active_model_serializers'
   gem 'devise'
+  gem 'paperclip'
+  gem 'busted', require: false
+  gem 'rack-mini-profiler'
+  gem 'get_process_mem'
 
   gem 'codeclimate-test-reporter', require: false
   gem 'codacy-coverage', :require => false
