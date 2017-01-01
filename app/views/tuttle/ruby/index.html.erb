@@ -2,12 +2,11 @@
 
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#ruby" role="tab" data-toggle="tab">Ruby</a></li>
-  <li><a href="#environment" role="tab" data-toggle="tab">Environment</a></li>
+  <li><a href="#environment" role="tab" data-toggle="tab">Environment (<%= ENV.size %>)</a></li>
+  <li><a href="#load_path" role="tab" data-toggle="tab">Load Path (<%= $LOAD_PATH.size %>)</a></li>
+  <li><a href="#loaded_features" role="tab" data-toggle="tab">Loaded Features (<%= $LOADED_FEATURES.size %>)</a></li>
   <li><a href="#rbconfig" role="tab" data-toggle="tab">Ruby Config</a></li>
   <li><a href="#bundler" role="tab" data-toggle="tab">Bundler</a></li>
-  <li><a href="#load_path" role="tab" data-toggle="tab">Load Path</a></li>
-  <li><a href="#loaded_features" role="tab" data-toggle="tab">Loaded Features</a></li>
-
 </ul>
 
 <div class="tab-content">
@@ -46,29 +45,44 @@
     <pre><%= RubyVM::OPTS.inspect %></pre>
   </div>
 
+
   <div class="tab-pane" id="rbconfig">
     <h3>RbConfig</h3>
-    <p>The RbConfig records the compile-time values of... </p>
+    <p>RbConfig records the compile-time settings that were used to build ruby.</p>
+
+    <p>
+      <code>RbConfig.ruby</code> = <code><%= RbConfig.ruby -%></code>
+      <br>
+      <code>RbConfig::TOPDIR</code> = <code><%= RbConfig::TOPDIR -%></code>
+    </p>
+
+    <h3>RbConfig::CONFIG</h3>
     <table class="table table-condensed" style="width: auto;">
       <tr>
         <th>Setting</th>
         <th>Value</th>
+        <th>Unexpanded Value</th>
       </tr>
       <% RbConfig::CONFIG.each do |k, v| %>
         <tr>
           <td><%= k %></td>
           <td><code><%= v %></code></td>
+          <td><code><%= RbConfig::MAKEFILE_CONFIG[k] %></code></td>
         </tr>
       <% end %>
     </table>
   </div>
 
   <div class="tab-pane" id="environment">
-<pre>
-<% @filtered_env.each do |key, val| %>
+    <p>
+      The <code>ENV</code> (<%= ENV.size %> entries) includes
+      the environment variables.
+    </p>
+    <pre>
+<% @filtered_env.each do |key, val| -%>
 <%= key %> = <%= val %>
-<% end %>
-</pre>
+<% end -%>
+    </pre>
   </div>
 
   <div class="tab-pane" id="bundler">
@@ -93,7 +107,7 @@
 
   <div class="tab-pane" id="load_path">
     <p>
-      The the <code>$LOAD_PATH</code> (<%= $LOAD_PATH.size %> entries) lists
+      The <code>$LOAD_PATH</code> (<%= $LOAD_PATH.size %> entries) lists
       the directories that will be searched when code is loaded with
       <code>require</code> or <code>load</code>.
     </p>
