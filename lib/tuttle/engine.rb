@@ -1,3 +1,4 @@
+require 'tuttle'
 require 'rails/engine'
 
 module Tuttle
