@@ -53,6 +53,7 @@ class ProfilingMiddlewareTest < ActionDispatch::IntegrationTest
   end
 
   test 'busted profiling middleware' do
+    skip unless defined?(::Busted) && Busted::Tracer.exists?
     get '/tuttle?tuttle-profiler=busted'
     assert response.body.include? 'Caches Request Observer'
     assert_response :success
