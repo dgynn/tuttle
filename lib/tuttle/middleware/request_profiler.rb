@@ -37,15 +37,27 @@ module Tuttle
         }
         options[:top] = Integer(query_params['memory_profiler_top']) if query_params.key?('memory_profiler_top')
 
+        status = nil
+        body = nil
+
+        t0 = Time.current
         report = MemoryProfiler.report(options) do
-          _, _, body = @app.call(env)
+          status, _headers, body = @app.call(env)
           body.close if body.respond_to?(:close)
         end
+        response_time = Time.current - t0
 
         result = StringIO.new
         report.pretty_print(result)
 
-        [200, { 'Content-Type' => 'text/plain' }, ["Report from Tuttle::Middeware::RequestProfiler\n", result.string]]
+        response = ["Report from Tuttle::Middeware::RequestProfiler\n"]
+        response << "Time of request: #{Time.current.to_s}\n"
+        response << "Response status: #{status}\n" unless status == 200
+        response << "Response time: #{response_time}\n"
+        response << "Response body size: #{body.body.length}\n" if body.is_a?(ActionDispatch::Response::RackBody)
+        response << "\n"
+        response << result.string
+        [200, { 'Content-Type' => 'text/plain' }, response]
       end
 
       def profile_cpu(env, query_string)
