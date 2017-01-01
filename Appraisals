@@ -1,5 +1,6 @@
 appraise 'rails-master' do
   gem 'rails', :github => 'rails/rails', :branch => 'master'
+  gem 'arel', :github => 'rails/arel', :branch => 'master'
   gem 'rails-controller-testing'
 end
 
