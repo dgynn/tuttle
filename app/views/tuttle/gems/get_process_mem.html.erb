@@ -1,11 +1,13 @@
 <h2>Process and Memory</h2>
+<% if defined?(GetProcessMem) %>
 GetProcessMem Version: <%= GetProcessMem::VERSION %>
+<% end %>
 
 <h3>Ruby Process Information</h3>
 <table class="table table-condensed not-wide">
   <tr>
     <th>PID</th>
-    <td><%= $PID %></td>
+    <td><%= Process.pid %></td>
   </tr>
   <tr>
     <th>Parent PPID</th>
@@ -50,41 +52,39 @@ GetProcessMem Version: <%= GetProcessMem::VERSION %>
 </table>
 
 
-<% if defined?(GetProcessMem) %>
-  <% memory_self = GetProcessMem.new($PID) %>
-  <% memory_parent = GetProcessMem.new(Process.ppid) %>
+<% if @memory_self %>
   <h3>GetProcessMem</h3>
   <table class="table table-condensed not-wide">
     <tr>
       <th>Linux?</th>
-      <td><%= truth_label(memory_self.linux?) %></td>
+      <td><%= truth_label(@memory_self.linux?) %></td>
     </tr>
     <tr>
       <th>PID bytes</th>
-      <td><%= memory_self.bytes %></td>
+      <td><%= ActiveSupport::NumberHelper.number_to_human_size(@memory_self.bytes.to_i) %></td>
     </tr>
     <tr>
       <th>PID ps_memory</th>
-      <td><%= memory_self.send(:ps_memory) %></td>
+      <td><%= ActiveSupport::NumberHelper.number_to_human_size(@memory_self.send(:ps_memory).to_i) %></td>
     </tr>
-    <% if memory_parent.respond_to?(:linux_status_memory) %>
+    <% if @memory_self.respond_to?(:linux_status_memory) %>
       <tr>
         <th>PID status_memory</th>
-        <td><%= memory_self.linux_status_memory || '--Unknown--' %></td>
+        <td><%= @memory_self.linux_status_memory > 0 ? ActiveSupport::NumberHelper.number_to_human_size(@memory_self.linux_status_memory.to_i) : '--Unknown--' %></td>
       </tr>
     <% end %>
     <tr>
       <th>PPID bytes</th>
-      <td><%= memory_parent.bytes %></td>
+      <td><%= ActiveSupport::NumberHelper.number_to_human_size(@memory_parent.bytes.to_i) %></td>
     </tr>
     <tr>
       <th>PPID ps_memory</th>
-      <td><%= memory_parent.send(:ps_memory) %></td>
+      <td><%= ActiveSupport::NumberHelper.number_to_human_size(@memory_parent.send(:ps_memory).to_i) %></td>
     </tr>
-    <% if memory_parent.respond_to?(:linux_status_memory) %>
+    <% if @memory_parent.respond_to?(:linux_status_memory) %>
       <tr>
         <th>PPID status_memory</th>
-        <td><%= memory_parent.linux_status_memory || '--Unknown--' %></td>
+        <td><%= @memory_parent.linux_status_memory > 0 ? ActiveSupport::NumberHelper.number_to_human_size(@memory_parent.linux_status_memory.to_i) : '--Unknown--' %></td>
       </tr>
     <% end %>
   </table>
