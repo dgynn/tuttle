@@ -23,6 +23,12 @@ Tuttle::Engine.routes.draw do
     get :dependencies, :inflectors, :time_zones
   end
 
+  if defined?(ActiveJob)
+    namespace :active_job do
+      get '', :action => :index
+    end
+  end
+
   get '/rack_mini_profiler' => 'rack_mini_profiler#index'
 
   get '/request' => 'request#index'

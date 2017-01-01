@@ -1,0 +1,48 @@
+<h1>Active Job Overview</h1>
+
+<dl class="dl-horizontal">
+  <dt>Active Job Version</dt><dd><%= ActiveJob::VERSION::STRING %></dd>
+</dl>
+
+<h3>Config Settings</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Setting</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>config.active_job</td>
+    <td><code><%= Rails.configuration.active_job %></code></td>
+    <td>All settings for config.active_job</td>
+  </tr>
+  <tr>
+    <td>config.active_job.queue_adapter</td>
+    <td><%= Rails.configuration.active_job.queue_adapter %></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>config.active_job.queue_name_prefix</td>
+    <td><%= Rails.configuration.active_job.queue_name_prefix %></td>
+    <td>An optional name to prepend to job queue names</td>
+  </tr>
+</table>
+
+<h3>Job Classes</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Class</th>
+    <th>Queue Adapter</th>
+    <th>Queue</th>
+    <th>perform arguments</th>
+  </tr>
+  <% @job_classes.each do |job_klass| %>
+    <tr>
+      <td><code><%= job_klass.name %></code></td>
+      <td><code><%= job_klass.queue_adapter %></code></td>
+      <% # TODO: queue_name can be a Proc set with `queue_as` %>
+      <td><code><%= job_klass.queue_name %></code></td>
+      <td><code><%= job_klass.instance_method(:perform).parameters.map { |_req, var| var }.join(', ') %></code></td>
+    </tr>
+  <% end %>
+</table>
