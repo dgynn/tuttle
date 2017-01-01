@@ -54,7 +54,7 @@ module Tuttle
         response << "Time of request: #{Time.current.to_s}\n"
         response << "Response status: #{status}\n" unless status == 200
         response << "Response time: #{response_time}\n"
-        response << "Response body size: #{body.body.length}\n" if body.is_a?(ActionDispatch::Response::RackBody)
+        response << "Response body size: #{body.body.length}\n" if body.respond_to?(:body)
         response << "\n"
         response << result.string
         [200, { 'Content-Type' => 'text/plain' }, response]
@@ -95,6 +95,12 @@ module Tuttle
         [200, { 'Content-Type' => content_type }, [result.string]]
       end
 
+      # These methods *may* cause the method cache to be invalidated
+      TRACE_METHODS = Set.new([:extend, :include, :const_set, :remove_const, :alias_method, :remove_method,
+                               :prepend, :append_features, :prepend_features,
+                               :public_constant, :private_constant, :autoload,
+                               :define_method, :define_singleton_method])
+
       def profile_busted(env, query_string)
         # Note: Requires Busted (of course) and DTrace so will need much better error handling and information
         # For DTrace on OS X (post 10.11) you may need to disable SIP as well as be running with root privileges
@@ -115,30 +121,31 @@ module Tuttle
         #   So clearing the method cache of a single Class is less of a performance hit than blowing away the entire method cache
         #
         # Busted Dtraces :method-cache-clear internal events which are when Ruby says the method cache was cleared
-        # The @tracer Dtraces Class/Module definitions (:end) and calls to C method (:c_call) which would likely cause a method cache clear
+        # The @cache_buster_tracepoint Dtraces Class/Module definitions (:class) and calls to C method (:c_call) which would likely cause a method cache clear
         #
         # From the observed results...
         #   :method-cache-clear may fire more times than RubyVM.stat[]
         cache_busters = []
-        # These methods *may* cause the method cache to be invalidated
-        trace_methods = Set.new([:extend, :include, :const_set, :remove_const, :alias_method, :remove_method,
-                                 :prepend, :append_features, :prepend_features,
-                                 :public_constant, :private_constant, :autoload,
-                                 :define_method, :define_singleton_method])
 
-        # Trace class definitions (which always invalidate the cache) and c-calls which may invalidate the cache
-        # TODO: decide whether :start or :end calls should be traced
-        @tracer = TracePoint.new(:end, :c_call) do |trace|
-          if trace.event == :end
+        # This is really still incomplete...
+        # Internally, Ruby does not fire :c_call or :class for many events that would increment the :class_serial
+        # For example `Person = Class.new` does not fire a :class event
+        # And it also does create a new constant (:constant_state) but does not fire a :const_set event
+
+        # Trace class definitions (which always(?) invalidate the cache) and c-calls which may invalidate the cache
+        @cache_buster_tracepoint ||= TracePoint.new(:class, :c_call) do |trace|
+          if trace.event == :class
             cache_busters << {
                 :event => trace.event,
-                :location => "#{trace.path}:#{trace.lineno}",
+                :event_description => "Class definition",
+                :location => "#{trace.path}##{trace.lineno}",
                 :target_class => trace.self
             }
-          elsif trace_methods.include?(trace.method_id)
+          elsif TRACE_METHODS.include?(trace.method_id)
             cache_busters << {
                 :event => trace.event,
-                :location => "#{trace.path}:#{trace.lineno}",
+                :event_description => "#{trace.defined_class}##{trace.method_id}",
+                :location => "#{trace.path}##{trace.lineno}",
                 :target_class => trace.self.class,
                 :defined_class => trace.defined_class,
                 :method_id => trace.method_id
@@ -148,27 +155,39 @@ module Tuttle
 
         # Trace the request and capture the RubyVM.stat before/after
         vmstat_before = RubyVM.stat
-        @tracer.enable
-        results = Busted.run(trace: true) do
-          _, _, body = @app.call(env)
-          body.close if body.respond_to?(:close)
+        results = @cache_buster_tracepoint.enable do
+          Busted.run(trace: true) do
+            _, _, body = @app.call(env)
+            body.close if body.respond_to?(:close)
+          end
         end
-        @tracer.disable
         vmstat_after = RubyVM.stat
 
         # Prepare the output
-        # TODO: convert to ERB (with table?)
-        output = "\nRubyVM.stat:\n".dup
+        output = "\nRubyVM.stat:           Before     After      Change\n".dup
         [:global_method_state, :global_constant_state, :class_serial].each do |stat|
-          output << sprintf("%-25s %10d %10d %+d\n", stat, vmstat_before[stat], vmstat_after[stat],  vmstat_after[stat] - vmstat_before[stat])
+          output << sprintf("%-22s %-10d %-10d %+d\n", stat, vmstat_before[stat], vmstat_after[stat],  vmstat_after[stat] - vmstat_before[stat])
         end
 
-        output << "\nTraces (method-cache-clear):\n"
+        output << "\nCounts:\n"
+        output << "method-cache-clear: #{results[:traces][:method].size}\n"
+        output << "C calls that may cause cache clear: #{cache_busters.size}\n"
+        cache_busters.group_by do |trace_info|
+          if trace_info[:event] == :c_call
+            "#{trace_info[:defined_class]}##{ trace_info[:method_id]}"
+          else
+            "Class Defined"
+          end
+        end.each do |grouping, traces|
+          output << "  #{grouping}: #{traces.size}\n"
+        end
+
+        output << "\nTraces (method-cache-clear): (#{results[:traces][:method].size} times)\n"
         results[:traces][:method].each do |trace|
           output << "#{trace[:class]} - #{trace[:sourcefile]}##{trace[:lineno]}\n"
         end
 
-        output << "\nTraces (method cache clearing calls):\n"
+        output << "\nTraces (method cache clearing calls): (#{cache_busters.size} times)\n"
         cache_busters.each do |trace_info|
           if trace_info[:event] == :c_call
             output << sprintf("%s\#%s: %s %s\n",
@@ -178,9 +197,10 @@ module Tuttle
                               # trace_info[:target_object_id],
                               trace_info[:location])
           else
-            output << sprintf("Class/Module Definition: %s %s\n",
+            output << sprintf("Class Definition: %s %s %s\n",
                               trace_info[:target_class],
                               #trace_info[:target_object_id],
+                              trace_info[:defined_class],
                               trace_info[:location])
           end
         end
