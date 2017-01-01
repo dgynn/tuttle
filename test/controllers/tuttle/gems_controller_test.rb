@@ -18,6 +18,11 @@ module Tuttle
       assert_response :success
     end
 
+    test 'should get get_process_mem' do
+      get :get_process_mem
+      assert_response :success
+    end
+
     test 'should get other' do
       get :other
       assert_response :success
