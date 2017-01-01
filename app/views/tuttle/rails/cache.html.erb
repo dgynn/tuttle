@@ -1,14 +1,49 @@
-<h1>Cache</h1>
+<h1>
+  Caching
+  <%= truth_label(ActionController::Base.send(:cache_configured?), 'Enabled', 'Disabled') %>
+</h1>
+
+<p>For an in-depth overview of Rails Caching, see the <a href="http://guides.rubyonrails.org/caching_with_rails.html">Caching with Rails</a> guide.</p>
 
 <h2>Configuration</h2>
+<p>Rails needs to have caching enabled and a specific cache implementation configured.</p>
+<p>
+  <code>config.action_controller.perform_caching</code>
+  <%= truth_label(Rails.application.config.action_controller.perform_caching) %>
+</p>
+<p>
+  <%- # TODO: break out the cache store and the cache store options -%>
+  <code>config.cache_store</code>
+  <%= Rails.application.config.cache_store.inspect %>
+</p>
+<% if ActionMailer::Base.respond_to?(:perform_caching=) %>
+  <p>
+    <code>config.action_mailer.perform_caching</code>
+    <%= truth_label(Rails.application.config.action_mailer.perform_caching) %>
+  </p>
+<% end %>
+<%- unless Rails.application.config.action_controller.perform_caching %>
+  <p>
+    Rails is not configured to perform caching in this environment.
+    You will need to set <code>config.action_controller.perform_caching = true</code> to enable caching.
+  </p>
+<% end %>
+
+<p>
+  Cache configuration
+  <%= truth_label(Rails.application.config.action_controller.perform_caching) %>
+</p>
 
 <pre>
 
 Rails.application.config.action_controller.perform_caching = <%= Rails.application.config.action_controller.perform_caching %>
-
-  Page caching available? <%= !!defined?(ActionController::Caching::Pages) %>
-  Action caching available? <%= !!defined?(ActionController::Caching::Actions) %>
-
+<%-
+  # Page and action caching were removed from Rails and made available in a separate gem
+  #  https://github.com/rails/actionpack-page_caching
+  #  https://github.com/rails/actionpack-action_caching
+  # Page caching available? <%= !!defined?(ActionController::Caching::Pages)
+  # Action caching available? <%= !!defined?(ActionController::Caching::Actions)
+-%>
 Rails.cache class = <%= @cache.class %>
 Rails.cache options = <%= @cache.options %>
 
@@ -72,7 +107,7 @@ DalliStore options
       <td><%= event.name=='cache_read.active_support' ? 'read':'write' %></td>
       <td><%= event.payload[:key] %></td>
       <td><%= event.payload[:hit] %></td>
-      <td><%= event.payload.reject {|k,_v| k==:key || k==:hit} %></td>
+      <td><%= event.payload.except(:key, :hit) %></td>
       <td><%= event.time.to_s(:db) %></td>
       <td><%= number_with_precision(event.duration) %></td>
       <td><%= event.transaction_id %></td>
