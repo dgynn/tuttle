@@ -31,12 +31,8 @@ module Tuttle
 
       Tuttle.automount_engine = true if Tuttle.automount_engine.nil?
 
-      if Tuttle.automount_engine
-        Rails.application.routes.prepend do
-          Tuttle::Engine.logger.info('Auto-mounting /tuttle routes')
-          mount Tuttle::Engine, at: 'tuttle'
-        end
-      end
+      mount_engine! if Tuttle.automount_engine
+      use_profiling_middleware! if Tuttle.enable_profiling
 
       if Tuttle.track_notifications
         Tuttle::Instrumenter.initialize_tuttle_instrumenter
@@ -45,6 +41,22 @@ module Tuttle
 
     config.to_prepare do
       Tuttle::Engine.reload_needed = true
+    end
+
+    private
+
+    def mount_engine!
+      Rails.application.routes.prepend do
+        Tuttle::Engine.logger.info('Auto-mounting /tuttle routes')
+        mount Tuttle::Engine, at: 'tuttle'
+      end
+    end
+
+    def use_profiling_middleware!
+      # Add memory/cpu profiler middleware at the end of the stack
+      Tuttle::Engine.logger.info('Using Tuttle::Middleware::RequestProfiler middleware')
+      require 'tuttle/middleware/request_profiler'
+      Rails.application.config.middleware.use Tuttle::Middleware::RequestProfiler
     end
 
   end

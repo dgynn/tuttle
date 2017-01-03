@@ -6,6 +6,7 @@ require 'active_support/core_ext/module/attribute_accessors'
 module Tuttle
   mattr_accessor :automount_engine
   mattr_accessor :enabled
+  mattr_accessor :enable_profiling
   mattr_accessor :track_notifications
 
   autoload :Instrumenter, 'tuttle/instrumenter'
