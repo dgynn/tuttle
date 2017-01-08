@@ -6,6 +6,7 @@ module Tuttle
   class RailsController < ApplicationController
 
     def index
+      @config_options = Tuttle::ConfigurationRegistry.data.to_a.sort_by!(&:first)
     end
 
     def controllers

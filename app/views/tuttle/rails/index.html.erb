@@ -20,10 +20,16 @@ Log Level = <%= Rails.configuration.log_level %>
 <div class="tab-content">
   <div class="tab-pane active" id="config">
     <p>
-      Rails configuration is managed through the applications's config/application.rb, an environment-specific configuration file, and initializers from the config/initializers directory.
+      Rails configuration is managed through the applications's <code>config/application.rb</code>,
+      an environment-specific configuration file, and initializers from
+      the <code>config/initializers</code> directory.
     </p>
     <p>
-      The combined results of these configurations are shown here:
+      The Rails Guide <a href="<%= rails_guides_versioned_url('configuring.html') %>">Configuring Rails Applications</a>
+      has a mostly-complete list of the options available.
+    </p>
+    <p>
+      The combined results of these configurations are shown here.
     </p>
     <table class="table table-condensed">
       <tr>
@@ -31,23 +37,16 @@ Log Level = <%= Rails.configuration.log_level %>
         <th>Value</th>
         <th>Description</th>
       </tr>
-      <tr>
-        <td>config.asset_host</td>
-        <td><%= Rails.configuration.asset_host %></td>
-        <td>
-           Sets the host for the assets. Useful when CDNs are used for hosting assets, or when you want to work around the concurrency constraints built-in in browsers using different domain aliases. Shorter version of config.action_controller.asset_host.
-        </td>
-      </tr>
-      <tr>
-        <td>config.beginning_of_week</td>
-        <td><%= Rails.configuration.beginning_of_week %></td>
-        <td>
-          Sets the default beginning of week for the application. Accepts a valid week day symbol (e.g. :monday).
-        </td>
-      </tr>
+      <% @config_options.each do |key, description| %>
+        <tr data-config-key="<%= key %>">
+          <td>config.<%= key %></td>
+          <td><code><%= Rails.configuration.send(key).inspect rescue 'ERROR'%></code></td>
+          <td><%= description %></td>
+        </tr>
+      <% end %>
     </table>
 
-    <div class="panel panel-warning">
+    <div class="panel panel-warning hidden">
       <div class="panel-heading">
         <h4 class="panel-title" data-toggle="collapse" data-target="#rails_config_instances">Instance Variables</h4>
       </div>

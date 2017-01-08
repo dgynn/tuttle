@@ -1,0 +1,5 @@
+---
+:file_watcher:
+  Is the class used to detect file updates in the filesystem when
+  config.reload_classes_only_on_change is true.
+  Must conform to ActiveSupport::FileUpdateChecker API.

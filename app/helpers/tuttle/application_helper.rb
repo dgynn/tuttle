@@ -18,6 +18,10 @@ module Tuttle
       main_app.respond_to?(:root_url) ? main_app.root_url : '/'
     end
 
+    def rails_guides_versioned_url(path)
+      "http://guides.rubyonrails.org/v#{Tuttle::VersionDetector.rails_major_minor}/#{path}"
+    end
+
     private
 
     def redact_by_key(key, value)
