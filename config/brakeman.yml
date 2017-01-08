@@ -1,7 +1,0 @@
----
-:rails3: true
-:rails4: true
-:rails5: true
-:skip_checks:
-- CheckXMLDoS
-

@@ -1,6 +1,7 @@
 module Tuttle
   class ApplicationController < ActionController::Base
     abstract!
+    protect_from_forgery with: :exception
 
     before_action :check_reload_status
 
