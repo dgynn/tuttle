@@ -1,147 +1,102 @@
 <h1>
-  Caching
-  <%= truth_label(ActionController::Base.send(:cache_configured?), 'Enabled', 'Disabled') %>
+  Caching <%= truth_label(ActionController::Base.send(:cache_configured?), 'Enabled', 'Disabled') %>
 </h1>
 
-<p>For an in-depth overview of Rails Caching, see the <a href="<%= rails_guides_versioned_url('caching_with_rails.html') %>">Caching with Rails</a> guide.</p>
+<p>
+  For an in-depth overview of Rails Caching, see the
+  <a href="<%= rails_guides_versioned_url('caching_with_rails.html') %>">Caching with Rails</a> guide.
+</p>
 
 <h2>Configuration</h2>
-<p>Rails needs to have caching enabled and a specific cache implementation configured.</p>
-<p>
-  <code>config.action_controller.perform_caching</code>
-  <%= truth_label(Rails.application.config.action_controller.perform_caching) %>
-</p>
-<p>
-  <%- # TODO: break out the cache store and the cache store options -%>
-  <code>config.cache_store</code>
-  <%= Rails.application.config.cache_store.inspect %>
-</p>
-<% if ActionMailer::Base.respond_to?(:perform_caching=) %>
+<p>Rails needs to have caching enabled <em>and</em> a specific cache implementation configured.</p>
+
+<table class="table table-condensed not-wide">
+  <tr>
+    <th>Setting</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>config.action_controller.perform_caching</td>
+    <td><%= truth_label(Rails.application.config.action_controller.perform_caching) %></td>
+    <td>
+      Configures whether the application should perform caching or not.
+      Typically set to false in development mode, true in production.
+    </td>
+  </tr>
+  <tr>
+    <td>config.cache_store</td>
+    <td><code><%= Rails.application.config.cache_store.inspect %></code></td>
+    <td>
+      Configuration parameters that will be used to initialize the cache store.
+    </td>
+  </tr>
+  <tr>
+    <td>ENV['RAILS_CACHE_ID']</td>
+    <td><code><%= ENV['RAILS_CACHE_ID'].inspect %></code></td>
+    <td>Used to generate expanded cache keys in Rails' caching code if present</td>
+  </tr>
+  <tr>
+    <td>ENV['RAILS_APP_VERSION']</td>
+    <td><code><%= ENV['RAILS_APP_VERSION'].inspect %></code></td>
+    <td>Used to generate expanded cache keys in Rails' caching code if present</td>
+  </tr>
+  <% if ActionMailer::Base.respond_to?(:perform_caching=) %>
+    <tr>
+      <td>config.action_mailer.perform_caching</td>
+      <td><%= truth_label(Rails.application.config.action_mailer.perform_caching) %></td>
+      <td></td>
+    </tr>
+  <% end %>
+</table>
+
+<% if Rails.application.config.action_controller.perform_caching %>
+  <h2>Cache Details</h2>
   <p>
-    <code>config.action_mailer.perform_caching</code>
-    <%= truth_label(Rails.application.config.action_mailer.perform_caching) %>
+    Rails.cache class = <code><%= @cache.class %></code><br />
   </p>
-<% end %>
-<%- unless Rails.application.config.action_controller.perform_caching %>
+  <p>
+    Rails.cache options = <code><%= @cache.options.inspect %></code>
+  </p>
+  <p>Rails.cache standard options:<br />
+  <%- ActiveSupport::Cache::UNIVERSAL_OPTIONS.each do |option| %>
+      &nbsp;&nbsp;<code><%= option.inspect %> =&gt; <%= @cache.options[option].inspect %></code><br />
+  <%- end %>
+  </p>
+
+  <%-
+    # Page and action caching were removed from Rails and made available in a separate gem
+    #  https://github.com/rails/actionpack-page_caching
+    #  https://github.com/rails/actionpack-action_caching
+    # Page caching available? <%= !!defined?(ActionController::Caching::Pages)
+    # Action caching available? <%= !!defined?(ActionController::Caching::Actions)
+  -%>
+
+  <%- if @cache.is_a?(ActiveSupport::Cache::MemoryStore) %>
+    <%= render partial: 'cache_memory_store' %>
+  <%- elsif @cache.is_a?(ActiveSupport::Cache::MemCacheStore) ||
+            defined?(::ActiveSupport::Cache::DalliStore) && @cache.is_a?(ActiveSupport::Cache::DalliStore) %>
+    <%= render partial: 'cache_dalli_store' %>
+  <%- elsif @cache.is_a?(ActiveSupport::Cache::FileStore) %>
+    <p>
+      Rails FileStore options<br />
+      &nbsp;&nbsp;<code>:cache_path =&gt; <%= @cache.cache_path %></code>
+    </p>
+  <%- elsif @cache.is_a?(ActiveSupport::Cache::NullStore) %>
+    <p>
+      NullStore has no configuration options
+    </p>
+  <%- else %>
+    <p>
+      Unknown cache store.
+    </p>
+  <%- end %>
+
+  <% # DISABLED render partial: 'cache_monitor' %>
+
+<% else %>
   <p>
     Rails is not configured to perform caching in this environment.
     You will need to set <code>config.action_controller.perform_caching = true</code> to enable caching.
   </p>
 <% end %>
-
-<p>
-  Cache configuration
-  <%= truth_label(Rails.application.config.action_controller.perform_caching) %>
-</p>
-
-<pre>
-
-Rails.application.config.action_controller.perform_caching = <%= Rails.application.config.action_controller.perform_caching %>
-<%-
-  # Page and action caching were removed from Rails and made available in a separate gem
-  #  https://github.com/rails/actionpack-page_caching
-  #  https://github.com/rails/actionpack-action_caching
-  # Page caching available? <%= !!defined?(ActionController::Caching::Pages)
-  # Action caching available? <%= !!defined?(ActionController::Caching::Actions)
--%>
-Rails.cache class = <%= @cache.class %>
-Rails.cache options = <%= @cache.options %>
-
-Rails.cache standard options
-<%- ActiveSupport::Cache::UNIVERSAL_OPTIONS.each do |option| %>
-  :<%= option.to_s %> = <%= @cache.options[option] %>
-<%- end %>
-
-<%- if @cache.is_a?(ActiveSupport::Cache::MemoryStore) %>
-Rails MemoryStore options
-  :size = <%= @cache.instance_variable_get(:@max_size) %>
-  :max_prune_time = <%= @cache.instance_variable_get(:@max_prune_time) %>
-<%- elsif @cache.is_a?(ActiveSupport::Cache::FileStore) %>
-Rails FileStore options
-  :cache_path = <%= @cache.instance_variable_get(:@cache_path) %>
-<%- elsif defined?(Dalli) && @cache.is_a?(ActiveSupport::Cache::MemCacheStore) %>
-Rails MemCacheStore options
-  TBD - can take an array of addresses
-<%- elsif defined?(Dalli) && defined?(ActiveSupport::Cache::DalliStore) && @cache.is_a?(ActiveSupport::Cache::DalliStore) %>
-DalliStore options
-  TBD - can take an array of addresses, can use connection_pool gem
-<%- end %>
-</pre>
-
-<%- if defined?(Dalli) && @cache.respond_to?(:stats) %>
-<h3>MemCache Stats</h3>
-<pre>
-  <%= @cache.stats %>
-</pre>
-<%- end %>
-
-<%-
-    #TODO: Controls
-    #Add options here for MemoryStore(clear, cleanup, and prune), FileStore(clear, cleanup), and MemCacheStore(clear).
-    #For MemoryStore, provide method to dump keys and Entry attributes for very granular testing
-    #For testing/inspection, provide a form to manipulate (add,remove,incr,decr) entries
-
--%>
-
-<h2>Monitoring/Instrumentation</h2>
-<%- unless Tuttle.track_notifications %>
-  <div class="alert alert-warning" role="alert">
-    <p>Note: Tuttle cache instrumentation has not been enabled. Use <code>config.track_notifications=true</code> to enable.</p>
-  </div>
-<%- end %>
-
-<h3>Recent cache interactions</h3>
-
-<table class="table">
-  <tr>
-    <th>Action</th>
-    <th>Key</th>
-    <th>Hit?</th>
-    <th>Options</th>
-    <th>Time</th>
-    <th>Duration</th>
-    <th>TransactionID</th>
-  </tr>
-  <% @cache_events.reverse.each do |event| -%>
-    <tr >
-      <td><%= event.name=='cache_read.active_support' ? 'read':'write' %></td>
-      <td><%= event.payload[:key] %></td>
-      <td><%= event.payload[:hit] %></td>
-      <td><%= event.payload.except(:key, :hit) %></td>
-      <td><%= event.time.to_s(:db) %></td>
-      <td><%= number_with_precision(event.duration) %></td>
-      <td><%= event.transaction_id %></td>
-    </tr>
-  <% end -%>
-</table>
-
-<h3>Recent cache call locations</h3>
-
-<table class="table">
-  <tr>
-    <th>Action</th>
-    <th>File</th>
-    <th>Line</th>
-    <th>Key</th>
-    <th>Hit?</th>
-    <th>Options</th>
-    <th>Time</th>
-    <th>TransactionID</th>
-  </tr>
-  <% @tuttle_cache_events.reverse.each do |event| -%>
-    <tr >
-      <td>Read</td>
-      <td><%= event.payload[:call_location_path] %></td>
-      <td><%= event.payload[:call_location_lineno] %></td>
-      <td><%= event.payload[:key] %></td>
-      <td><%= event.payload[:hit] %></td>
-      <td><%= event.payload.reject {|k,_v| %i(key hit call_location_path call_location_lineno).include?(k) } %></td>
-      <td><%= event.time.to_s(:db) %></td>
-      <td><%= event.transaction_id %></td>
-    </tr>
-  <% end -%>
-</table>
-
-<%-
-    # TODO: Track calls and record keys broken down by namespace
--%>

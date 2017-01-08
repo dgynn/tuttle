@@ -1,0 +1,43 @@
+<h2>Memory Store Internals</h2>
+<table class="table table-condensed not-wide">
+  <tr>
+    <th>Setting</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Cache Size</td>
+    <td><%= @cache.instance_variable_get(:@cache_size) %></td>
+    <td>Size of the entries including keys and overhead</td>
+  </tr>
+  <tr>
+    <td>Max Size</td>
+    <td><%= @cache.instance_variable_get(:@max_size) %></td>
+    <td>Maximum allowed size which triggers pruning. Default is 32MB.</td>
+  </tr>
+  <tr>
+    <td>Max Prune Time</td>
+    <td><%= @cache.instance_variable_get(:@max_prune_time) %></td>
+    <td>Time limit for doing pruning</td>
+  </tr>
+  <tr>
+    <td>Entries</td>
+    <td><%= @cache.instance_variable_get(:@data).size %></td>
+    <td>Total number of active entries</td>
+  </tr>
+</table>
+
+<% timenow = Time.now.to_f %>
+<h2>Memory Store keys by last access time (seconds ago)</h2>
+<table class="table table-condensed not-wide">
+  <tr>
+    <th>Last Access<br></th>
+    <th>Key</th>
+  </tr>
+  <% @cache.instance_variable_get(:@key_access).sort_by(&:last).reverse!.each do |k, v| %>
+    <tr>
+      <td><%= (timenow - v).round(2) %></td>
+      <td><%= k %></td>
+    </tr>
+  <% end %>
+</table>
