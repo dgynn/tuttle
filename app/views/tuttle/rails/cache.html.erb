@@ -3,7 +3,7 @@
   <%= truth_label(ActionController::Base.send(:cache_configured?), 'Enabled', 'Disabled') %>
 </h1>
 
-<p>For an in-depth overview of Rails Caching, see the <a href="http://guides.rubyonrails.org/caching_with_rails.html">Caching with Rails</a> guide.</p>
+<p>For an in-depth overview of Rails Caching, see the <a href="<%= rails_guides_versioned_url('caching_with_rails.html') %>">Caching with Rails</a> guide.</p>
 
 <h2>Configuration</h2>
 <p>Rails needs to have caching enabled and a specific cache implementation configured.</p>
