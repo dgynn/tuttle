@@ -1,6 +1,9 @@
 engines:
   brakeman:
     enabled: true
+    checks:
+      CVE_2015_3227:
+        enabled: false
   duplication:
     enabled: true
     config:

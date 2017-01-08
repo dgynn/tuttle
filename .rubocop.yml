@@ -12,7 +12,7 @@ Documentation:
   Enabled: false
 
 Metrics/LineLength:
-  Max: 120
+  Max: 150
 
 Metrics/MethodLength:
   Max: 25
@@ -31,3 +31,11 @@ Style/SpaceInsideBlockBraces:
 Style/HashSyntax:
   Enabled: false
 
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
