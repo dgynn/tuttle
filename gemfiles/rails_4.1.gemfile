@@ -7,17 +7,17 @@ gem "rails", "~> 4.1.0"
 group :development, :test do
   gem "jquery-rails"
   gem "sqlite3"
-  gem "cancancan"
   gem "active_model_serializers"
-  gem "devise"
-  gem "paperclip"
   gem "busted"
-  gem "rack-mini-profiler"
+  gem "cancancan"
+  gem "devise"
   gem "get_process_mem"
-  gem "codeclimate-test-reporter", :require => false
-  gem "codacy-coverage", :require => false
   gem "memory_profiler", :github => "SamSaffron/memory_profiler", :branch => "master"
+  gem "paperclip"
+  gem "rack-mini-profiler"
   gem "ruby-prof"
+  gem "codacy-coverage", :require => false
+  gem "codeclimate-test-reporter", :require => false
   gem "rubocop", :require => false
 end
 
