@@ -25,8 +25,9 @@
   css_compressor: <%= Rails.application.config.assets.css_compressor %><br/>
 
   asset_host (for CDNs): <%= Rails.application.config.action_controller.asset_host %><br/>
-  static_cache_control (for CDNs): <%= Rails.application.config.static_cache_control %><br/>
-
+  <% if Rails::VERSION::MAJOR < 5 %>
+    static_cache_control (for CDNs): <%= Rails.application.config.static_cache_control %><br/>
+  <% end %>
 
   <h3>Asset paths</h3>
   <pre>
