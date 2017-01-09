@@ -7,7 +7,6 @@ module Tuttle
       get :index
       assert_response :success
       assert_select 'h1', 'Tuttle Dashboard'
-      assert_not_nil assigns(:event_counts)
     end
 
   end

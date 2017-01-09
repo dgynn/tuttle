@@ -11,21 +11,28 @@
         <p>Version: <%= Rails::VERSION::STRING %></p>
         <p>Environment: <%= Rails.env %></p>
         <p>Root: <%= Rails.root %></p>
-        <p>Controllers: <%= ActionController::Base.descendants.size %></p>
-        <p>Models: <%= ActiveRecord::Base.descendants.size %></p>
+        <p>Database: <%= ::ActiveRecord::Base.connection.adapter_name rescue 'N/A' %></p>
+        <p>Caching: <%= truth_label(::ActionController::Base.send(:cache_configured?), 'Enabled', 'Disabled') %></p>
       </div>
       <div class="panel-footer">
-        <%= link_to 'More...', rails_path %>
+        <%= link_to "Configuration", rails_path, :class=>['btn','btn-primary'], :role=>'button' %>
+        <%= link_to "Database", rails_database_path, :class=>['btn','btn-primary'], :role=>'button' %>
+        <%= link_to "Asset Pipeline", rails_assets_path, :class=>['btn','btn-primary'], :role=>'button' %>
+        <%= link_to "Caching", rails_cache_path, :class=>['btn','btn-primary'], :role=>'button' %>
       </div>
     </div>
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Tuttle Gem Helper Tools</h3>
+        <h3 class="panel-title">Libraries and Frameworks</h3>
       </div>
       <ul class="list-group">
+        <li class="list-group-item"><%= link_to 'ActiveSupport', active_support_path %></li>
+        <%- if defined?(::ActiveJob) %>
+          <li class="list-group-item"><%= link_to 'ActiveJob', active_job_path %></li>
+        <%- end %>
         <%- if defined?(CanCanCan) %>
-          <li class="list-group-item"><%= link_to 'CanCan', cancancan_path %></li>
+          <li class="list-group-item"><%= link_to 'CanCanCan', cancancan_path %></li>
         <%- end %>
         <%- if defined?(Devise) %>
           <li class="list-group-item"><%= link_to 'Devise', devise_path %></li>
@@ -33,23 +40,19 @@
         <%- if defined?(Paperclip) %>
           <li class="list-group-item"><%= link_to 'Paperclip', paperclip_path %></li>
         <%- end %>
-        <%- if !defined?(CanCanCan) && !defined?(Devise) && !defined?(Paperclip) %>
-          <li class="list-group-item list-group-item-warning">None</li>
-        <%- end %>
+        <li class="list-group-item"><%= link_to 'HTTP Clients', gems_http_clients_path %></li>
+        <li class="list-group-item"><%= link_to 'JSON', gems_json_path %></li>
       </ul>
     </div>
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Ruby</h3>
+        <h3 class="panel-title">Performance Tuning</h3>
       </div>
-      <div class="panel-body">
-        <p>Version: <%= RUBY_DESCRIPTION %></p>
-        <p>Gems: <%= Bundler.rubygems.all_specs.size %></p>
-      </div>
-      <div class="panel-footer">
-        <%= link_to 'More...', ruby_path %>
-      </div>
+      <ul class="list-group">
+        <li class="list-group-item"><%= link_to 'Ruby VM tuning', ruby_tuning_path %></li>
+        <li class="list-group-item"><%= link_to 'Request Profiling', gems_other_path(:anchor => 'request-profiler') %></li>
+      </ul>
     </div>
 
   </div>
@@ -68,17 +71,18 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Events (<%= Tuttle::Instrumenter.events.size %>)</h3>
+        <h3 class="panel-title">Ruby</h3>
       </div>
-      <ul class="list-group">
-        <% @event_counts.sort.each do |name,val| -%>
-            <li class="list-group-item"><span class="badge"><%= val %></span><%= name %></li>
-        <% end -%>
-      </ul>
       <div class="panel-body">
-        <%= link_to 'Details...', rails_instrumentation_path %>
+        <p>Version: <%= RUBY_DESCRIPTION %></p>
+        <p>Gems: <%= Bundler.rubygems.all_specs.size %></p>
+      </div>
+      <div class="panel-footer">
+        <%= link_to "Configuration", ruby_path, :class=>['btn','btn-primary'], :role=>'button' %>
+        <%= link_to "Gems", gems_path, :class=>['btn','btn-primary'], :role=>'button' %>
       </div>
     </div>
+
   </div>
 
 </div>

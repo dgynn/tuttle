@@ -35,6 +35,7 @@
   </div>
 </div>
 
+<a id="request-profiler"></a>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Experimental Request Profiler</h3>
@@ -63,15 +64,16 @@
       <p>Profile memory allocation using <code>memory_profiler</code> with <code>tuttle-profiler=memory_profiler</code> query param.</p>
       <p>
         Additional parameters can include:
-        <ul>
-          <li><code>memory_profiler_allow_files</code> - Regexp pattern for files to be included</li>
-          <li><code>memory_profiler_ignore_files</code> - Regexp pattern for files to be ignored</li>
-          <li><code>memory_profiler_top</code> - Number of lines to include in report (defaults to 50)</li>
-        </ul>
       </p>
+      <ul>
+        <li><code>memory_profiler_allow_files</code> - Regexp pattern for files to be included</li>
+        <li><code>memory_profiler_ignore_files</code> - Regexp pattern for files to be ignored</li>
+        <li><code>memory_profiler_top</code> - Number of lines to include in report (defaults to 50)</li>
+      </ul>
       <p>Example:
         <% example_url = main_app_root_url + '?tuttle-profiler=memory_profiler' %>
-        <%= link_to example_url, example_url %></p>
+        <%= link_to example_url, example_url %>
+      </p>
       <br/>
 
       <h4>CPU Profiling <%= truth_label(defined?(RubyProf), 'available', 'not available') %></h4>
@@ -86,7 +88,7 @@
         </ul>
       <p>Example:
         <% example_url = main_app_root_url + '?tuttle-profiler=ruby-prof&ruby-prof_printer=fast_stack' %>
-        <%= link_to example_url, example_url %></p>
+        <%= link_to example_url, example_url %>
       </p>
 
     <% else %>
