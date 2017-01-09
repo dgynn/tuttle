@@ -1,3 +1,15 @@
+### 0.0.6
+
+* Features
+  * Easier configuration with config.enable_profiling to load profiling middleware
+  * Improved Asset Pipeline configuration inspector
+  * Improved Rails Caching configuration inspector
+  * Basic ActiveJob configuration inspector
+  * Improved Rails general configuration options from Rails Guides
+  * Syntax highlighting with highlight.js
+  * Experimental inspector for Facter
+  * Experimental profiler for Busted with additional DTrace inspections
+
 ### 0.0.5
 
 * Features
