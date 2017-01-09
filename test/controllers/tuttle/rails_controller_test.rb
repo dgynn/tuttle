@@ -9,7 +9,6 @@ module Tuttle
 
       assert_select "#config tr[data-config-key=enable_dependency_loading]", 1 if ::Rails::VERSION::MAJOR == 5
       assert_select "#config tr[data-config-key=enable_dependency_loading]", 0 if ::Rails::VERSION::MAJOR == 4
-
     end
 
     test 'should get controllers' do

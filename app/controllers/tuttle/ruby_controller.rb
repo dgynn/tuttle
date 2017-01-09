@@ -5,7 +5,7 @@ require_dependency 'tuttle/application_controller'
 module Tuttle
   class RubyController < ApplicationController
 
-    ENV_FILTERS = [/.*_(URL|PASSWORD|KEY|KEY_BASE|AUTHENTICATION)$/]
+    ENV_FILTERS = [/.*_(URL|PASSWORD|KEY|KEY_BASE|AUTHENTICATION)$/].freeze
 
     def index
       # TODO: need better filter for sensitive values. this covers DB-style URLs with passwords, passwords, and keys

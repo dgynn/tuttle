@@ -14,12 +14,10 @@ module Tuttle
 
     # rubocop:disable Style/AccessorMethodName
     def get_process_mem
-      require 'get_process_mem' rescue nil
-      require 'get_process_mem/version' rescue nil
-      if defined?(GetProcessMem)
-        @memory_self = GetProcessMem.new
-        @memory_parent = GetProcessMem.new(Process.ppid)
-      end
+      require 'get_process_mem'
+      require 'get_process_mem/version'
+      @memory_self = GetProcessMem.new
+      @memory_parent = GetProcessMem.new(Process.ppid)
     end
 
     def other

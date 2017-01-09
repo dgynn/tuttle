@@ -1,7 +1,10 @@
+# frozen-string-literal: true
+
 module Tuttle
   module ApplicationHelper
-    def truth_label(is_true, true_label = 'true'.freeze, false_label = 'false'.freeze)
-      "<span class='label label-#{is_true ? 'success'.freeze : 'danger'.freeze}'>#{is_true ? true_label : false_label}</span>".html_safe
+    def truth_label(is_true, true_label = 'true', false_label = 'false')
+      content_tag(:span, is_true ? true_label : false_label,
+                  class: ['label', is_true ? 'label-success' : 'label-danger'])
     end
 
     def tuttle_redacted(enumarator)
@@ -27,7 +30,7 @@ module Tuttle
     def redact_by_key(key, value)
       case key
       when 'password', /(_secret|_credentials)/
-        '--HIDDEN--'.freeze
+        '--HIDDEN--'
       else
         value
       end

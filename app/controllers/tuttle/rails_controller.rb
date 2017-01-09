@@ -121,6 +121,7 @@ module Tuttle
           recognized_path[:engine] = engine_class
           recognized_paths << recognized_path
         rescue ActionController::RoutingError
+          Tuttle::Engine.logger.info("Routing error recognizing path for #{path}")
         end
       end
 

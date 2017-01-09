@@ -51,7 +51,7 @@ module Tuttle
         report.pretty_print(result)
 
         response = ["Report from Tuttle::Middeware::RequestProfiler\n"]
-        response << "Time of request: #{Time.current.to_s}\n"
+        response << "Time of request: #{Time.current}\n"
         response << "Response status: #{status}\n" unless status == 200
         response << "Response time: #{response_time}\n"
         response << "Response body size: #{body.body.length}\n" if body.respond_to?(:body)
@@ -101,7 +101,7 @@ module Tuttle
                                :public_constant, :private_constant, :autoload,
                                :define_method, :define_singleton_method])
 
-      def profile_busted(env, query_string)
+      def profile_busted(env, _query_string)
         # Note: Requires Busted (of course) and DTrace so will need much better error handling and information
         # For DTrace on OS X (post 10.11) you may need to disable SIP as well as be running with root privileges
         # https://derflounder.wordpress.com/2015/10/01/system-integrity-protection-adding-another-layer-to-apples-security-model/
@@ -121,7 +121,8 @@ module Tuttle
         #   So clearing the method cache of a single Class is less of a performance hit than blowing away the entire method cache
         #
         # Busted Dtraces :method-cache-clear internal events which are when Ruby says the method cache was cleared
-        # The @cache_buster_tracepoint Dtraces Class/Module definitions (:class) and calls to C method (:c_call) which would likely cause a method cache clear
+        # The @cache_buster_tracepoint Dtraces Class/Module definitions (:class)
+        # and calls to C method (:c_call) which would likely cause a method cache clear
         #
         # From the observed results...
         #   :method-cache-clear may fire more times than RubyVM.stat[]
@@ -136,19 +137,19 @@ module Tuttle
         @cache_buster_tracepoint ||= TracePoint.new(:class, :c_call) do |trace|
           if trace.event == :class
             cache_busters << {
-                :event => trace.event,
-                :event_description => "Class definition",
-                :location => "#{trace.path}##{trace.lineno}",
-                :target_class => trace.self
+              :event => trace.event,
+              :event_description => "Class definition",
+              :location => "#{trace.path}##{trace.lineno}",
+              :target_class => trace.self
             }
           elsif TRACE_METHODS.include?(trace.method_id)
             cache_busters << {
-                :event => trace.event,
-                :event_description => "#{trace.defined_class}##{trace.method_id}",
-                :location => "#{trace.path}##{trace.lineno}",
-                :target_class => trace.self.class,
-                :defined_class => trace.defined_class,
-                :method_id => trace.method_id
+              :event => trace.event,
+              :event_description => "#{trace.defined_class}##{trace.method_id}",
+              :location => "#{trace.path}##{trace.lineno}",
+              :target_class => trace.self.class,
+              :defined_class => trace.defined_class,
+              :method_id => trace.method_id
             }
           end
         end
@@ -166,19 +167,24 @@ module Tuttle
         # Prepare the output
         output = "\nRubyVM.stat:           Before     After      Change\n".dup
         [:global_method_state, :global_constant_state, :class_serial].each do |stat|
-          output << sprintf("%-22s %-10d %-10d %+d\n", stat, vmstat_before[stat], vmstat_after[stat],  vmstat_after[stat] - vmstat_before[stat])
+          output << format("%-22s %-10d %-10d %+d\n",
+                           stat,
+                           vmstat_before[stat],
+                           vmstat_after[stat],
+                           vmstat_after[stat] - vmstat_before[stat])
         end
 
         output << "\nCounts:\n"
         output << "method-cache-clear: #{results[:traces][:method].size}\n"
         output << "C calls that may cause cache clear: #{cache_busters.size}\n"
-        cache_busters.group_by do |trace_info|
+        grouped_traces = cache_busters.group_by do |trace_info|
           if trace_info[:event] == :c_call
-            "#{trace_info[:defined_class]}##{ trace_info[:method_id]}"
+            "#{trace_info[:defined_class]}##{trace_info[:method_id]}"
           else
             "Class Defined"
           end
-        end.each do |grouping, traces|
+        end
+        grouped_traces.each do |grouping, traces|
           output << "  #{grouping}: #{traces.size}\n"
         end
 
@@ -190,28 +196,24 @@ module Tuttle
         output << "\nTraces (method cache clearing calls): (#{cache_busters.size} times)\n"
         cache_busters.each do |trace_info|
           if trace_info[:event] == :c_call
-            output << sprintf("%s\#%s: %s %s\n",
-                              trace_info[:defined_class],
-                              trace_info[:method_id],
-                              trace_info[:target_class],
-                              # trace_info[:target_object_id],
-                              trace_info[:location])
+            output << format("%s\#%s: %s %s\n",
+                             trace_info[:defined_class],
+                             trace_info[:method_id],
+                             trace_info[:target_class],
+                             trace_info[:location])
           else
-            output << sprintf("Class Definition: %s %s %s\n",
-                              trace_info[:target_class],
-                              #trace_info[:target_object_id],
-                              trace_info[:defined_class],
-                              trace_info[:location])
+            output << format("Class Definition: %s %s %s\n",
+                             trace_info[:target_class],
+                             trace_info[:defined_class],
+                             trace_info[:location])
           end
         end
 
-        [ 200,
-          { 'Content-Type' => 'text/plain' },
-          [ "Tuttle - Ruby Method/Constant Caches Request Observer v0.0.1\n",
-            "Ruby Version: #{RUBY_VERSION}\n",
-            output
-          ]
-        ]
+        [200,
+         { 'Content-Type' => 'text/plain' },
+         ["Tuttle - Ruby Method/Constant Caches Request Observer v0.0.1\n",
+          "Ruby Version: #{RUBY_VERSION}\n",
+          output]]
       end
 
     end
