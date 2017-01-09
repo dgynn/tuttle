@@ -1,41 +1,193 @@
-<h2>Assets/Sprockets</h2>
+<h2>Asset Pipeline</h2>
+<%
+  # TODO: this should be broken up by intent
+  # -setting up CDN
+  # -development time
+  # Also look for obsolete keys in config.assets (like compress)
+%>
+<p>
+  The Asset Pipeline is configured primarily by <code>config.assets.*</code>
+  settings. These values are typically set in <code>config/application.rb</code>,
+  <code>config/initiailizers/assets.rb</code>, and the different
+  <code>config/environments/*</code> files.
+</p>
 
-<%- if @sprockets %>
-  Sprockets version: <%= Sprockets::VERSION %><br/>
-  Sprockets::Rails version: <%= Sprockets::Rails::VERSION %><br/>
-  SASS version: <%= defined?(Sass::VERSION) ? Sass::VERSION : '-' %><br/>
+<p>
+  See the Rails Guides for
+  <a href="<%= rails_guides_versioned_url('asset_pipeline.html') %>">Asset Pipeline</a>
+  and
+  <a href="<%= rails_guides_versioned_url('configuring.html#configuring-assets') %>">Configuring Assets</a>
+  for a further description of the settings available.
+</p>
+
+<%- if @sprockets_env %>
+  <h3>Helper Gems</h3>
+  Sprockets version: <%= ::Sprockets::VERSION %><br/>
+  Sprockets::Rails version: <%= ::Sprockets::Rails::VERSION %><br/>
+  Sass::Rails version: <%= defined?(::Sass::Rails::VERSION) ? ::Sass::Rails::VERSION : '-' %><br/>
+  Sass version: <%= defined?(::Sass::VERSION) ? Sass::VERSION : '-' %><br/>
   CoffeeScript version: <%= defined?(CoffeeScript) ? CoffeeScript::version : '-' %><br/>
-  ECO version: <%= defined?(Eco) ? Eco::version : '-' %><br/>
-  EJS version: <%= defined?(EJS) ? '1.1.1' : '-' %><br/>
 
   <h3>Configuration</h3>
-  digest: <%= Rails.application.config.assets.digest %><br/>
-  <%- if Sprockets::VERSION < '3' %>
-  ** digest value: <%= @sprockets.digest %><br/>
-  <%- end %>
-  assets version: <%= Rails.application.config.assets.version %><br/>
-  ** sprockets assets version: <%= @sprockets.version %><br/>
-  assets prefix: <%= Rails.application.config.assets.prefix %><br/>
-  manifest: <%= Rails.application.config.assets.manifest || 'false' %><br/>
-  debug: <%= Rails.application.config.assets.debug %><br/>
-  compile: <%= Rails.application.config.assets.compile %><br/>
-  <%- # NOTE: only in Sprockets 2.x %>
-  raise_runtime_errors: <%= Rails.application.config.assets.raise_runtime_errors %><br/>
-  js_compressor: <%= Rails.application.config.assets.js_compressor %><br/>
-  css_compressor: <%= Rails.application.config.assets.css_compressor %><br/>
+  <table class="table table-condensed">
+    <tr>
+      <th>Setting</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>config.assets.enabled</td>
+      <td><code><%= @assets_config.enabled.inspect %></code></td>
+      <td>Controls whether the asset pipeline is enabled.</td>
+    </tr>
+    <tr>
+      <td>config.assets.version</td>
+      <td><code><%= @assets_config.version.inspect %></code></td>
+      <td>Version of your assets, change this if you want to expire all your assets.</td>
+    </tr>
+    <tr>
+      <td>config.assets.prefix</td>
+      <td><code><%= @assets_config.prefix.inspect %></code></td>
+      <td>Defines the prefix where assets are served from.</td>
+    </tr>
+    <tr>
+      <td>config.assets.manifest</td>
+      <td><code><%= @assets_config.manifest.inspect %></code></td>
+      <td>If defined, it will be the full path to be used for the asset precompiler's manifest file. Defaults to a file named "manifest-&lt;random&gt;.json"</td>
+    </tr>
+    <tr>
+      <td>config.assets.debug</td>
+      <td><code><%= @assets_config.debug.inspect %></code></td>
+      <td>Disables the concatenation and compression of assets.</td>
+    </tr>
+    <tr>
+      <td>config.assets.compile</td>
+      <td><code><%= @assets_config.compile.inspect %></code></td>
+      <td>Enable live compilation. Should be true in development and false in production.</td>
+    </tr>
+    <tr>
+      <td>config.assets.quiet</td>
+      <td><code><%= @assets_config.quiet.inspect %></code></td>
+      <td>
+        If set to true in an environment configuration (not an initializer),
+        a Middleware will be added that silences the Logger.
+      </td>
+    </tr>
+    <tr>
+      <td>config.assets.resolve_with</td>
+      <td><code><%= @assets_config.resolve_with.inspect %></code></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>config.assets.unknown_asset_fallback</td>
+      <td><code><%= @assets_config.unknown_asset_fallback.inspect %></code></td>
+      <td></td>
+    </tr>
+    <% if Sprockets::Rails::VERSION >= '3.6.2' %>
+    <tr>
+      <td>config.assets.check_precompiled_asset</td>
+      <td><code><%= @assets_config.check_precompiled_asset.inspect %></code></td>
+      <% # Formerly config.assets.raise_runtime_errors - wrong in docs %>
+      <td>Set this flag to true to enable additional runtime error checking. Recommended in config/environments/development.rb to minimize unexpected behavior when deploying to production.</td>
+    </tr>
+    <% end %>
+    <tr>
+      <td>config.assets.gzip</td>
+      <td><code><%= @assets_config.gzip.inspect %></code></td>
+      <td>A flag that enables the creation of gzipped version of compiled assets, along with non-gzipped assets.</td>
+    </tr>
+    <tr>
+      <td>config.assets.digest</td>
+      <td><code><%= @assets_config.digest.inspect %></code></td>
+      <td>Enables the use of MD5 fingerprints in asset names</td>
+    </tr>
+    <tr>
+      <td>config.assets.js_compressor</td>
+      <td><code><%= @assets_config.js_compressor.inspect %></code></td>
+      <td>Defines the JavaScript compressor to use</td>
+    </tr>
+    <tr>
+      <td>config.assets.css_compressor</td>
+      <td><code><%= @assets_config.css_compressor.inspect %></code></td>
+      <td>Defines the CSS compressor to use. It is set by default by sass-rails.</td>
+    </tr>
+    <tr>
+      <td>config.assets.cache_limit</td>
+      <td>
+        <%= ActiveSupport::NumberHelper.number_to_human_size(@assets_config.cache_limit) %>
+      </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>config.action_controller.asset_host</td>
+      <td><code><%= Rails.application.config.action_controller.asset_host %></code></td>
+      <td>
+        Use primarily in production to set a hostname of the CDN.
+        Assets will be served with an appropriate scheme based on the request.
+      </td>
+    </tr>
+    <% if Rails::VERSION::MAJOR < 5 %>
+      <%
+        # Note: in Rails 5 this is config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=31536000' }
+        # See http://blog.bigbinary.com/2015/10/31/rails-5-allows-setting-custom-http-headers-for-assets.html
+      %>
+    <tr>
+      <td>config.static_cache_control</td>
+      <td><code><%= Rails.application.config.static_cache_control %></code></td>
+      <td>In Rails 4, a single Cache-Control header can be configured such as
+        <code>'public, max-age=1000'</code>
+      </td>
+    </tr>
+    <% end %>
+  </table>
 
-  asset_host (for CDNs): <%= Rails.application.config.action_controller.asset_host %><br/>
-  <% if Rails::VERSION::MAJOR < 5 %>
-    static_cache_control (for CDNs): <%= Rails.application.config.static_cache_control %><br/>
+<% if false # This is working but not tested or complete yet %>
+  <h4>Sass-rails Configuration</h4>
+  <% Rails.application.config.sass.each do |k, v| %>
+    <%= "#{k} = #{v}" %><br>
   <% end %>
+<% end %>
 
   <h3>Asset paths</h3>
+  <p>
+    The assets paths are configured with <code>config.assets.path</code> and are searched
+    in order. By default, the directories under <code>app/assets</code>, <code>lib/assets</code>,
+    and <code>vendor/assets</code> are included.
+  </p>
   <pre>
-  <% @sprockets.paths.each do |asset_path| %>
-  <%= asset_path.to_s %>
-  <% end %>
+<% @sprockets_env.paths.each do |asset_path| -%>
+<%= asset_path.to_s %>
+<% end -%>
+</pre>
 
-  </pre>
+  <h3>Precompiles - Explicit and Patterns (<%= @assets_config.precompile.length %> items)</h3>
+  <ul>
+  <% @assets_config.precompile.each do |asset_path| %>
+    <li><%= asset_path %></li>
+  <% end -%>
+  </ul>
+
+  <%
+    # More potential inspections
+    # Rails.application.assets_manifest.filename
+    # => "<ROOT>/public/assets/.sprockets-manifest-7df610ba9ea7edfaac06929d79cc8034.json"
+    # Exceed-development-local > Rails.application.assets_manifest.directory
+    # => "<ROOT>/public/assets"
+    # Exceed-development-local > Rails.application.assets_manifest.assets
+    # => {}
+    # Exceed-development-local > Rails.application.assets_manifest.files
+  %>
+
+  <% # Only supported in Rails 4.1+ %>
+  <% if Rails.application.respond_to?(:precompiled_assets) %>
+    <% all_precompiles = Rails.application.precompiled_assets %>
+    <h3>All precompiled (<%= all_precompiles.length %> assets)</h3>
+    <ul>
+      <% all_precompiles.sort.each do |asset_path| %>
+        <li><%= asset_path %></li>
+      <% end -%>
+    </ul>
+  <% end %>
 
 <%- else %>
   <p>Sprockets does not appear to be enabled for this application.</p>

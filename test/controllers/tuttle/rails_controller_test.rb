@@ -60,7 +60,8 @@ module Tuttle
     test 'should get assets' do
       get :assets
       assert_response :success
-      assert_not_nil assigns(:sprockets)
+      assert_not_nil assigns(:sprockets_env)
+      assert_not_nil assigns(:assets_config)
     end
 
     test 'should get routes' do

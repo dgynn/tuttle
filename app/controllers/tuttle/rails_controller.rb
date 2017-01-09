@@ -65,7 +65,8 @@ module Tuttle
     end
 
     def assets
-      @sprockets = Rails.application.assets
+      @sprockets_env = Rails.application.assets
+      @assets_config = Rails.application.config.assets
       # TODO: revisit detection of "engines" which are classified as processors, transformers, etc.
     end
 
