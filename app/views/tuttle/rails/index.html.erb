@@ -122,11 +122,29 @@ Log Level = <%= Rails.configuration.log_level %>
     </table>
   </div>
   <div class="tab-pane" id="initializers">
-    <p>Rails initializers are blocks of code that run during application initialization.</p>
-    <p>Initializers can be provided by any Railtie, which includes Rails components themselves as well as many Gems.</p>
+    <p>
+      <a href="<%= rails_guides_versioned_url('configuring.html#using-initializer-files') %>">Rails initializers</a> are blocks of code that run during application initialization.
+      Initializers can be provided by any Railtie, which includes Rails components themselves as well as many Gems.
+    </p>
+    <p>
+      All files in your <code>config/initializers</code> directory will be loaded by the <code>:load_config_initializers</code> initializer
+    </p>
+
+    <%
+      special_hooks = [:bootstrap_hook, :run_prepare_callbacks, :eager_load!, :finisher_hook]
+    %>
+
+    <p></p>
     <table class="table table-condensed">
-      <tr><th>#</th><th>Name</th><th>Context Class</th><th>Group</th><th>After</th><th>Before</th></tr>
-    <%- idx = 0 %>
+      <tr><th>#</th><th>Name</th><th>Context Class or File Location</th><th>Group</th><th>After</th><th>Before</th></tr>
+      <%- idx = 0 %>
+      <% ActiveSupport.instance_variable_get(:@load_hooks)[:before_configuration].each do |k, _v| %>
+        <tr>
+          <td></td>
+          <td>:before_configuration hook</td>
+          <td colspan="4"><code><%= display_source_locaction(*k.source_location) %></code></td>
+        </tr>
+      <% end %>
     <%- Rails.application.initializers.tsort_each do |initializer| %>
       <%- options = initializer.instance_variable_get('@options'.freeze) %>
       <tr>
@@ -137,9 +155,42 @@ Log Level = <%= Rails.configuration.log_level %>
         <td><%= options.try(:[],:after).try(:inspect) %></td>
         <td><%= options.try(:[],:before).try(:inspect) %></td>
       </tr>
+        <% if initializer.name == :load_config_initializers %>
+          <% initializer.instance_variable_get('@context'.freeze).config.paths["config/initializers"].existent.sort.each do |initializer_file| %>
+            <tr>
+            <td></td>
+            <td>--&gt; config_initializer file</td>
+            <td colspan="4"><code><%= file_location(initializer_file) %></code></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% if special_hooks.include?(initializer.name) %>
+        <%
+          # TODO: Add special handling blocks for these cases
+          special_hook_load = case initializer.name
+                          when :bootstrap_hook
+                            :before_initialize
+                          when :run_prepare_callbacks
+                            # TODO: this is not correct. to_prepare blocks are not in load_hooks
+                            :to_prepare
+                          when :eager_load!
+                            :before_eager_load
+                          when :finisher_hook
+                            :after_initialize
+                          end
+        %>
+          <% ActiveSupport.instance_variable_get(:@load_hooks)[special_hook_load].each do |k, _v| %>
+            <tr>
+              <td></td>
+              <td>--&gt; <%= special_hook_load.inspect %></td>
+              <td colspan="4"><code><%= display_source_locaction(*k.source_location) %></code></td>
+            </tr>
+          <%- end %>
+        <%- end %>
     <%- end %>
     </table>
   </div>
+
   <div class="tab-pane" id="middleware">
     <p>The Rack middleware configuration shows the modules in the Rack stack that will process the request and response.</p>
     <ol>

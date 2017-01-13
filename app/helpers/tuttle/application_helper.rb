@@ -51,19 +51,22 @@ module Tuttle
         "Unknown"
       end if path.nil?
 
-      display_location =
-        if path.start_with?(Rails.root.to_s)
-          path.gsub(Rails.root.to_s, "$RAILS_ROOT")
-        elsif path.start_with?(RbConfig::CONFIG['rubylibdir'])
-          path.gsub(RbConfig::CONFIG['rubylibdir'], "$RUBY_LIB_DIR")
-        elsif File.realpath(path).start_with?(File.realpath(Bundler.rubygems.gem_dir))
-          File.realpath(path).gsub(BUNDLER_GEM_PATHS_REGEX, "$GEMS")
-        else
-          path
-        end
+      display_location = file_location(path)
       expanded_path = File.expand_path(path)
       content_tag(:span, :class => 'tuttle-path', :data => { :initial => path, :expanded => expanded_path }) do
         "#{display_location}##{line}"
+      end
+    end
+
+    def file_location(path)
+      if path.start_with?(Rails.root.to_s)
+        path.gsub(Rails.root.to_s, "$RAILS_ROOT")
+      elsif path.start_with?(RbConfig::CONFIG['rubylibdir'])
+        path.gsub(RbConfig::CONFIG['rubylibdir'], "$RUBY_LIB_DIR")
+      elsif File.realpath(path).start_with?(File.realpath(Bundler.rubygems.gem_dir))
+        File.realpath(path).gsub(BUNDLER_GEM_PATHS_REGEX, "$GEMS")
+      else
+        path
       end
     end
 
