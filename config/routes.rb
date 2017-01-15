@@ -18,6 +18,10 @@ Tuttle::Engine.routes.draw do
     get :get_process_mem, :http_clients, :json, :other
   end
 
+  resources :i18n, :only => [:index] do
+    collection { get :localize }
+  end
+
   namespace :active_support do
     get '', :action => :index
     get :dependencies, :inflectors, :time_zones

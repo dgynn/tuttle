@@ -1,0 +1,46 @@
+<% date_current = Date.current %>
+<% time_current = Time.current %>
+<h1>Localization</h1>
+<p>
+  Rails will localize Dates and Times using keys scoped under <code>date.format</code>
+  and <code>time.format</code>.
+</p>
+<p>
+  The current time is <%= time_current.to_s %>
+</p>
+
+<h3>Dates</h3>
+<table class="table table table-condensed">
+  <tr>
+    <th>Locale</th>
+    <th>Default</th>
+    <th>Short</th>
+    <th>Long</th>
+  </tr>
+  <% I18n.available_locales.each do |locale_name| %>
+    <tr>
+      <td><%= locale_name %></td>
+      <% [:default, :short, :long].each do |format| %>
+        <td><%= l(date_current, locale: locale_name, format: format) rescue 'translation missing' %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<h3>Times</h3>
+<table class="table table table-condensed">
+  <tr>
+    <th>Locale</th>
+    <th>Default</th>
+    <th>Short</th>
+    <th>Long</th>
+  </tr>
+  <% I18n.available_locales.each do |locale_name| %>
+    <tr>
+      <td><%= locale_name %></td>
+      <% [:default, :short, :long].each do |format| %>
+        <td><%= l(time_current, locale: locale_name, format: format) rescue 'translation missing' %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

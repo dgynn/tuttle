@@ -50,6 +50,11 @@
             <li><%= link_to 'Asset Pipeline', rails_assets_path %></li>
             <li><%= link_to 'Caching', rails_cache_path %></li>
             <li role="separator" class="divider"></li>
+            <%- if defined?(::I18n) %>
+              <li><%= link_to 'Internationalization', i18n_index_path %></li>
+              <li><%= link_to 'Localization', localize_i18n_index_path %></li>
+              <li role="separator" class="divider"></li>
+            <% end %>
             <li><%= link_to 'Database', rails_database_path %></li>
             <li><%= link_to 'Schema Cache', rails_schema_cache_path %></li>
             <li role="separator" class="divider"></li>

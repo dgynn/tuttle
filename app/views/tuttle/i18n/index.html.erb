@@ -1,0 +1,91 @@
+<h1>Internationalization</h1>
+
+<p>
+  Rails Internationalization (I18n) configuration is describe in the Rails
+  Guide for the <%= link_to_rails_guide('i18n', 'Rails Internationalization API') %>.
+</p>
+
+<dl class="dl-horizontal">
+  <dt>I18n Version</dt><dd><%= I18n::VERSION %></dd>
+</dl>
+
+<h3>Config Settings</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Setting</th>
+    <th>Config</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>I18n.default_locale</td>
+    <td><code><%= I18n.default_locale.inspect %></code></td>
+    <td>Default localte</td>
+  </tr>
+  <tr>
+    <td>I18n.locale</td>
+    <td><code><%= I18n.locale.inspect %></code></td>
+    <td>Locale of this request</td>
+  </tr>
+  <tr>
+    <td>I18n.exception_handler</td>
+    <td><code><%= I18n.exception_handler.class.inspect %></code></td>
+    <td>Exception handler (class)</td>
+  </tr>
+  <tr>
+    <td>I18n.backend</td>
+    <td><code><%= I18n.backend.class.inspect %></code></td>
+    <td>Backend (class)</td>
+  </tr>
+  <% if I18n.respond_to?(:fallbacks) %>
+    <tr>
+      <td>I18n.fallbacks</td>
+      <td><code><%= I18n.fallbacks.inspect %></code></td>
+      <td>Fallbacks</td>
+    </tr>
+  <% end %>
+  <tr>
+    <td>I18n.available_locales</td>
+    <td><code><%= I18n.available_locales %></code></td>
+    <td>Available locales</td>
+  </tr>
+  <tr>
+    <td>I18n.enforce_available_locales</td>
+    <td><code><%= I18n.enforce_available_locales %></code></td>
+    <td>Available locales</td>
+  </tr>
+
+  <tr>
+    <td>I18n.default_separator</td>
+    <td><code><%= I18n.default_separator %></code></td>
+    <td>Default separator (should be `.`')</td>
+  </tr>
+</table>
+
+
+<% config_paths = Rails.application.config.i18n.load_path.map(&:to_s) %>
+<h3>I18n load path (<%= I18n.load_path.size %> entries)</h3>
+<table class="table table table-condensed">
+  <tr>
+    <th>Path</th>
+    <th>Configured</th>
+    <th>Exists</th>
+    <th>Size</th>
+  </tr>
+  <% I18n.load_path.each do |path_location| %>
+    <tr>
+      <td class="text-nowrap">
+        <%= display_path(path_location) %>
+      </td>
+      <td><%= truth_label(config_paths.include?(path_location)) %></td>
+      <td><%= truth_label(File.exist?(path_location)) %></td>
+      <td><%= File.size(path_location) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<h4>Rails config.18n.load_path (<%= Rails.application.config.i18n.load_path.size %> entries)</h4>
+
+<pre>
+<%= Rails.application.config.i18n.load_path.map(&:to_s).join("\n") %>
+</pre>
+
