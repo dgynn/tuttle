@@ -89,20 +89,27 @@
 
     <h2>Configuration</h2>
     <dl>
-
       <dt>Version</dt><dd><%= ::Bundler::VERSION %></dd>
       <dt>Local config file</dt><dd><%= Bundler.settings.send(:local_config_file) %></dd>
       <dt>Global config file</dt><dd><%= Bundler.settings.send(:global_config_file) %></dd>
-      <dt>Require sudo?</dt><dd><%= Bundler.requires_sudo? %></dd>
-      <dt>Allow sudo?</dt><dd><%= Bundler.settings.allow_sudo? %></dd>
+      <dt>Require sudo?</dt><dd><%= truth_label(Bundler.requires_sudo?) %></dd>
+      <dt>Allow sudo?</dt><dd><%= truth_label(Bundler.settings.allow_sudo?) %></dd>
     </dl>
     <h2>Settings</h2>
-    <dl>
-      <% Bundler.settings.all.each do |key| %>
-          <dt><%= key %></dt>
-          <dd><%= Bundler.settings.pretty_values_for(key)[0] %></dd>
+    <table class="table table-condensed">
+      <tr>
+        <th>Setting</th>
+        <th>Value</th>
+        <th>Configured by</th>
+      </tr>
+      <% Bundler.settings.all.reject {|key| key.start_with?('#')}.each do |key| %>
+        <tr>
+          <td><%= key %></td>
+          <td><code><%= Bundler.settings[key].inspect %></code></td>
+          <td><%= Bundler.settings.pretty_values_for(key)[0] %></td>
+        </tr>
       <% end %>
-    </dl>
+    </table>
   </div>
 
   <div class="tab-pane" id="load_path">
