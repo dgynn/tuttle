@@ -26,7 +26,7 @@ module Tuttle
 
       next unless Tuttle.enabled
 
-      @logger = ::Logger.new("#{Rails.root}/log/tuttle.log")
+      @logger = ::Logger.new(Rails.root.join('log', 'tuttle.log'))
       Tuttle::Engine.logger.info('Tuttle engine started')
 
       Tuttle.automount_engine = true if Tuttle.automount_engine.nil?

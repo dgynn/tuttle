@@ -2,7 +2,7 @@
 
 module Tuttle
   module ApplicationHelper
-    BUNDLER_GEM_PATHS_REGEX = /(#{Bundler.rubygems.gem_dir}|#{File.realpath(Bundler.rubygems.gem_dir)})+(\/bundler)*\/gems/
+    BUNDLER_GEM_PATHS_REGEX = %r{(#{Bundler.rubygems.gem_dir}|#{File.realpath(Bundler.rubygems.gem_dir)})+(/bundler)*/gems}
 
     def truth_label(is_true, true_label = 'true', false_label = 'false')
       content_tag(:span, is_true ? true_label : false_label,
@@ -41,7 +41,7 @@ module Tuttle
           path
         end
       expanded_path = File.expand_path(path)
-      content_tag(:span, :class=>'tuttle-path', :data => { :initial => path, :expanded => expanded_path}) do
+      content_tag(:span, :class => 'tuttle-path', :data => { :initial => path, :expanded => expanded_path }) do
         display_location
       end
     end
