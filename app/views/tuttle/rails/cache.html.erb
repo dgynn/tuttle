@@ -72,7 +72,9 @@
     # Action caching available? <%= !!defined?(ActionController::Caching::Actions)
   -%>
 
-  <%- if @cache.is_a?(ActiveSupport::Cache::MemoryStore) %>
+  <%- if @cache.is_a?(ActiveSupport::Cache::NullStore) %>
+    <p>NullStore has no configuration options</p>
+  <%- elsif @cache.is_a?(ActiveSupport::Cache::MemoryStore) %>
     <%= render partial: 'cache_memory_store' %>
   <%- elsif @cache.is_a?(ActiveSupport::Cache::MemCacheStore) ||
             defined?(::ActiveSupport::Cache::DalliStore) && @cache.is_a?(ActiveSupport::Cache::DalliStore) %>
@@ -82,14 +84,8 @@
       Rails FileStore options<br />
       &nbsp;&nbsp;<code>:cache_path =&gt; <%= @cache.cache_path %></code>
     </p>
-  <%- elsif @cache.is_a?(ActiveSupport::Cache::NullStore) %>
-    <p>
-      NullStore has no configuration options
-    </p>
   <%- else %>
-    <p>
-      Unknown cache store.
-    </p>
+    <p>Unknown cache store.</p>
   <%- end %>
 
   <% # DISABLED render partial: 'cache_monitor' %>
