@@ -2,7 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 4.2.0"
+gem "rails", "~> 5.1.0rc1"
+gem "rails-controller-testing"
 
 group :development, :test do
   gem "jquery-rails"

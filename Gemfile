@@ -11,7 +11,7 @@ group :development, :test do
   gem 'active_model_serializers'
   gem 'busted'
   gem 'cancancan'
-  gem 'devise'
+  gem 'devise', "> 3.5.0"
   gem 'get_process_mem'
   gem 'memory_profiler', :github => 'SamSaffron/memory_profiler', :branch => 'master'
   gem 'paperclip'
