@@ -2,8 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "rails", github: "rails/rails", branch: "master"
-gem "arel", github: "rails/arel", branch: "master"
+gem "rails", branch: "master", git: "https://github.com/rails/rails.git"
+gem "arel", branch: "master", git: "https://github.com/rails/arel.git"
 gem "rails-controller-testing"
 
 group :development, :test do
