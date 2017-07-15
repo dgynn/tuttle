@@ -15,6 +15,19 @@
 <p>Pool size = <%= ActiveRecord::Base.connection_pool.size rescue 'N/A' %></p>
 <p>Schema Cache size = <%= @conn.schema_cache.size rescue 'N/A' %></p>
 
+<%- if defined?(PG::Connection) && ActiveRecord::Base.connection.raw_connection.class <= PG::Connection -%>
+  <h3>PostgreSQL Prepared Statements</h3>
+  <table class="table table-condensed">
+    <% statements = ActiveRecord::Base.connection.raw_connection.exec("select * from pg_prepared_statements order by prepare_time;").to_a %>
+    <% statements.each do |row| %>
+      <tr>
+        <td><%= row["name"] %></td>
+        <td><%= row["statement"] %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
 <%- if defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter) && @conn.class <= ActiveRecord::ConnectionAdapters::PostgreSQLAdapter -%>
 
 <%- statement_pool = @conn.instance_variable_get(:@statements) %>
