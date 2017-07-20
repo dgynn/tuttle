@@ -46,6 +46,25 @@ module Tuttle
       end
     end
 
+    def display_source_locaction(path, line)
+      return content_tag(:span, :class => 'tuttle-path') do
+        "Unknown"
+      end if path.nil?
+
+      display_location =
+        if path.start_with?(Rails.root.to_s)
+          path.gsub(Rails.root.to_s, "$RAILS_ROOT")
+        elsif File.realpath(path).start_with?(File.realpath(Bundler.rubygems.gem_dir))
+          File.realpath(path).gsub(BUNDLER_GEM_PATHS_REGEX, "$GEMS")
+        else
+          path
+        end
+      expanded_path = File.expand_path(path)
+      content_tag(:span, :class => 'tuttle-path', :data => { :initial => path, :expanded => expanded_path }) do
+        "#{display_location}##{line}"
+      end
+    end
+
     private
 
     def redact_by_key(key, value)

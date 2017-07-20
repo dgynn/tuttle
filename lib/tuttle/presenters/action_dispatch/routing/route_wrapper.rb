@@ -25,7 +25,42 @@ module Tuttle
           end
 
           def internal_to_rails?
-            true == internal?
+            !!internal?
+          end
+
+          def route_problem
+            return @route_problem if defined?(@route_problem)
+            @route_problem = if requirements[:controller].present? && controller_klass.nil?
+              'Controller does not exist'
+            elsif requirements[:action].present? && controller_klass && !controller_klass.action_methods.include?(action)
+              'Action does not exist'
+            else
+              nil
+            end
+          end
+
+          private
+
+          def controller_klass
+            return @controller_klass if defined?(@controller_klass)
+            @controller_klass =
+              if requirements[:controller].present?
+                begin
+                  controller_reference(controller)
+                rescue NameError => e
+                  # No class is defined for the give route
+                  # puts "NameError for #{requirements[:controller]}"
+                  nil
+                end
+              else
+                nil
+              end
+            end
+
+          # Copied from <actionpack>/lib/action_dispatch/routing/route_set.rb
+          def controller_reference(controller_param)
+            const_name = "#{controller_param.camelize}Controller"
+            ActiveSupport::Dependencies.constantize(const_name)
           end
 
         end

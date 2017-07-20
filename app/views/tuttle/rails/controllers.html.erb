@@ -1,10 +1,45 @@
-<h2>Controllers and public instance methods (<%= @controllers.size %>)</h2>
-<pre>
+<h2>Controllers (<%= @controllers.size %>) and action methods (<%= @controllers.map(&:action_methods).map(&:size).sum %>)</h2>
+
 <% @controllers.each do |controller| %>
-<%= controller.inspect %>
-<%- controller.action_methods.sort.each do |method| %>
-  <%= method.to_s %>
+  <%- controller_instance = controller.new %>
+  <%- callback_chain_presenter = Tuttle::Presenters::ActiveSupport::Callbacks::CallbackChainWrapper.new(controller._process_action_callbacks) %>
+
+  <h4><%= controller.inspect %> (<code><%= controller.controller_path %></code>) &lt; <%= controller.superclass %></h4>
+
+  <details>
+    <summary>Callbacks (<%= callback_chain_presenter.size %>)</summary>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Kind</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% # TODO: show if/unless details %>
+        <%- callback_chain_presenter.each do |cb| %>
+          <tr>
+            <td><code><%= cb.filter.inspect %></code></td>
+            <td><code><%= cb.kind.inspect %></code></td>
+            <td><code><%= display_source_locaction(*cb.safe_source_location(controller_instance)) %></code></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </details>
+
+  <h5>Actions:</h5>
+  <table class="table table-condensed">
+    <tbody>
+    <%- controller.action_methods.each do |method| %>
+      <% # TODO controller and action layout, template exists? %>
+      <% # TODO routes to actions %>
+      <tr>
+        <td><code><%= method.to_s %></code></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% end %>
 
-<% end %>
-</pre>

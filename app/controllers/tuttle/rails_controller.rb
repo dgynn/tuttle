@@ -1,6 +1,7 @@
 require 'rails/generators'
 require_dependency 'tuttle/application_controller'
 require_dependency 'tuttle/presenters/action_dispatch/routing/route_wrapper'
+require_dependency 'tuttle/presenters/active_support/callbacks'
 
 module Tuttle
   class RailsController < ApplicationController
@@ -10,12 +11,19 @@ module Tuttle
     end
 
     def controllers
-      # TODO: Both ObjectSpace and .descendants approaches have issues with class reloading during development
       # It seems likely that .descendants will work best when Tuttle and Rails classes are not modified
       # but both approaches also require eager_load to be true
       # @controllers = ObjectSpace.each_object(::Class).select {|klass| klass < ActionController::Base }
       @controllers = ActionController::Base.descendants
-      @controllers.reject! {|controller| controller <= Tuttle::ApplicationController || controller.abstract?}
+      @controllers.reject! do |controller|
+        controller.abstract? || controller <= Tuttle::ApplicationController
+      end
+
+      @controllers.reject! do |controller|
+        # Rails 5.1 introduced Rails::ApplicationController which really should be abstract
+        controller == Rails::ApplicationController
+      end if defined?(Rails::ApplicationController)
+
       @controllers.sort_by!(&:name)
     end
 
