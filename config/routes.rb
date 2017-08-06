@@ -10,7 +10,7 @@ Tuttle::Engine.routes.draw do
 
   namespace :ruby do
     get '', :action => :index
-    get :miscellaneous, :tuning, :extensions
+    get :miscellaneous, :tuning, :extensions, :constants
   end
 
   namespace :gems do

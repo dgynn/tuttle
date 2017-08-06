@@ -37,6 +37,13 @@ module Tuttle
     def miscellaneous
     end
 
+    def constants
+      # Global constants minus a few deprecated constants (to prevent warnings)
+      @constants = (Object.constants - [:Bignum, :Fixnum, :NIL, :TRUE, :FALSE, :TimeoutError]).
+                      sort.map { |sym| [sym, Object.const_get(sym).class, Object.const_get(sym)] }.
+                      reject { |_sym, klass, _val| klass == Class || klass == Module }
+    end
+
     def extensions
       @obj_extensions = Object.methods.select { |meth| Object.method(meth).source_location }.
                                sort.

@@ -23,5 +23,10 @@ module Tuttle
       assert_response :success
     end
 
+    test 'should get constants' do
+      get :constants
+      assert_response :success
+    end
+
   end
 end
