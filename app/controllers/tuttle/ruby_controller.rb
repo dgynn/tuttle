@@ -37,5 +37,11 @@ module Tuttle
     def miscellaneous
     end
 
+    def extensions
+      @obj_extensions = Object.methods.select { |meth| Object.method(meth).source_location }.
+                               sort.
+                               map { |meth| [meth, *Object.method(meth).source_location] }
+    end
+
   end
 end

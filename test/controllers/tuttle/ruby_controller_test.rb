@@ -18,5 +18,10 @@ module Tuttle
       assert_response :success
     end
 
+    test 'should get extensions' do
+      get :extensions
+      assert_response :success
+    end
+
   end
 end
