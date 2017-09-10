@@ -1,6 +1,6 @@
-<h1>Gems</h1>
+<h1>Gems <span class="badge"><%= @gemspecs.size %></span></h1>
 
-<table class="table">
+<table class="table table-striped  table-condensed">
   <tr>
     <th>Name</th>
     <th>Version</th>
@@ -8,7 +8,7 @@
     <th>License</th>
     <th>Homepage</th>
   </tr>
-  <% Bundler.rubygems.all_specs.sort_by(&:name).each do |gemspec| %>
+  <% @gemspecs.each do |gemspec| %>
     <tr>
       <td class="text-nowrap"><%= gemspec.name %></td>
       <td><%= gemspec.version.to_s %></td>

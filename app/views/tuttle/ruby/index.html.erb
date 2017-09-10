@@ -2,9 +2,9 @@
 
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#ruby" role="tab" data-toggle="tab">Ruby</a></li>
-  <li><a href="#environment" role="tab" data-toggle="tab">Environment (<%= ENV.size %>)</a></li>
-  <li><a href="#load_path" role="tab" data-toggle="tab">Load Path (<%= $LOAD_PATH.size %>)</a></li>
-  <li><a href="#loaded_features" role="tab" data-toggle="tab">Loaded Features (<%= $LOADED_FEATURES.size %>)</a></li>
+  <li><a href="#environment" role="tab" data-toggle="tab">Environment <span class="badge"><%= ENV.size %></span></a></li>
+  <li><a href="#load_path" role="tab" data-toggle="tab">Load Path <span class="badge"><%= $LOAD_PATH.size %></span></a></li>
+  <li><a href="#loaded_features" role="tab" data-toggle="tab">Loaded Features <span class="badge"><%= $LOADED_FEATURES.size %></span></a></li>
   <li><a href="#rbconfig" role="tab" data-toggle="tab">Ruby Config</a></li>
   <li><a href="#bundler" role="tab" data-toggle="tab">Bundler</a></li>
 </ul>
@@ -75,8 +75,7 @@
 
   <div class="tab-pane" id="environment">
     <p>
-      The <code>ENV</code> (<%= ENV.size %> entries) includes
-      the environment variables.
+      The <code>ENV</code> includes the environment variables.
     </p>
     <pre>
 <% @filtered_env.each do |key, val| -%>
@@ -114,7 +113,7 @@
 
   <div class="tab-pane" id="load_path">
     <p>
-      The <code>$LOAD_PATH</code> (<%= $LOAD_PATH.size %> entries) lists
+      The <code>$LOAD_PATH</code> lists
       the directories that will be searched when code is loaded with
       <code>require</code> or <code>load</code>.
     </p>
@@ -126,7 +125,7 @@
   </div>
 
   <div class="tab-pane" id="loaded_features">
-    <p>The following <b><%= $LOADED_FEATURES.size %></b> files have been loaded via <code>require</code> at some point.</p>
+    <p>The following files have been loaded via <code>require</code> at some point.</p>
     <ul>
       <%- $LOADED_FEATURES.each do |filename| %>
         <li><%= filename %></li>

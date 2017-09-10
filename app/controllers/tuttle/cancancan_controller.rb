@@ -6,6 +6,7 @@ module Tuttle
     def index
       @cancan_user = current_user || User.new
       @ability = Ability.new(@cancan_user)
+      @rules = @ability.instance_variable_get('@rules')
     end
 
     def rule_tester

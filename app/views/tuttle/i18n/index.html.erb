@@ -19,7 +19,7 @@
   <tr>
     <td>I18n.default_locale</td>
     <td><code><%= I18n.default_locale.inspect %></code></td>
-    <td>Default localte</td>
+    <td>Default locale</td>
   </tr>
   <tr>
     <td>I18n.locale</td>
@@ -51,25 +51,25 @@
   <tr>
     <td>I18n.enforce_available_locales</td>
     <td><code><%= I18n.enforce_available_locales %></code></td>
-    <td>Available locales</td>
+    <td>Enforce available locales</td>
   </tr>
 
   <tr>
     <td>I18n.default_separator</td>
     <td><code><%= I18n.default_separator %></code></td>
-    <td>Default separator (should be `.`')</td>
+    <td>Default separator (should be <code>.</code>)</td>
   </tr>
 </table>
 
 
 <% config_paths = Rails.application.config.i18n.load_path.map(&:to_s) %>
-<h3>I18n load path (<%= I18n.load_path.size %> entries)</h3>
+<h3>I18n load path <span class="badge"><%= I18n.load_path.size %> files</span></h3>
 <table class="table table table-condensed">
   <tr>
     <th>Path</th>
     <th>Configured</th>
     <th>Exists</th>
-    <th>Size</th>
+    <th>File Size</th>
   </tr>
   <% I18n.load_path.each do |path_location| %>
     <tr>
@@ -83,7 +83,7 @@
   <% end %>
 </table>
 
-<h4>Rails config.18n.load_path (<%= Rails.application.config.i18n.load_path.size %> entries)</h4>
+<h4>Rails config.18n.load_path <span class="badge"><%= Rails.application.config.i18n.load_path.size %> entries</span></h4>
 
 <pre>
 <%= Rails.application.config.i18n.load_path.map(&:to_s).join("\n") %>

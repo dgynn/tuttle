@@ -1,4 +1,4 @@
-<h2>Controllers (<%= @controllers.size %>) and action methods (<%= @controllers.map(&:action_methods).map(&:size).sum %>)</h2>
+<h2>Controllers <span class="badge"><%= @controllers.size %></span> and action methods <span class="badge"><%= @controllers.map(&:action_methods).map(&:size).sum %></span></h2>
 
 <% @controllers.each do |controller| %>
   <%- controller_instance = controller.new %>
@@ -7,7 +7,7 @@
   <h4><%= controller.inspect %> (<code><%= controller.controller_path %></code>) &lt; <%= controller.superclass %></h4>
 
   <details>
-    <summary>Callbacks (<%= callback_chain_presenter.size %>)</summary>
+    <summary>Callbacks <span class="badge"><%= callback_chain_presenter.size %></span></summary>
     <table class="table table-condensed">
       <thead>
         <tr>

@@ -10,21 +10,21 @@
       Depending on the nature of the JSON you are decoding or objects you are encoding you may see a benefit by using the appropriate library.
     </p>
 
-    <p>Libraries detected</p>
-    <ul>
-      <li>JSON Pure: <%= truth_label(defined?(JSON::Pure)) %></li>
-      <li>JSON: <%= truth_label(defined?(JSON) && !defined?(JSON::Pure)) %></li>
-      <li><a href="https://github.com/brianmario/yajl-ruby">Yajl</a>: <%= truth_label(defined?(Yajl)) %></li>
-      <li><a href="https://github.com/ohler55/oj">Oj</a>: <%= truth_label(defined?(Oj)) %></li>
-      <li>
-        <a href="https://github.com/intridea/multi_json">MultiJson</a>: <%= truth_label(defined?(MultiJson)) %>
+    <p>Libraries detected and loaded are marked in <span class="text-success">green</span></p>
+    <ul class="list-group col-sm-4">
+      <li class="list-group-item list-group-item-<%= defined?(::ActiveSupport::JSON) ? 'success' : 'warning' %>">ActiveSupport::JSON</li>
+      <li class="list-group-item list-group-item-<%= defined?(::JSON) && !defined?(::JSON::Pure) ? 'success' : 'warning' %>">JSON</li>
+      <li class="list-group-item list-group-item-<%= defined?(::JSON::Pure) ? 'success' : 'warning' %>">JSON Pure</li>
+      <li class="list-group-item list-group-item-<%= defined?(::MultiJson) ? 'success' : 'warning' %>">
+        <a href="https://github.com/intridea/multi_json">MultiJson</a>
         <%- if defined?(MultiJson) %>
           &mdash; (Adapter: <%= MultiJson.adapter %>)
         <%- end %>
       </li>
-      <li>ActiveSupport::JSON: <%= truth_label(defined?(ActiveSupport::JSON)) %></li>
+      <li class="list-group-item list-group-item-<%= defined?(::Oj) ? 'success' : 'warning' %>"><a href="https://github.com/ohler55/oj">Oj</a></li>
+      <li class="list-group-item list-group-item-<%= defined?(::Yajl) ? 'success' : 'warning' %>"><a href="https://github.com/brianmario/yajl-ruby">Yajl</a></li>
     </ul>
-    <p></p>
+
   </div>
   <div class="panel-footer">
   </div>

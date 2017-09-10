@@ -160,7 +160,7 @@
 <% end -%>
 </pre>
 
-  <h3>Precompiles - Explicit and Patterns (<%= @assets_config.precompile.length %> items)</h3>
+  <h3>Precompiles - Explicit and Patterns <span class="badge"><%= @assets_config.precompile.length %> items</span></h3>
   <ul>
   <% @assets_config.precompile.each do |asset_path| %>
     <li><%= asset_path %></li>
@@ -181,7 +181,7 @@
   <% # Only supported in Rails 4.1+ %>
   <% if Rails.application.respond_to?(:precompiled_assets) %>
     <% all_precompiles = Rails.application.precompiled_assets %>
-    <h3>All precompiled (<%= all_precompiles.length %> assets)</h3>
+    <h3>All precompiled <span class="badge"><%= all_precompiles.length %> assets</span></h3>
     <ul>
       <% all_precompiles.sort.each do |asset_path| %>
         <li><%= asset_path %></li>

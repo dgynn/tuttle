@@ -4,6 +4,7 @@ module Tuttle
   class GemsController < ApplicationController
 
     def index
+      @gemspecs = Bundler.rubygems.all_specs.sort_by(&:name)
     end
 
     def http_clients
