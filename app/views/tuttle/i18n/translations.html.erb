@@ -1,0 +1,12 @@
+<h1>Translations for <code><%= I18n.locale.inspect %></code></h1>
+
+<p>
+  Available locales:
+<% I18n.available_locales.sort.each do |hl| %>
+  <%= link_to hl.inspect, i18n_translations_path(hl: hl), class:"btn btn-xs #{ I18n.locale == hl ? 'btn-success' : 'btn-default'}", role: "button" %>
+<% end %>
+</p>
+
+<ul>
+  <%= render partial: 'translation_entry', collection: @translations[I18n.locale].to_a.sort_by { |entry| "#{entry[1].is_a?(Hash)}-#{entry[0]}" } %>
+</ul>

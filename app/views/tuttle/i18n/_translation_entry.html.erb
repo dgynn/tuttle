@@ -1,0 +1,10 @@
+<% k, v = local_assigns[:translation_entry] %>
+<% if v.is_a? (Hash) %>
+  <li><%= k.inspect %>
+    <ul>
+      <%= render partial: 'translation_entry', collection: v.to_a.sort_by { |entry| "#{entry[1].is_a?(Hash)}-#{entry[0]}" } %>
+    </ul>
+  </li>
+<% else %>
+  <li><%= k.inspect %> = <%= v.inspect %></li>
+<% end %>

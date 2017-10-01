@@ -4,6 +4,7 @@ module Tuttle
     protect_from_forgery with: :exception
 
     before_action :check_reload_status
+    around_action :set_locale
 
     private
 
@@ -13,6 +14,16 @@ module Tuttle
       ActiveSupport::Notifications.instrument 'tuttle.perform_eager_load' do
         Rails.application.eager_load!
         Tuttle::Engine.reload_needed = false
+      end
+    end
+
+    def set_locale
+      if params[:hl] && I18n.locale_available?(params[:hl])
+        I18n.with_locale(params[:hl]) do
+          yield
+        end
+      else
+        yield
       end
     end
 

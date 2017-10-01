@@ -54,8 +54,9 @@
             <li><%= link_to 'Caching', rails_cache_path %></li>
             <li role="separator" class="divider"></li>
             <%- if defined?(::I18n) %>
-              <li><%= link_to 'Internationalization', i18n_index_path %></li>
-              <li><%= link_to 'Localization', localize_i18n_index_path %></li>
+              <li><%= link_to 'Internationalization', i18n_path %></li>
+              <li><%= link_to 'Localization', i18n_localize_path %></li>
+              <li><%= link_to 'Translations', i18n_translations_path %></li>
               <li role="separator" class="divider"></li>
             <% end %>
             <li><%= link_to 'Database', rails_database_path %></li>

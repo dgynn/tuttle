@@ -1,7 +1,7 @@
 <h1>Internationalization</h1>
 
 <p>
-  Rails Internationalization (I18n) configuration is describe in the Rails
+  Rails Internationalization (I18n) configuration is described in the Rails
   Guide for the <%= link_to_rails_guide('i18n', 'Rails Internationalization API') %>.
 </p>
 
@@ -22,9 +22,9 @@
     <td>Default locale</td>
   </tr>
   <tr>
-    <td>I18n.locale</td>
-    <td><code><%= I18n.locale.inspect %></code></td>
-    <td>Locale of this request</td>
+    <td>I18n.default_separator</td>
+    <td><code><%= I18n.default_separator.inspect %></code></td>
+    <td>Default separator (should be <code>.</code>)</td>
   </tr>
   <tr>
     <td>I18n.exception_handler</td>
@@ -36,13 +36,6 @@
     <td><code><%= I18n.backend.class.inspect %></code></td>
     <td>Backend (class)</td>
   </tr>
-  <% if I18n.respond_to?(:fallbacks) %>
-    <tr>
-      <td>I18n.fallbacks</td>
-      <td><code><%= I18n.fallbacks.inspect %></code></td>
-      <td>Fallbacks</td>
-    </tr>
-  <% end %>
   <tr>
     <td>I18n.available_locales</td>
     <td><code><%= I18n.available_locales %></code></td>
@@ -50,17 +43,31 @@
   </tr>
   <tr>
     <td>I18n.enforce_available_locales</td>
-    <td><code><%= I18n.enforce_available_locales %></code></td>
+    <td><%= truth_label(I18n.enforce_available_locales) %></td>
     <td>Enforce available locales</td>
   </tr>
-
   <tr>
-    <td>I18n.default_separator</td>
-    <td><code><%= I18n.default_separator %></code></td>
-    <td>Default separator (should be <code>.</code>)</td>
+    <td>I18n::Locale::Tag.implementation</td>
+    <td><%= I18n::Locale::Tag.implementation %></td>
+    <td>Locale format support for fallbacks</td>
   </tr>
 </table>
 
+<h3>i18n Extensions</h3>
+<h4>Fallbacks <%= truth_label(I18n.respond_to?(:fallbacks), "enabled", "not enabled") %></h4>
+<% if I18n.respond_to?(:fallbacks) %>
+  <table class="table table table-condensed">
+    <% I18n.fallbacks.each do |k, v| %>
+      <tr>
+        <td><code><%= k.inspect %></code></td>
+        <td><code><%= v.inspect %></code></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+<h4>Pluralization <%= truth_label(I18n.backend.class < I18n::Backend::Pluralization, "enabled", "not enabled") %></h4>
+<h4>Cache <%= truth_label(I18n.respond_to?(:cache_store), "enabled", "not enabled") %></h4>
+<h4>GetText <%= truth_label(I18n.backend.class < I18n::Backend::Gettext, "enabled", "not enabled") %></h4>
 
 <% config_paths = Rails.application.config.i18n.load_path.map(&:to_s) %>
 <h3>I18n load path <span class="badge"><%= I18n.load_path.size %> files</span></h3>
@@ -82,10 +89,3 @@
     </tr>
   <% end %>
 </table>
-
-<h4>Rails config.18n.load_path <span class="badge"><%= Rails.application.config.i18n.load_path.size %> entries</span></h4>
-
-<pre>
-<%= Rails.application.config.i18n.load_path.map(&:to_s).join("\n") %>
-</pre>
-

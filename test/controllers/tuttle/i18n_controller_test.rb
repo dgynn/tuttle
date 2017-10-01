@@ -17,5 +17,12 @@ module Tuttle
       assert_select 'h1', 'Localization'
     end
 
+    test 'should get translations' do
+      get :translations
+      assert_response :success
+
+      assert_select 'h1', 'Translations for :en'
+    end
+
   end
 end

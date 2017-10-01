@@ -9,5 +9,9 @@ module Tuttle
     def localize
     end
 
+    def translations
+      @translations = I18n.backend.send(:translations)
+    end
+
   end
 end
