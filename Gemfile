@@ -25,6 +25,5 @@ group :development, :test do
   gem 'ruby-prof'
 
   gem 'codacy-coverage', require: false
-  gem 'codeclimate-test-reporter', require: false
   gem 'rubocop', require: false
 end

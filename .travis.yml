@@ -2,30 +2,32 @@ language: ruby
 cache: bundler
 sudo: false
 rvm:
-  - 2.4.1
-  - 2.3.4
+  - 2.4.2
+  - 2.3.5
   - 2.2.7
 gemfile:
-  - gemfiles/rails_master.gemfile
   - gemfiles/rails_5.1.gemfile
   - gemfiles/rails_5.0.gemfile
   - gemfiles/rails_4.2.gemfile
   - gemfiles/rails_4.1.gemfile
+  - gemfiles/rails_master.gemfile
 
 git:
   depth: 3
 
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
-  - RAILS_ENV=test bundle exec rake --trace app:db:setup test
-after_success:
-  - bundle exec codeclimate-test-reporter
+  - RAILS_ENV=test bundle exec rake app:db:setup test
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 # Devise does not work with ruby 2.4
 matrix:
   exclude:
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       gemfile: gemfiles/rails_4.1.gemfile
-
-addons:
-  code_climate:
-    repo_token: 4f26543d90e08f0a1dd093467b6e7cf71136050011235d05238b120e480341f0
+  allow_failures:
+    - gemfile: gemfiles/rails_master.gemfile
