@@ -1,3 +1,12 @@
+### 0.0.7
+
+* Features
+  * Rails 5.1 support (drops Rails 4.0)
+  * New I18n inspector
+  * New Constants and Object extensions inspector
+  * Improved Rails routes inspector to show route validity
+  * Improved listing display formatting
+
 ### 0.0.6
 
 * Features
