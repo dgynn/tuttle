@@ -4,7 +4,6 @@ module Tuttle
   module Presenters
     module ActiveSupport
       module Callbacks
-
         class CallbackWrapper < DelegateClass(::ActiveSupport::Callbacks::Callback)
           def safe_source_location(controller_instance)
             controller_instance.method(filter).try(:source_location) rescue [nil, nil]

@@ -19,10 +19,10 @@ module Tuttle
         controller.abstract? || controller <= Tuttle::ApplicationController
       end
 
-      @controllers.reject! do |controller|
-        # Rails 5.1 introduced Rails::ApplicationController which really should be abstract
-        controller == Rails::ApplicationController
-      end if defined?(Rails::ApplicationController)
+      # Rails 5.1 introduced Rails::ApplicationController which really should be abstract
+      if defined?(Rails::ApplicationController)
+        @controllers.reject! { |controller| controller == Rails::ApplicationController }
+      end
 
       @controllers.sort_by!(&:name)
     end
@@ -32,7 +32,7 @@ module Tuttle
     end
 
     def generators
-      Rails::Generators.lookup! if 'true' == params[:load_all_generators]
+      Rails::Generators.lookup! if params[:load_all_generators] == 'true'
       @generators = Rails::Generators.subclasses.group_by(&:base_name)
     end
 
@@ -109,7 +109,7 @@ module Tuttle
 
     def recognize_paths(path)
       results = {}
-      [:get, :post, :put, :delete, :patch].each {|method| results[method] = recognize_path(path, method: method)}
+      %i[get post put delete patch].each {|method| results[method] = recognize_path(path, method: method)}
       results
     end
 

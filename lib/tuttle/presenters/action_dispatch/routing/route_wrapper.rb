@@ -30,13 +30,12 @@ module Tuttle
 
           def route_problem
             return @route_problem if defined?(@route_problem)
-            @route_problem = if requirements[:controller].present? && controller_klass.nil?
-              'Controller does not exist'
-            elsif requirements[:action].present? && controller_klass && !controller_klass.action_methods.include?(action)
-              'Action does not exist'
-            else
-              nil
-            end
+            @route_problem =
+              if requirements[:controller].present? && controller_klass.nil?
+                'Controller does not exist'
+              elsif requirements[:action].present? && controller_klass && !controller_klass.action_methods.include?(action)
+                'Action does not exist'
+              end
           end
 
           private
@@ -47,15 +46,13 @@ module Tuttle
               if requirements[:controller].present?
                 begin
                   controller_reference(controller)
-                rescue NameError => e
+                rescue NameError
                   # No class is defined for the give route
                   # puts "NameError for #{requirements[:controller]}"
                   nil
                 end
-              else
-                nil
               end
-            end
+          end
 
           # Copied from <actionpack>/lib/action_dispatch/routing/route_set.rb
           def controller_reference(controller_param)

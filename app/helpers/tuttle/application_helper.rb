@@ -41,15 +41,11 @@ module Tuttle
           path
         end
       expanded_path = File.expand_path(path)
-      content_tag(:span, :class => 'tuttle-path', :data => { :initial => path, :expanded => expanded_path }) do
-        display_location
-      end
+      content_tag(:span, display_location, :class => 'tuttle-path', :data => { :initial => path, :expanded => expanded_path })
     end
 
     def display_source_locaction(path, line)
-      return content_tag(:span, :class => 'tuttle-path') do
-        "Unknown"
-      end if path.nil?
+      return content_tag(:span, "Unknown", :class => 'tuttle-path') if path.nil?
 
       display_location = file_location(path)
       expanded_path = File.expand_path(path)

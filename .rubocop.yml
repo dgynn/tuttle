@@ -4,6 +4,7 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - 'test/dummy/**/*'
+    - 'lib/tuttle/ruby_prof/fast_call_stack_printer.rb'
 
 Rails:
   Enabled: true
@@ -20,10 +21,10 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Max: 25
 
-Style/EmptyLinesAroundClassBody:
+Layout/EmptyLinesAroundClassBody:
   Enabled: false
 
-Style/SpaceInsideBlockBraces:
+Layout/SpaceInsideBlockBraces:
   Enabled: false
   SpaceBeforeBlockParameters: false
   EnforcedStyle: no_space
@@ -39,3 +40,6 @@ Style/StringLiterals:
 
 Style/GuardClause:
   Enabled: false
+
+Layout/DotPosition:
+  EnforcedStyle: trailing

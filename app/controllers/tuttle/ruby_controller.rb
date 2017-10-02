@@ -39,8 +39,9 @@ module Tuttle
 
     def constants
       # Global constants minus a few deprecated constants (to prevent warnings)
-      @constants = (Object.constants - [:Bignum, :Fixnum, :NIL, :TRUE, :FALSE, :TimeoutError]).
-                      sort.map { |sym| [sym, Object.const_get(sym).class, Object.const_get(sym)] }.
+      @constants = (Object.constants - %i[Bignum Fixnum NIL TRUE FALSE TimeoutError]).
+                      sort.
+                      map { |sym| [sym, Object.const_get(sym).class, Object.const_get(sym)] }.
                       reject { |_sym, klass, _val| klass == Class || klass == Module }
     end
 
