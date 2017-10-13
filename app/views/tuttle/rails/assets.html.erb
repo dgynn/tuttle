@@ -83,7 +83,7 @@
       <td><code><%= @assets_config.unknown_asset_fallback.inspect %></code></td>
       <td></td>
     </tr>
-    <% if Sprockets::Rails::VERSION >= '3.6.2' %>
+    <% if Sprockets::VERSION >= '3.6.2' %>
     <tr>
       <td>config.assets.check_precompiled_asset</td>
       <td><code><%= @assets_config.check_precompiled_asset.inspect %></code></td>
