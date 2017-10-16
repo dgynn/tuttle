@@ -4,9 +4,15 @@ module Tuttle
   module ApplicationHelper
     BUNDLER_GEM_PATHS_REGEX = %r{(#{Bundler.rubygems.gem_dir}|#{File.realpath(Bundler.rubygems.gem_dir)})+(/bundler)*/gems}
 
+    # Display true/false label with text overrides
     def truth_label(is_true, true_label = 'true', false_label = 'false')
       content_tag(:span, is_true ? true_label : false_label,
                   class: ['label', is_true ? 'label-success' : 'label-danger'])
+    end
+
+    # Display label if condition is true
+    def true_label(is_true, true_label = 'true')
+      content_tag(:span, true_label, class: ['label', 'label-success']) if is_true
     end
 
     def tuttle_redacted(enumarator)
@@ -32,6 +38,7 @@ module Tuttle
     end
 
     def display_path(path)
+      return if path.blank?
       display_location =
         if path.start_with?(Rails.root.to_s)
           path.gsub(Rails.root.to_s, "$RAILS_ROOT")

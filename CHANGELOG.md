@@ -1,3 +1,8 @@
+### Unreleased
+
+* Features
+  * New ExecJS inspector
+
 ### 0.0.7
 
 * Features

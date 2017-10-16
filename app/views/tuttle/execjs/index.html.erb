@@ -1,0 +1,87 @@
+<style>
+  #execjs-runtimes .best_available { font-weight: bold; }
+</style>
+
+<h1>ExecJS</h1>
+
+<p>
+  <a href="https://github.com/rails/execjs">ExecJS</a> lets you run JavaScript code from Ruby.
+</p>
+<p>
+  ExecJS automatically picks the best runtime available to evaluate your JavaScript program, then returns the result to you as a Ruby object.
+</p>
+<p>
+  You can override the selection process by setting a <code>EXECJS_RUNTIME</code> environment variable.
+</p>
+<p>
+  ExecJS is used by gems such as Uglifier and CoffeeScript even if you don't call evaluate JavaScript directly from your own application.
+</p>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">ExecJS Configuration</h3>
+  </div>
+  <div class="panel-body">
+
+    <dl>
+      <dt>ExecJS Version</dt>
+      <dd><code><%= ExecJS::VERSION %></code></dd>
+
+      <dt>Autodetect: (Environment or best-available)</dt>
+      <dd><code><%= ExecJS::Runtimes.autodetect.try(:name) %></code></dd>
+
+      <dt>Best Available: (First non-deprecated, available runtime)</dt>
+      <dd><code><%= ExecJS::Runtimes.best_available.name %></code></dd>
+
+      <dt>From Environment</dt>
+      <dd><code><%= ExecJS::Runtimes.from_environment.try(:name).inspect %></code></dd>
+
+      <dt>ENV["EXECJS_RUNTIME"]: (must match Name in table below)</dt>
+      <dd><code><%= ENV["EXECJS_RUNTIME"].inspect %></code></dd>
+
+      <dt>Platform installed NodeJS (<code>`nodejs --version || node --version`</code>)</dt>
+      <dd><code><%= `(nodejs --version || node --version) 2>/dev/null` %></code></dd>
+
+    </dl>
+
+    <h3>ExecJS Runtimes</h3>
+    <table id="execjs-runtimes" class="table table-compact">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Selection</th>
+        <th width="99%">Details</th>
+        <th>Deprecated</th>
+      </tr>
+
+      <% ExecJS::Runtimes.names.each do |runtime_name| %>
+        <% runtime = ExecJS::Runtimes.const_get(runtime_name) %>
+        <tr class="<%= runtime == ExecJS::Runtimes.best_available ? "info best_available" : runtime.available? ? "success " : "warning" %> ">
+          <td class="nowrap"><%= runtime_name %></td>
+          <td class="nowrap"><%= runtime.name %></td>
+          <td class="nowrap">
+            <%= true_label(runtime == ExecJS::Runtimes.autodetect, "auto-detected")%>
+            <%= true_label(runtime == ExecJS::Runtimes.best_available, "best available")%>
+            <%= true_label(runtime == ExecJS::Runtimes.from_environment, "from environment")%>
+          </td>
+          <td>
+            <% if runtime.available? %>
+              <details>
+                <summary><%= runtime.class %></summary>
+                <p>
+                  Command: <code><%= runtime.instance_variable_get(:@command).try(:inspect) %></code><br/>
+                  Runner Path: <code><%= display_path(runtime.instance_variable_get(:@runner_path)) %></code><br/>
+                  <!-- Inspect: <code><%= runtime.inspect %></code> -->
+                </p>
+              </details>
+            <% end %>
+          </td>
+          <td><%= truth_label(runtime.deprecated?) %></td>
+        </tr>
+      <% end %>
+    </table>
+
+  </div>
+  <div class="panel-footer">
+  </div>
+</div>

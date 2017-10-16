@@ -23,6 +23,8 @@ group :development, :test do
   gem 'paperclip'
   gem 'rack-mini-profiler'
   gem 'ruby-prof'
+  gem 'mini_racer'
+  gem 'execjs'
 
   gem 'codacy-coverage', require: false
   gem 'rubocop', require: false

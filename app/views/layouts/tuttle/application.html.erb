@@ -18,6 +18,7 @@
     table.not-wide { width: auto; }
     table code { color: black; background-color: inherit; padding: 0; }
     table.table-condensed tbody tr td:first-child { padding-left: 0; }
+    table td.nowrap { white-space: nowrap; }
     a[href*="github.com"] { white-space: nowrap; }
     a[href*="github.com"]:after { font-family: FontAwesome; content: "\f09b";  display: inline-block;  color: initial;  padding-left: 3px; }
     details :focus { outline: none; }
@@ -96,6 +97,9 @@
             <%- end %>
             <%- if defined?(::GetProcessMem) %>
               <li><%= link_to 'GetProcessMem', gems_get_process_mem_path %></li>
+            <%- end %>
+            <%- if defined?(::ExecJS) %>
+              <li><%= link_to 'ExecJS', execjs_path %></li>
             <%- end %>
             <li><%= link_to 'HTTP Clients', gems_http_clients_path %></li>
             <li><%= link_to 'JSON', gems_json_path %></li>

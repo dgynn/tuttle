@@ -57,4 +57,8 @@ Tuttle::Engine.routes.draw do
     get '/cancancan/rule_tester' => 'cancancan#rule_tester'
   end
 
+  if defined?(::ExecJS)
+    get '/execjs' => 'execjs#index'
+  end
+
 end
