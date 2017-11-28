@@ -2,44 +2,51 @@
 <% time_current = Time.current %>
 <h1>Localization</h1>
 <p>
-  Rails will localize Dates and Times using keys scoped under <code>date.format</code>
-  and <code>time.format</code>.
+  Rails will localize Dates and Times using keys scoped under
+  <code>date.format</code> and <code>time.format</code>.
+  Typically the <code>rails-i18n</code> gem will provide the default
+  translations for these translations but they can be overridden.
 </p>
 <p>
-  The current time is <%= time_current.to_s %>
+  The current date is <code><%= date_current.to_s %></code><br/>
+  The current time is <code><%= time_current.to_s %></code><br/>
 </p>
 
 <h3>Dates</h3>
+<% date_formats = I18n.translate('date.formats', locale: I18n.default_locale) %>
 <table class="table table table-condensed">
   <tr>
     <th>Locale</th>
-    <th>Default</th>
-    <th>Short</th>
-    <th>Long</th>
+    <% date_formats.each do |format, _format_string| %>
+      <th class="nowrap"><%= format.inspect %></th>
+    <% end %>
   </tr>
-  <% I18n.available_locales.each do |locale_name| %>
-    <tr>
+  <% @sorted_locales.each do |locale_name| %>
+    <% locale_date_formats = I18n.translate('date.formats', locale: locale_name, fallback: false) rescue nil  %>
+    <tr class="<% 'missing' if locale_date_formats.nil? %>">
       <td><%= locale_name %></td>
-      <% [:default, :short, :long].each do |format| %>
-        <td><%= l(date_current, locale: locale_name, format: format) rescue 'translation missing' %></td>
+      <% date_formats.each do |format, format_string| %>
+        <td class="nowrap"><%= l(date_current, locale: locale_name, format: format) rescue 'translation missing' %></td>
       <% end %>
     </tr>
   <% end %>
 </table>
 
 <h3>Times</h3>
+<% time_formats = I18n.translate('time.formats', locale: I18n.default_locale) %>
+
 <table class="table table table-condensed">
   <tr>
     <th>Locale</th>
-    <th>Default</th>
-    <th>Short</th>
-    <th>Long</th>
+    <% time_formats.each do |format, _format_string| %>
+      <th class="nowrap"><%= format.inspect %></th>
+    <% end %>
   </tr>
-  <% I18n.available_locales.each do |locale_name| %>
+  <% @sorted_locales.each do |locale_name| %>
     <tr>
       <td><%= locale_name %></td>
-      <% [:default, :short, :long].each do |format| %>
-        <td><%= l(time_current, locale: locale_name, format: format) rescue 'translation missing' %></td>
+      <% time_formats.each do |format, _format_string| %>
+        <td class="nowrap"><%= l(time_current, locale: locale_name, format: format) rescue 'translation missing' %></td>
       <% end %>
     </tr>
   <% end %>
