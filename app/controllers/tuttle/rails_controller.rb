@@ -2,6 +2,7 @@ require 'rails/generators'
 require_dependency 'tuttle/application_controller'
 require_dependency 'tuttle/presenters/action_dispatch/routing/route_wrapper'
 require_dependency 'tuttle/presenters/active_support/callbacks'
+require_dependency 'tuttle/presenters/active_record/reflection_presenter'
 
 module Tuttle
   class RailsController < ApplicationController
@@ -37,7 +38,7 @@ module Tuttle
     end
 
     def models
-      @models = ActiveRecord::Base.descendants
+      @models = ActiveRecord::Base.descendants.reject { |model| model.abstract_class? || !model.table_exists? }
       @models.sort_by!(&:name)
     end
 

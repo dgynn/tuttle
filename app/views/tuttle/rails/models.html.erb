@@ -1,82 +1,159 @@
+<style>
+  .panel-body { overflow: auto; }
+  .autodetected { background: lightgoldenrodyellow; }
+</style>
+
 <h2>Models <span class="badge"><%= @models.size %></span></h2>
 
 <% if (0 == @models.size) %>
-No models were found in this application
-<% end %>
+  <p>No models were found in this application</p>
+<% else %>
+  <% @models.each do |model| %>
+    <a name="model-<%= model.name %>"></a>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= model.name %></h3>
+      </div>
+      <div class="panel-body">
+        <h4>Associations <span class="badge"><%= model.reflect_on_all_associations.size %></span></h4>
+        <% if model.reflect_on_all_associations.size > 0 %>
+          <table class="table table-condensed">
+            <tr>
+              <th>Name</th>
+              <th>Macro</th>
+              <th>Type</th>
+              <th class="nowrap">Inverse Of</th>
+              <th>Scoped?</th>
+              <th>Polymorphic?</th>
+              <th>Validate?</th>
+              <th>Dependent</th>
+              <th class="nowrap">Class Name</th>
+              <th>Autosave</th>
+              <th>Required?</th>
+              <th>Foreign Key</th>
+              <th>Options</th>
+            </tr>
+            <% model.reflect_on_all_associations.each do |reflection| %>
+              <% reflection_presenter = ::Tuttle::Presenters::ActiveRecord::ReflectionPresenter.new(reflection, self) %>
+              <tr>
+                <td><%= reflection_presenter.name %></td>
+                <td><%= reflection_presenter.macro %></td>
+                <td><%= reflection_presenter.type %></td>
+                <td><%= reflection_presenter.inverse_of %></td>
+                <td><%= reflection_presenter.scoped? %></td>
+                <td><%= reflection_presenter.polymorphic? %></td>
+                <td><%= reflection_presenter.validate? %></td>
+                <td><%= reflection_presenter.options_dependent %></td>
+                <td><%= reflection_presenter.options_class_name %></td>
+                <td><%= reflection_presenter.options_autosave %></td>
+                <td><%= reflection_presenter.options_required %></td>
+                <td><%= reflection_presenter.foreign_key %></td>
+                <td><%= reflection_presenter.options_other %></td>
+              </tr>
+            <% end %>
+          </table>
+        <% end %>
 
-<table class="table table-compact">
-  <tr>
-    <th>&nbsp;</th>
-    <th>Name</th>
-    <th>Type</th>
-    <th>Default</th>
-    <th>Null</th>
-    <th>Limit</th>
-    <th>SQL Type</th>
-    <th>Precision</th>
-    <th>Scale</th>
-  </tr>
-<% @models.each do |model| %>
-  <% next if model.abstract_class? || ! model.table_exists? %>
-<tr>
-  <th colspan="9"><%= model.name %> (<%= model.table_name %>)</th>
-</tr>
-  <% model.columns.each do |col| %>
-      <tr>
-        <td>&nbsp;</td>
-        <td><%= col.name || Rails.configuration.filtered_parameters %></td>
-        <td><%= col.type %></td>
-        <td><%= col.default %></td>
-        <td><%= 'false' unless col.null %></td>
-        <td><%= col.limit %></td>
-        <td><%= col.sql_type %></td>
-        <td><%= col.precision %></td>
-        <td><%= col.scale %></td>
-      </tr>
+        <h4>Columns <span class="badge"><%= model.columns.size %></span></h4>
+        <table class="table table-condensed">
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Null</th>
+            <th>Limit</th>
+            <th>SQL Type</th>
+            <th>Precision</th>
+            <th>Scale</th>
+          </tr>
+          <% model.columns.each do |col| %>
+            <tr>
+              <td><%= col.name || Rails.configuration.filtered_parameters %></td>
+              <td><%= col.type %></td>
+              <td><%= col.default %></td>
+              <td><%= 'false' unless col.null %></td>
+              <td><%= col.limit %></td>
+              <td><%= col.sql_type %></td>
+              <td><%= col.precision %></td>
+              <td><%= col.scale %></td>
+            </tr>
+          <% end %>
+        </table>
+
+        <h4>Validators: <span class="badge"><%= model.validators.size %></span></h4>
+        <% if model.validators.size > 0 %>
+          <table class="table table-condensed">
+            <tr>
+              <th>Kind</th>
+              <th>Attributes</th>
+              <th>Options</th>
+            </tr>
+            <% model.validators.each do |validator| %>
+              <tr>
+                <td><%= validator.kind %></td>
+                <td><%= validator.attributes if validator.respond_to?(:attributes) %></td>
+                <td><%= validator.options %></td>
+              </tr>
+            <% end %>
+          </table>
+        <% end %>
+
+        <h4>Stored attributes <span class="badge"><%= model.stored_attributes.size %></span></h4>
+        <% if model.stored_attributes.size > 0 %>
+          <table class="table table-condensed">
+            <tr>
+              <th class="nowrap">Store Name</th>
+              <th>Attributes</th>
+            </tr>
+            <% model.stored_attributes.each do |store, attributes| %>
+              <tr>
+                <td class="nowrap"><%= store.inspect %></td>
+                <td><%= attributes.inspect %></td>
+              </tr>
+            <% end %>
+          </table>
+        <% end %>
+
+        <h4>Callbacks Counts</h4>
+        <table class="table table-condensed not-wide">
+          <tr>
+            <th class="nowrap">Callback</th>
+            <th>Before</th>
+            <th>After</th>
+            <th>Around</th>
+          </tr>
+          <% [:save, :create, :validate, :commit, :touch, :rollback, :find, :initialize].each do |callback_type| %>
+            <% callbacks = model.send(:get_callbacks, callback_type) %>
+            <tr>
+              <td class="nowrap"><%= callback_type.inspect %></td>
+              <td><%= callbacks.select{ |cb| cb.kind.eql?(:before) }.size %></td>
+              <td><%= callbacks.select{ |cb| cb.kind.eql?(:after) }.size %></td>
+              <td><%= callbacks.select{ |cb| cb.kind.eql?(:around) }.size %></td>
+            </tr>
+          <% end %>
+        </table>
+
+        <% if model.respond_to?(:find_by_statement_cache) %>
+          <h4>FindBy Statement Cache <span class="badge"><%= model.find_by_statement_cache.size %></span></h4>
+          <% if model.find_by_statement_cache.size > 0 %>
+            <table class="table table-condensed">
+            <tr>
+              <th>Keys</th>
+              <th>SQL</th>
+            </tr>
+            <% model.find_by_statement_cache.each do |keys, statement_cache| %>
+              <tr>
+                <td><%= keys.inspect %></td>
+                <td><%= statement_cache.query_builder.instance_variable_get(:@sql) rescue '--Error--' %></td>
+              </tr>
+            <% end %>
+          </table>
+          <% end %>
+        <% end %>
+
+    </div>
+  </div>
+
   <% end %>
-<% end %>
-</table>
-
-<% @models.each do |model| %>
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title"><%= model.name %></h3>
-  </div>
-  <div class="panel-body">
-    Stored attributes = <%= model.stored_attributes %><br/>
-    Save callbacks = <%= model.send('_save_callbacks').count %><br/>
-    Associations = <%= model.reflect_on_all_associations.count %><br/>
-    Reflections = <%= model.reflections.keys.sort!.to_s %><br/>
-    Validators:<br/>
-    <table class="table table-compact">
-      <tr>
-        <th>Kind</th>
-        <th>Attributes</th>
-        <th>Options</th>
-      </tr>
-      <% model.validators.each do |validator| %>
-        <tr>
-          <td><%= validator.kind %></td>
-          <td><%= validator.attributes if validator.respond_to?(:attributes) %></td>
-          <td><%= validator.options %></td>
-        </tr>
-      <% end %>
-    </table>
-
-    <% next if model.abstract_class? || ! model.table_exists? %>
-    <% if model.respond_to?(:find_by_statement_cache) %>
-      FindBy Statement Cache:<br/>
-      <%= model.find_by_statement_cache.map {|k,v| "#{k}=>#{v.query_builder.instance_variable_get(:@sql)}"}.join('<br/>') %>
-    <% end %>
-  </div>
-</div>
 
 <% end %>
-
-
-<pre>
-<% @models.each do |model| %>
-<%= model.inspect.to_s %>
-
-<% end %>
-</pre>
