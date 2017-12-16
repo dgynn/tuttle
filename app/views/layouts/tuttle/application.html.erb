@@ -99,6 +99,9 @@
             <%- if defined?(::ExecJS) %>
               <li><%= link_to 'ExecJS', execjs_path %></li>
             <%- end %>
+            <%- if defined?(::Rack::Attack) %>
+              <li><%= link_to 'Rack::Attack', rack_attack_path %></li>
+            <%- end %>
             <li><%= link_to 'HTTP Clients', gems_http_clients_path %></li>
             <li><%= link_to 'JSON', gems_json_path %></li>
             <li><%= link_to 'Other', gems_other_path %></li>

@@ -2,6 +2,7 @@
 
 * Features
   * New ExecJS inspector
+  * New Rack::Attack inspector
   * Improved ActiveRecord models inspector with associations and validations
 
 ### 0.0.7

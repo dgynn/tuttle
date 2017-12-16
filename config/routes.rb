@@ -61,4 +61,8 @@ Tuttle::Engine.routes.draw do
     get '/execjs' => 'execjs#index'
   end
 
+  if defined?(::Rack::Attack)
+    get '/rack-attack' => 'rack_attack#index'
+  end
+
 end

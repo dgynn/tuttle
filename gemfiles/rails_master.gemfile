@@ -13,6 +13,7 @@ group :development, :test do
   gem "busted"
   gem "cancancan"
   gem "devise", "> 3.5.0", github: "plataformatec/devise"
+  gem "rack-attack"
   gem "get_process_mem"
   gem "memory_profiler", github: "SamSaffron/memory_profiler", branch: "master"
   gem "paperclip"

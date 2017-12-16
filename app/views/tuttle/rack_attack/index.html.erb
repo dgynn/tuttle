@@ -1,0 +1,227 @@
+<style>
+  table td.noresults { background-color: lightgoldenrodyellow; text-align: center; }
+</style>
+<h1>Rack::Attack</h1>
+
+<p>
+  <a href="https://github.com/kickstarter/rack-attack">Rack::Attack</a> is middleware for blocking & throttling abusive requests.
+</p>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Configuration</h2>
+  </div>
+  <div class="panel-body">
+    <dl>
+      <dt>Version</dt>
+      <dd><code><%= Rack::Attack::VERSION %></code></dd>
+      <dt>Cache Class</dt>
+      <dd><code><%= Rack::Attack.cache.class %></code></dd>
+      <dt>Cache Prefix</dt>
+      <dd><code><%= Rack::Attack.cache.prefix %></code></dd>
+      <dt>Notifier</dt>
+      <dd><code><%= Rack::Attack.notifier %></code></dd>
+      <dt>Blocklisted Response</dt>
+      <dd><%= display_source_locaction(*Rack::Attack.blocklisted_response.source_location) %></dd>
+      <dt>Throttled Response</dt>
+      <dd><%= display_source_locaction(*Rack::Attack.throttled_response.source_location) %></dd>
+    </dl>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Current request environment</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-compact">
+      <tr>
+        <th>Name</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>Request IP</td>
+        <td><%= request.ip %></td>
+      </tr>
+      <tr>
+        <td>Request Host</td>
+        <td><%= request.host %></td>
+      </tr>
+
+      <% @rack_attack_rack_environent_settings.each do |k| %>
+        <tr>
+          <td><%= k %></td>
+          <td>
+            <% if request.env[k].is_a?(Hash) %>
+              <% request.env[k].each do |k, v| %>
+                <%= k.to_s %> : <%= v.inspect %><br/>
+              <% end %>
+            <% else %>
+              <%= value_inspect(request.env[k], hide_nil: false) %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Throttles <span class="badge"><%= @throttles.size %></span></h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-compact">
+      <tr>
+        <th>Name</th>
+        <th>Limit</th>
+        <th>Period</th>
+        <th>Source Location</th>
+      </tr>
+      <% if @throttles.size == 0 %>
+        <tr>
+          <td colspan="5" class="noresults">No throttles registered</td>
+        </tr>
+      <% else %>
+        <% @throttles.values.each do |throttle| %>
+          <tr>
+            <td><%= throttle.name %></td>
+            <td>
+              <% if throttle.limit.respond_to?(:call) %>
+                <%= display_source_locaction(*throttle.limit.source_location)  %>
+              <% else %>
+                <%= throttle.limit %>
+              <% end %>
+            </td>
+            <td>
+              <% if throttle.period.respond_to?(:call) %>
+                <%= display_source_locaction(*throttle.period.source_location)  %>
+              <% else %>
+                <%= throttle.period %>
+              <% end %>
+            </td>
+            <td>
+              <%= display_source_locaction(*throttle.block.source_location) %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Safelists <span class="badge"><%= @safelists.size %></span></h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-compact nowrap">
+      <tr>
+        <th>Name</th>
+        <th>Source Location</th>
+      </tr>
+      <% if @safelists.size == 0 %>
+        <tr>
+          <td colspan="2" class="noresults">No safelists registered</td>
+        </tr>
+      <% else %>
+        <% @safelists.values.each do |safelist| %>
+        <tr>
+          <td><%= safelist.name %></td>
+          <td><%= display_source_locaction(*safelist.block.source_location) %></td>
+        </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Blocklists <span class="badge"><%= @blocklists.size %></span></h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-compact">
+      <tr>
+        <th>Name</th>
+        <th>Source Location</th>
+      </tr>
+      <% if @blocklists.size == 0 %>
+        <tr>
+          <td colspan="2" class="noresults">No blocklists registered</td>
+        </tr>
+      <% else %>
+        <% @blocklists.values.each do |blocklists| %>
+          <tr>
+            <td><%= blocklists.name %></td>
+            <td><%= display_source_locaction(*blocklists.block.source_location) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Tracks <span class="badge"><%= @tracks.size %></span></h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-compact">
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Filter Class</th>
+        <th>Limit</th>
+        <th>Period</th>
+        <th>Source Location</th>
+      </tr>
+      <% if @tracks.size == 0 %>
+        <tr>
+          <td colspan="6" class="noresults">No blocklists registered</td>
+        </tr>
+      <% else %>
+        <% @tracks.values.each do |track| %>
+            <tr>
+              <td><%= track.filter.name %></td>
+              <td><%= track.filter.type %></td>
+              <td><%= track.filter.class %></td>
+              <% # TODO presenter needed here %>
+              <% if track.filter.class == Rack::Attack::Throttle %>
+                <td><%= track.filter.limit rescue nil %></td>
+                <td><%= track.filter.period rescue nil %></td>
+              <% else %>
+                <td colspan="2"></td>
+              <% end %>
+              <td><%= display_source_locaction(*track.filter.block.source_location)  rescue 'No Source Location' %></td>
+            </tr>
+          <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Notification Listeners <span class="badge"><%= @asn_listeners.size %></span></h2>
+  </div>
+  <div class="panel-body">
+    <p>ActiveSupport::Notification listeners for 'rack.attack'</p>
+    <table class="table table-compact">
+      <tr>
+        <th>Source Location</th>
+      </tr>
+      <% if @asn_listeners.size == 0 %>
+        <tr>
+          <td colspan="1" class="noresults">None registered</td>
+        </tr>
+      <% else %>
+        <% @asn_listeners.each do |listener| %>
+          <tr>
+            <td><%= display_source_locaction(*listener.instance_variable_get(:@delegate).source_location) rescue 'Unknown'   %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+   </div>
+</div>

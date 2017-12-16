@@ -73,6 +73,19 @@ module Tuttle
       end
     end
 
+    def value_inspect(val, hide_nil: false)
+      case val
+      when NilClass
+        content_tag(:code, val.inspect) unless hide_nil
+      when String
+        content_tag(:code, val.inspect)
+      when Symbol
+        content_tag(:code, val.inspect)
+      else
+        val.inspect
+      end
+    end
+
     private
 
     def redact_by_key(key, value)
