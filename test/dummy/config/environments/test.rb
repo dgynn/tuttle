@@ -17,9 +17,12 @@ Dummy::Application.configure do
     config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
   end
 
+  if Rails::VERSION::STRING >= '5.2'
+    config.active_record.sqlite3.represent_boolean_as_integer = true
+  end
+
   config.eager_load = false
   config.active_support.test_order = :sorted
-  config.secret_key_base = 'abcdefghihkl'
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
