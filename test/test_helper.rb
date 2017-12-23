@@ -2,7 +2,9 @@
 ENV['RAILS_ENV'] = 'test'
 
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start 'rails' do
+  add_group 'Presenters', 'lib/tuttle/presenters'
+end
 
 if ENV['CODACY_PROJECT_TOKEN']
   require 'codacy-coverage'
@@ -14,8 +16,8 @@ require 'rails/test_help'
 
 Rails.backtrace_cleaner.remove_silencers!
 
-# Load support files
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+# Load support files - current there are no support files needed
+# Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 # Load fixtures from the engine
 if ActiveSupport::TestCase.method_defined?(:fixture_path=)
