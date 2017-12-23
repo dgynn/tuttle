@@ -57,7 +57,7 @@ module Tuttle
           # Copied from <actionpack>/lib/action_dispatch/routing/route_set.rb
           def controller_reference(controller_param)
             const_name = "#{controller_param.camelize}Controller"
-            ActiveSupport::Dependencies.constantize(const_name)
+            ::ActiveSupport::Dependencies.constantize(const_name)
           end
 
         end
