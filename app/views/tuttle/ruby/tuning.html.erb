@@ -47,7 +47,7 @@ ENV['RUBY_GLOBAL_METHOD_CACHE_SIZE'] = <%= ENV.fetch('RUBY_GLOBAL_METHOD_CACHE_S
 </p>
 <h4>Controls</h4>
 <p>
-  Normally, the Garbage Collector runs as needed to free memory. You can also programmatically control the GC as well to stop it from running or to trigger a GC on demand.</code>
+  Normally, the Garbage Collector runs as needed to free memory. You can also programmatically control the GC as well to stop it from running or to trigger a GC on demand.
 </p>
 <p>
   Is GC enabled? <%= truth_label(@gc_enabled) %>
@@ -91,15 +91,12 @@ ENV['RUBY_GLOBAL_METHOD_CACHE_SIZE'] = <%= ENV.fetch('RUBY_GLOBAL_METHOD_CACHE_S
 </p>
 <p>
   Some useful resources for understanding how these variables affect performance can be found here:
-  <ul>
-    <li><a href="https://github.com/tmm1">Aman Gupta's</a> post: <a href="http://tmm1.net/ruby21-rgengc/">Ruby 2.1: RGenGC</a></li>
-    <li><a href="https://github.com/mrnugget">Thorsten Ball's</a> post: <a href="http://thorstenball.com/blog/2014/03/12/watching-understanding-ruby-2.1-garbage-collector/">Watching and Understanding the Ruby 2.1 Garbage Collector at Work</a></li>
-  </ul>
 </p>
-<%
-   #
-   #
-%>
+<ul>
+  <li><a href="https://github.com/tmm1">Aman Gupta's</a> post: <a href="http://tmm1.net/ruby21-rgengc/">Ruby 2.1: RGenGC</a></li>
+  <li><a href="https://github.com/mrnugget">Thorsten Ball's</a> post: <a href="http://thorstenball.com/blog/2014/03/12/watching-understanding-ruby-2.1-garbage-collector/">Watching and Understanding the Ruby 2.1 Garbage Collector at Work</a></li>
+</ul>
+
 <table class="table table-condensed">
   <tr>
     <th>ENV</th>

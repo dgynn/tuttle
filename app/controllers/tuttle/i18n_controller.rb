@@ -19,7 +19,7 @@ module Tuttle
 
     def set_sorted_locales
       @sorted_locales = [I18n.default_locale] +
-        (I18n.available_locales.map(&:to_s).sort.map(&:to_sym) - [I18n.default_locale])
+                        (I18n.available_locales.map(&:to_s).sort.map(&:to_sym) - [I18n.default_locale])
     end
 
   end

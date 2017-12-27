@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.description = 'Rails server inspector'
   s.license     = 'MIT'
 
-  s.files = Dir['{app,config,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
+  s.files = Dir['{app,config,lib}/**/*'] + %w[MIT-LICENSE Rakefile README.md CHANGELOG.md]
 
-  s.required_ruby_version = '>= 2.0.0'
+  s.required_ruby_version = '>= 2.1.0'
 
   s.add_dependency 'rails', '>= 4.1.0'
 

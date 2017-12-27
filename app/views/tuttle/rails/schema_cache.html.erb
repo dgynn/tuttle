@@ -38,7 +38,7 @@
   <%= truth_label(@connection_schema_cache.version.present?,'DOES','DOES NOT') %>
   appear to have been loaded from the schema cache dump.
 </p>
-<% if !Rails.application.config.cache_classes %>
+<% unless Rails.application.config.cache_classes %>
 <p>Note: The schema cache is only loaded once on application startup. During development, with code reloading, it is likely to be reset.</p>
 <% end %>
 
@@ -75,7 +75,7 @@
     <tr>
       <td colspan="7" class="warning text-center">
         No data exists in the schema cache
-        </br>
+        <br />
         This most likely means that the connection has been reset either by
         code reloading or some connection problem
       </td>

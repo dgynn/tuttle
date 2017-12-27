@@ -15,10 +15,10 @@
         <p>Caching: <%= truth_label(::ActionController::Base.send(:cache_configured?), 'Enabled', 'Disabled') %></p>
       </div>
       <div class="panel-footer">
-        <%= link_to "Configuration", rails_path, :class=>['btn','btn-primary'], :role=>'button' %>
-        <%= link_to "Database", rails_database_path, :class=>['btn','btn-primary'], :role=>'button' %>
-        <%= link_to "Asset Pipeline", rails_assets_path, :class=>['btn','btn-primary'], :role=>'button' %>
-        <%= link_to "Caching", rails_cache_path, :class=>['btn','btn-primary'], :role=>'button' %>
+        <%= link_to "Configuration", rails_path, :class=> %w(btn btn-primary), :role=>'button' %>
+        <%= link_to "Database", rails_database_path, :class=> %w(btn btn-primary), :role=>'button' %>
+        <%= link_to "Asset Pipeline", rails_assets_path, :class=> %w(btn btn-primary), :role=>'button' %>
+        <%= link_to "Caching", rails_cache_path, :class=> %w(btn btn-primary), :role=>'button' %>
       </div>
     </div>
 
@@ -78,8 +78,8 @@
         <p>Gems: <%= Bundler.rubygems.all_specs.size %></p>
       </div>
       <div class="panel-footer">
-        <%= link_to "Configuration", ruby_path, :class=>['btn','btn-primary'], :role=>'button' %>
-        <%= link_to "Gems", gems_path, :class=>['btn','btn-primary'], :role=>'button' %>
+        <%= link_to "Configuration", ruby_path, :class=> %w(btn btn-primary), :role=>'button' %>
+        <%= link_to "Gems", gems_path, :class=> %w(btn btn-primary), :role=>'button' %>
       </div>
     </div>
 

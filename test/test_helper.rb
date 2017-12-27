@@ -33,6 +33,7 @@ class ActiveSupport::TestCase
 end
 
 require 'devise/version'
+# rubocop:disable Style/MixinUsage
 class ActionController::TestCase
   if Devise::VERSION < '4.2'
     include Devise::TestHelpers
@@ -44,4 +45,5 @@ class ActionController::TestCase
     @routes = Tuttle::Engine.routes
   end
 end
+# rubocop:enable Style/MixinUsage
 # rubocop:enable Style/ClassAndModuleChildren

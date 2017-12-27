@@ -13,13 +13,13 @@ group :development, :test do
   gem "cancancan"
   gem "devise", "> 3.5.0", github: "plataformatec/devise"
   gem "rack-attack"
+  gem "execjs"
   gem "get_process_mem"
   gem "memory_profiler", github: "SamSaffron/memory_profiler", branch: "master"
+  gem "mini_racer"
   gem "paperclip"
   gem "rack-mini-profiler"
   gem "ruby-prof"
-  gem "mini_racer"
-  gem "execjs"
   gem "codacy-coverage", require: false
   gem "rubocop", require: false
 end

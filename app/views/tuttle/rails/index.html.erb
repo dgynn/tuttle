@@ -64,20 +64,22 @@ Log Level = <%= Rails.configuration.log_level %>
     <p>
       Rails will load code based on the configured load paths with the
       help of ActiveSupport.
-      <ul>
-        <li>
-          Autoload - Files will be searched here to auto
-          load classes based on naming convention
-        </li>
-        <li>
-          Autoload Once - A subset of autoload that will not be reloaded
-          when class caching is disabled (default for development)
-        </li>
-        <li>
-          Eager Load - All classes here will be loaded when eager loading
-          is configured (default for production)
-        </li>
-      </ul>
+    </p>
+    <ul>
+      <li>
+        Autoload - Files will be searched here to auto
+        load classes based on naming convention
+      </li>
+      <li>
+        Autoload Once - A subset of autoload that will not be reloaded
+        when class caching is disabled (default for development)
+      </li>
+      <li>
+        Eager Load - All classes here will be loaded when eager loading
+        is configured (default for production)
+      </li>
+    </ul>
+    <p>
       The runtime load paths are determined by configuration (typically in
       <code>application.rb</code>), Rails' default load paths
       (e.g. <code>app/*</code>), paths contributed by Engines, and direct API

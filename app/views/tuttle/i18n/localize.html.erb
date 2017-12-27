@@ -25,7 +25,7 @@
     <% locale_date_formats = I18n.translate('date.formats', locale: locale_name, fallback: false) rescue nil  %>
     <tr class="<% 'missing' if locale_date_formats.nil? %>">
       <td><%= locale_name %></td>
-      <% date_formats.each do |format, format_string| %>
+      <% date_formats.each do |format, _format_string| %>
         <td class="nowrap"><%= l(date_current, locale: locale_name, format: format) rescue 'translation missing' %></td>
       <% end %>
     </tr>

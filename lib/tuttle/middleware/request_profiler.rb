@@ -11,7 +11,7 @@ module Tuttle
       def call(env)
         query_string = env['QUERY_STRING']
 
-        tuttle_profiler_action = /(^|[&?])tuttle\-profiler=([\w\-]*)/.match(query_string) { |m| m[2] }
+        tuttle_profiler_action = /(^|[&?])tuttle-profiler=([\w\-]*)/.match(query_string) { |m| m[2] }
 
         case tuttle_profiler_action
         when 'memory_profiler', 'memory'
@@ -67,7 +67,7 @@ module Tuttle
         query_params = Rack::Utils.parse_nested_query(query_string)
         options = {}
         options[:threshold] = Float(query_params['ruby-prof_threshold']) if query_params.key?('ruby-prof_threshold')
-        rubyprof_printer = /ruby\-prof_printer=([\w]*)/.match(query_string) { |m| m[1] }
+        rubyprof_printer = /ruby-prof_printer=([\w]*)/.match(query_string) { |m| m[1] }
 
         data = ::RubyProf::Profile.profile do
           _, _, body = @app.call(env)
@@ -96,10 +96,10 @@ module Tuttle
       end
 
       # These methods *may* cause the method cache to be invalidated
-      TRACE_METHODS = Set.new([:extend, :include, :const_set, :remove_const, :alias_method, :remove_method,
-                               :prepend, :append_features, :prepend_features,
-                               :public_constant, :private_constant, :autoload,
-                               :define_method, :define_singleton_method])
+      TRACE_METHODS = Set.new(%i[extend include const_set remove_const alias_method remove_method
+                                 prepend append_features prepend_features
+                                 public_constant private_constant autoload
+                                 define_method define_singleton_method])
 
       def profile_busted(env, _query_string)
         # Note: Requires Busted (of course) and DTrace so will need much better error handling and information
@@ -166,7 +166,7 @@ module Tuttle
 
         # Prepare the output
         output = "\nRubyVM.stat:           Before     After      Change\n".dup
-        [:global_method_state, :global_constant_state, :class_serial].each do |stat|
+        %i[global_method_state global_constant_state class_serial].each do |stat|
           output << format("%-22s %-10d %-10d %+d\n",
                            stat,
                            vmstat_before[stat],
@@ -195,18 +195,18 @@ module Tuttle
 
         output << "\nTraces (method cache clearing calls): (#{cache_busters.size} times)\n"
         cache_busters.each do |trace_info|
-          if trace_info[:event] == :c_call
-            output << format("%s\#%s: %s %s\n",
+          output << if trace_info[:event] == :c_call
+            format("%s\#%s: %s %s\n",
                              trace_info[:defined_class],
                              trace_info[:method_id],
                              trace_info[:target_class],
                              trace_info[:location])
           else
-            output << format("Class Definition: %s %s %s\n",
+            format("Class Definition: %s %s %s\n",
                              trace_info[:target_class],
                              trace_info[:defined_class],
                              trace_info[:location])
-          end
+                    end
         end
 
         [200,

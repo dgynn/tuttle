@@ -9,6 +9,7 @@ module Tuttle
         super(delegate)
       end
 
+      # noinspection RubyInstanceMethodNamingConvention
       def h
         @view
       end

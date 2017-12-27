@@ -56,7 +56,7 @@
 
       <% ExecJS::Runtimes.names.each do |runtime_name| %>
         <% runtime = ExecJS::Runtimes.const_get(runtime_name) %>
-        <tr class="<%= runtime == ExecJS::Runtimes.best_available ? "info best_available" : runtime.available? ? "success " : "warning" %> ">
+        <tr class="<%= runtime.available? ? "success " : "warning" %> <%= runtime == ExecJS::Runtimes.best_available ? "info best_available" : "" %>">
           <td class="nowrap"><%= runtime_name %></td>
           <td class="nowrap"><%= runtime.name %></td>
           <td class="nowrap">

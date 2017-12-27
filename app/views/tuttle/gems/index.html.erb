@@ -14,7 +14,7 @@
       <td><%= gemspec.version.to_s %></td>
       <td><%= gemspec.summary %></td>
       <td><%= gemspec.licenses.join(', ') %></td>
-      <td><%= link_to gemspec.homepage, gemspec.homepage if !gemspec.homepage.blank? %></td>
+      <td><%= link_to gemspec.homepage, gemspec.homepage unless gemspec.homepage.blank? %></td>
     </tr>
   <% end %>
 </table>

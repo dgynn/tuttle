@@ -12,7 +12,7 @@ module Tuttle
 
     # Display label if condition is true
     def true_label(is_true, true_label = 'true')
-      content_tag(:span, true_label, class: ['label', 'label-success']) if is_true
+      content_tag(:span, true_label, class: %w[label label-success]) if is_true
     end
 
     def tuttle_redacted(enumarator)

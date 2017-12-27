@@ -1,5 +1,5 @@
 <%- content_for(:javascripts) do -%>
-  <%= javascript_tag do -%>
+  <%= javascript_tag do %>
     $(function () { $('[data-toggle="tooltip"]').tooltip(); });
   <% end -%>
 <%- end %>
@@ -72,7 +72,7 @@
         </div>
       </div>
       <hr>
-      <% if !@recognized_paths.blank? %>
+      <% unless @recognized_paths.blank? %>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <table class="table table-striped">

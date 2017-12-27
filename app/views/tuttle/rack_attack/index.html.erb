@@ -48,13 +48,13 @@
         <td><%= request.host %></td>
       </tr>
 
-      <% @rack_attack_rack_environent_settings.each do |k| %>
+      <% @rack_attack_env_settings.each do |k| %>
         <tr>
           <td><%= k %></td>
           <td>
             <% if request.env[k].is_a?(Hash) %>
-              <% request.env[k].each do |k, v| %>
-                <%= k.to_s %> : <%= v.inspect %><br/>
+              <% request.env[k].each do |k2, v2| %>
+                <%= k2.to_s %> : <%= v2.inspect %><br/>
               <% end %>
             <% else %>
               <%= value_inspect(request.env[k], hide_nil: false) %>

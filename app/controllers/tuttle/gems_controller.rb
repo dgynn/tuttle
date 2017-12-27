@@ -13,8 +13,7 @@ module Tuttle
     def json
     end
 
-    # rubocop:disable Style/AccessorMethodName
-    def get_process_mem
+    def get_process_mem # rubocop:disable Naming/AccessorMethodName
       require 'get_process_mem'
       require 'get_process_mem/version'
       @memory_self = GetProcessMem.new

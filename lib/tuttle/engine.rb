@@ -34,9 +34,7 @@ module Tuttle
       mount_engine! if Tuttle.automount_engine
       use_profiling_middleware! if Tuttle.enable_profiling
 
-      if Tuttle.track_notifications
-        Tuttle::Instrumenter.initialize_tuttle_instrumenter
-      end
+      Tuttle::Instrumenter.initialize_tuttle_instrumenter if Tuttle.track_notifications
     end
 
     config.to_prepare do

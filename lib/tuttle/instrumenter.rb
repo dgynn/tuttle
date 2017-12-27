@@ -20,7 +20,8 @@ module Tuttle
       # Hitting the cache inspector page will enable it for that session.
       Tuttle::Engine.logger.info('Initializing cache_read subscriber')
       ActiveSupport::Notifications.subscribe('cache_read.active_support') do |*args|
-        cache_call_location = caller_locations.detect { |cl| cl.path.start_with?("#{Rails.root}/app".freeze) }
+        app_path = Rails.root.join('app').to_s
+        cache_call_location = caller_locations.detect { |cl| cl.path.start_with?(app_path) }
         event = ActiveSupport::Notifications::Event.new(*args)
 
         Tuttle::Engine.logger.info("Cache Read called: #{cache_call_location.path} on line #{cache_call_location.lineno} :: #{event.payload.inspect}")
