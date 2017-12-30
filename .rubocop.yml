@@ -15,6 +15,9 @@ Documentation:
 Layout/DotPosition:
   EnforcedStyle: trailing
 
+Layout/EmptyLineAfterMagicComment:
+  Enabled: false
+
 Layout/EmptyLinesAroundClassBody:
   Enabled: false
 

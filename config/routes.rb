@@ -1,3 +1,4 @@
+# frozen_string_literal: false
 Tuttle::Engine.routes.draw do
 
   root :to => 'home#index'

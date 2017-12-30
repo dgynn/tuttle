@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'ruby-prof/printers/call_stack_printer'
 
 # This is a modified version of the RubyProf::CallStackPrinter
@@ -27,7 +28,7 @@ module Tuttle
 
         @result.threads.each do |thread|
           @overall_time = thread.total_time
-          thread_info = "Thread: #{thread.id}"
+          thread_info = "Thread: #{thread.id}".dup
           thread_info << ", Fiber: #{thread.fiber_id}" unless thread.id == thread.fiber_id
           thread_info << format(' (%4.2f%% ~ %f)', (@overall_time / @overall_threads_time) * 100, @overall_time)
 

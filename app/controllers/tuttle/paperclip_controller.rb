@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_dependency 'tuttle/application_controller'
 require 'paperclip/version' if defined?(Paperclip)
 

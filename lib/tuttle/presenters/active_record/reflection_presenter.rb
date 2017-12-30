@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_dependency 'tuttle/presenters/base_presenter'
 
 module Tuttle

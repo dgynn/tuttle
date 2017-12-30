@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'tuttle/version'
 
 # TODO: clean this up so that mattr_accessor is not needed

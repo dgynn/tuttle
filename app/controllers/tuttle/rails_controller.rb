@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails/generators'
 require_dependency 'tuttle/application_controller'
 require_dependency 'tuttle/presenters/action_dispatch/routing/route_wrapper'

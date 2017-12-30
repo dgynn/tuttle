@@ -1,5 +1,4 @@
-# frozen-string-literal: true
-
+# frozen_string_literal: true
 module Tuttle
   module ApplicationHelper
     BUNDLER_GEM_PATHS_REGEX = %r{(#{Bundler.rubygems.gem_dir}|#{File.realpath(Bundler.rubygems.gem_dir)})+(/bundler)*/gems}
