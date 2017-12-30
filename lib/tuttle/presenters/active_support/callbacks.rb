@@ -7,16 +7,14 @@ module Tuttle
       module Callbacks
         class CallbackWrapper < DelegateClass(::ActiveSupport::Callbacks::Callback)
           def safe_source_location(controller_instance)
-              controller_instance.method(filter).try(:source_location)
-            rescue StandardError
-              [nil, nil]
+            controller_instance.method(filter).try(:source_location)
+          rescue StandardError
+            [nil, nil]
           end
         end
 
         class CallbackChainWrapper < DelegateClass(::ActiveSupport::Callbacks::CallbackChain)
-          def size
-            chain.size
-          end
+          delegate :size, to: :chain
 
           def each(&block)
             chain.map { |cb| CallbackWrapper.new(::Tuttle::Presenters::ActiveSupport::Callbacks::CallbackWrapper.new(cb)) } .each(&block)

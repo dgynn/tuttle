@@ -49,7 +49,7 @@
         <td><%= route.constraints %></td>
         <td><%= route.controller %></td>
         <td><%= route.action %></td>
-        <td><%= truth_label(route.internal_to_rails?) %></td>
+        <td><%= truth_label(route.internal?) %></td>
         <td><%= truth_label(route.engine?) %></td>
         <td><%= truth_label(route.route_problem.nil?) %> <%= route.route_problem %></td>
       </tr>

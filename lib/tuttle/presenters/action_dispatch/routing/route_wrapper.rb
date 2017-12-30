@@ -25,17 +25,15 @@ module Tuttle
             rack_app.respond_to?(:dispatcher?)
           end
 
-          def internal_to_rails?
-            !!internal?
-          end
-
           def route_problem
             return @route_problem if defined?(@route_problem)
             @route_problem =
-              if requirements[:controller].present? && controller_klass.nil?
+              if controller_klass
+                if requirements[:action] && controller_klass.action_methods.exclude?(action)
+                  'Action does not exist'
+                end
+              elsif requirements[:controller]
                 'Controller does not exist'
-              elsif requirements[:action].present? && controller_klass && !controller_klass.action_methods.include?(action)
-                'Action does not exist'
               end
           end
 
