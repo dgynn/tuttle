@@ -2,8 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "rails", branch: "master", git: "https://github.com/rails/rails.git"
-gem "arel", branch: "master", git: "https://github.com/rails/arel.git"
+gem "rails", github: "rails/rails", branch: "master"
+gem "arel", github: "rails/arel", branch: "master"
 gem "rails-controller-testing"
 
 group :development, :test do
@@ -12,13 +12,13 @@ group :development, :test do
   gem "active_model_serializers"
   gem "busted"
   gem "cancancan"
-  gem "devise", "> 3.5.0", github: "plataformatec/devise"
+  gem "devise", ">= 3.5.0"
   gem "rack-attack"
   gem "execjs"
   gem "get_process_mem"
-  gem "memory_profiler", github: "SamSaffron/memory_profiler", branch: "master"
+  gem "memory_profiler"
   gem "mini_racer"
-  gem "paperclip"
+  gem "paperclip", ">= 5.2.1"
   gem "rack-mini-profiler"
   gem "ruby-prof"
   gem "codacy-coverage", require: false

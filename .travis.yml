@@ -7,11 +7,12 @@ rvm:
   - 2.3.6
   - 2.2.7
 gemfile:
+  - gemfiles/rails_5.2.gemfile
   - gemfiles/rails_5.1.gemfile
   - gemfiles/rails_5.0.gemfile
   - gemfiles/rails_4.2.gemfile
   - gemfiles/rails_4.1.gemfile
-  - gemfiles/rails_master.gemfile
+#  - gemfiles/rails_master.gemfile
 
 git:
   depth: 3
@@ -22,7 +23,7 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - RAILS_ENV=test bundle exec rake app:db:setup test
+  - bundle exec rake app:db:setup test RAILS_ENV=test
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
@@ -33,5 +34,5 @@ matrix:
       gemfile: gemfiles/rails_4.1.gemfile
     - rvm: 2.4.3
       gemfile: gemfiles/rails_4.1.gemfile
-  allow_failures:
-    - gemfile: gemfiles/rails_master.gemfile
+#  allow_failures:
+#    - gemfile: gemfiles/rails_master.gemfile
