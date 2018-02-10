@@ -2,6 +2,7 @@
 
 <% @controllers.each do |controller| %>
   <%- controller_instance = controller.new %>
+  <%- controller_path = controller.controller_path %>
   <%- callback_chain_presenter = Tuttle::Presenters::ActiveSupport::Callbacks::CallbackChainWrapper.new(controller._process_action_callbacks) %>
 
   <h4><%= controller.inspect %> (<code><%= controller.controller_path %></code>) &lt; <%= controller.superclass %></h4>
@@ -29,14 +30,25 @@
     </table>
   </details>
 
-  <h5>Actions:</h5>
+  <%- action_methods = controller.action_methods %>
+  <h5>Actions <span class="badge"><%= action_methods.size %></span></h5>
   <table class="table table-condensed">
     <tbody>
-    <%- controller.action_methods.each do |method| %>
+    <%- action_methods.each do |method| %>
       <% # TODO controller and action layout, template exists? %>
       <% # TODO routes to actions %>
       <tr>
-        <td><code><%= method.to_s %></code></td>
+        <td width="50%"><code><%= method.to_s %></code></td>
+        <td width="50%" class="nowrap">
+          <%- route_matches = @routes.select { |r| r.controller == controller_path && r.action == method.to_s } %>
+          <% if route_matches.size > 0 %>
+            <% route_matches.each do |route| %>
+              <%= link_to "#{ route.verb } #{ route.path }", rails_routes_path(anchor: "route_#{route.precedence}") %><br/>
+            <% end %>
+          <% else %>
+            <code><%= truth_label(false, nil, 'unrouted') %></code>
+          <% end %>
+        </td>
       </tr>
     <% end %>
     </tbody>

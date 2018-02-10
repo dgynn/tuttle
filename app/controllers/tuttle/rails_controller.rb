@@ -13,6 +13,10 @@ module Tuttle
     end
 
     def controllers
+      @routes = Rails.application.routes.routes.collect do |route|
+        Tuttle::Presenters::ActionDispatch::Routing::RouteWrapper.new(route)
+      end
+
       # It seems likely that .descendants will work best when Tuttle and Rails classes are not modified
       # but both approaches also require eager_load to be true
       # @controllers = ObjectSpace.each_object(::Class).select {|klass| klass < ActionController::Base }

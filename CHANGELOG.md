@@ -4,6 +4,7 @@
   * New ExecJS inspector
   * New Rack::Attack inspector
   * Improved ActiveRecord models inspector with associations and validations
+  * Improved Rails Controllers link to matched routes (excluding wildcards and implicit renders)
 
 ### 0.0.7
 

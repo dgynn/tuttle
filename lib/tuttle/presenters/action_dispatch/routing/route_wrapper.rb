@@ -26,6 +26,7 @@ module Tuttle
           end
 
           def route_problem
+            # TODO: this does not handle ImplicitRender actions where the method does not exist but the template does
             return @route_problem if defined?(@route_problem)
             @route_problem =
               if controller_klass

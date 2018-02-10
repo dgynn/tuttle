@@ -41,7 +41,7 @@
       </tr>
       <% @routes.each do |route| %>
       <tr>
-        <td><%= route.precedence %></td>
+        <td><a name="route_<%= route.precedence %>"><%= route.precedence %></a></td>
         <td><%= route.verb %></td>
         <td><%= route.path %></td>
         <td><%= route.name %></td>
