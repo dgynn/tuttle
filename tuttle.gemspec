@@ -8,8 +8,9 @@ Gem::Specification.new do |s|
   s.authors     = ['Dave Gynn']
   s.email       = ['davegynn@gmail.com']
   s.homepage    = 'https://github.com/dgynn/tuttle'
-  s.summary     = 'Tuttle for Rails'
-  s.description = 'Rails server inspector'
+  s.summary     = 'Rails runtime configuration inspector'
+  s.description = 'Tuttle is a tool for Rails developers to inspect the runtime configuration information of their applications, libraries, and frameworks.'
+
   s.license     = 'MIT'
 
   s.files = Dir['{app,config,lib}/**/*'] + %w[MIT-LICENSE Rakefile README.md CHANGELOG.md]
