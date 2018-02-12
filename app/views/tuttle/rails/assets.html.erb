@@ -156,7 +156,7 @@
   </p>
   <pre>
 <% @sprockets_env.paths.each do |asset_path| -%>
-<%= asset_path.to_s %>
+<%= display_path(asset_path.to_s) %>
 <% end -%>
 </pre>
 

@@ -112,7 +112,7 @@ Log Level = <%= Rails.configuration.log_level %>
       </tr>
       <% all_load_paths.each do |path| %>
         <tr>
-          <td><%= path %></td>
+          <td><%= display_path(path) %></td>
           <td><%= truth_label(all_autoload_paths.include?(path)) %></td>
           <td><%= truth_label(all_autoload_once_paths.include?(path)) %></td>
           <td><%= truth_label(config_eager_load_paths.include?(path)) %></td>

@@ -28,7 +28,7 @@
 </p>
 <ul>
   <%- ActiveSupport::Dependencies.autoload_paths.each do |path_name| %>
-    <li><%= path_name %></li>
+    <li><%= display_path(path_name) %></li>
   <%- end %>
 </ul>
 
@@ -39,7 +39,7 @@
 </p>
 <ul>
   <%- ActiveSupport::Dependencies.autoload_once_paths.each do |path_name| %>
-    <li><%= path_name %></li>
+    <li><%= display_path(path_name) %></li>
   <%- end %>
 </ul>
 
