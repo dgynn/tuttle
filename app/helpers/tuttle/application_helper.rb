@@ -40,9 +40,9 @@ module Tuttle
       return if path.blank?
       display_location =
         if path.start_with?(Rails.root.to_s)
-          path.gsub(Rails.root.to_s, "$RAILS_ROOT")
+          path.sub(Rails.root.to_s, "$RAILS_ROOT")
         elsif File.realpath(path).start_with?(File.realpath(Bundler.rubygems.gem_dir))
-          File.realpath(path).gsub(BUNDLER_GEM_PATHS_REGEX, "$GEMS")
+          File.realpath(path).sub(BUNDLER_GEM_PATHS_REGEX, "$GEMS")
         else
           path
         end
