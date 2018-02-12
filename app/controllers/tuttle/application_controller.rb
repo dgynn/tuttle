@@ -13,8 +13,13 @@ module Tuttle
       return unless Tuttle::Engine.reload_needed && !Rails.configuration.eager_load
       Tuttle::Engine.logger.warn('Eager-loading application')
       ActiveSupport::Notifications.instrument 'tuttle.perform_eager_load' do
-        Rails.application.eager_load!
-        Tuttle::Engine.reload_needed = false
+        begin
+          Rails.application.eager_load!
+        rescue
+          Tuttle::Engine.logger.warn('Failed to eager-load application')
+        ensure
+          Tuttle::Engine.reload_needed = false
+        end
       end
     end
 
