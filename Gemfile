@@ -13,6 +13,7 @@ group :development, :test do
   gem 'cancancan'
   gem 'devise', '>= 3.5.0'
   gem 'rack-attack'
+  gem "redis", ">= 4.0"
 
   gem 'execjs'
   gem 'get_process_mem'
