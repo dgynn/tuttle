@@ -2,8 +2,8 @@ language: ruby
 cache: bundler
 sudo: false
 rvm:
-  - 2.6.0
-  - 2.5.3
+  - 2.6.2
+  - 2.5.4
   - 2.4.5
   - 2.3.8
 gemfile:
@@ -30,11 +30,13 @@ after_script:
 # Devise does not work with ruby 2.4
 matrix:
   exclude:
-    - rvm: 2.6.0
+    - rvm: 2.6.2
       gemfile: gemfiles/rails_4.2.gemfile
-    - rvm: 2.6.0
+    - rvm: 2.6.2
       gemfile: gemfiles/rails_4.1.gemfile
-    - rvm: 2.5.3
+    - rvm: 2.5.4
+      gemfile: gemfiles/rails_4.2.gemfile
+    - rvm: 2.5.4
       gemfile: gemfiles/rails_4.1.gemfile
     - rvm: 2.4.5
       gemfile: gemfiles/rails_4.1.gemfile

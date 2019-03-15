@@ -6,7 +6,7 @@ group :development, :test do
   # jquery-rails is used by the dummy application
   gem 'jquery-rails'
 
-  gem 'sqlite3'
+  gem 'sqlite3', '~> 1.3.6'
 
   gem 'active_model_serializers'
   gem 'busted'
