@@ -12,7 +12,7 @@ group :development, :test do
   gem 'busted'
   gem 'cancancan'
   gem 'devise', '>= 3.5.0'
-  gem 'rack-attack'
+  gem 'rack-attack', "6.1.0"
   gem "redis", ">= 4.0"
 
   gem 'execjs'
@@ -20,8 +20,8 @@ group :development, :test do
   gem 'memory_profiler'
   gem 'mini_racer'
   gem 'paperclip'
-  gem 'rack-mini-profiler'
-  gem 'ruby-prof'
+  gem 'rack-mini-profiler', "1.0.2"
+  gem 'ruby-prof', "0.17.0"
 
   gem 'codacy-coverage', require: false
   gem 'rubocop', require: false
