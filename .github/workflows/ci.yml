@@ -8,7 +8,10 @@ jobs:
     name: Ruby ${{ matrix.ruby }}
     strategy:
       matrix:
-        ruby: ["2.7", "2.6", "2.5"]
+        ruby: ["2.7", "2.6"]
+        rails: ["5.2", "5.1"]
+    env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
+      BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
@@ -18,9 +21,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: vendor/bundle
-          key: ${{ runner.os }}-${{ matrix.ruby }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-${{ matrix.ruby }}-${{ matrix.rails }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.ruby }}-gems-
+            ${{ runner.os }}-${{ matrix.ruby }}-${{ matrix.rails }}-gems-
       - name: Setup gems
         run: |
           gem install bundler
