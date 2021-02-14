@@ -5,7 +5,7 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Ruby ${{ matrix.ruby }}
+    name: Ruby ${{ matrix.ruby }} Rails ${{ matrix.rails }}
     strategy:
       matrix:
         ruby: ["2.7", "2.6"]
@@ -30,4 +30,4 @@ jobs:
           bundle config path vendor/bundle
           bundle install --jobs 4
       - name: Tests
-        run: bundle exec rake test
+        run: bundle exec rake app:db:setup test RAILS_ENV=test
