@@ -20,10 +20,3 @@ jobs:
           bundler-cache: true
       - name: Tests
         run: bundle exec rake app:db:setup test RAILS_ENV=test
-      - name: Send coverage to Code Climate
-        uses: paambaati/codeclimate-action@v2.7.4
-        env:
-          CC_TEST_REPORTER_ID: 854889fcf81412da79c7e8e67621cc8c1ee79e4db1ecf49484136b1a9824cb9b
-        with:
-          debug: true
-          coverageLocations: coverage/.resultset.json:simplecov
