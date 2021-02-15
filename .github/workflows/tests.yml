@@ -1,16 +1,16 @@
-name: CI
+name: tests
 
 on: [push]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Ruby ${{ matrix.ruby }} Rails ${{ matrix.rails }}
+    name: Ruby ${{ matrix.ruby }} / Rails ${{ matrix.rails }}
     strategy:
       matrix:
         ruby: ["2.7", "2.6"]
         rails: ["5.2", "5.1"]
-    env: # $BUNDLE_GEMFILE must be set at the job level, so it is set for all steps
+    env:
       BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile
     steps:
       - uses: actions/checkout@v2
@@ -31,3 +31,10 @@ jobs:
           bundle install --jobs 4
       - name: Tests
         run: bundle exec rake app:db:setup test RAILS_ENV=test
+      - name: Send coverage to Code Climate
+        uses: paambaati/codeclimate-action@v2.7.4
+        env:
+          CC_TEST_REPORTER_ID: 854889fcf81412da79c7e8e67621cc8c1ee79e4db1ecf49484136b1a9824cb9b
+        with:
+          debug: true
+          coverageLocations: coverage/.resultset.json:simplecov
