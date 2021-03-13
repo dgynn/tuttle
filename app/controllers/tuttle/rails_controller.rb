@@ -10,6 +10,11 @@ module Tuttle
 
     def index
       @config_options = Tuttle::ConfigurationRegistry.data.to_a.sort_by!(&:first)
+      @all_load_paths = if Rails::VERSION::STRING < "6"
+                          (Rails.application.send(:_all_load_paths) + ActiveSupport::Dependencies.autoload_paths).uniq rescue []
+                        else
+                          (Rails.application.send(:_all_load_paths, true) + ActiveSupport::Dependencies.autoload_paths).uniq rescue []
+                        end
     end
 
     def controllers

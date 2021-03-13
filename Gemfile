@@ -3,10 +3,12 @@ source 'https://rubygems.org'
 gemspec
 
 group :development, :test do
+  gem 'rails-controller-testing'
+
   # jquery-rails is used by the dummy application
   gem 'jquery-rails'
 
-  gem 'sqlite3', '~> 1.3.6'
+  gem 'sqlite3'
 
   gem 'active_model_serializers'
   gem 'busted'
