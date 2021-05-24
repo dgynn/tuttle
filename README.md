@@ -22,7 +22,7 @@ apps or just help you better understand what is going on inside the frameworks y
 
 Tuttle has no dependencies other than Rails but works with a number of gems if
 they are loaded to provide inspections.
-Gems supported include devise, paperclip, active_model_serializers, cancancan, and more.
+Gems supported include devise, active_model_serializers, cancancan, and more.
 
 Tuttle is still in beta/proof-of-concept mode but is safe to use in development and disabled by default in other environments.
 

@@ -21,7 +21,6 @@ group :development, :test do
   gem 'get_process_mem', "0.2.4"
   gem 'memory_profiler'
   gem 'mini_racer'
-  gem 'paperclip'
   gem 'rack-mini-profiler', "1.0.2"
   gem 'ruby-prof', "0.17.0"
 
