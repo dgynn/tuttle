@@ -17,7 +17,7 @@ Dummy::Application.configure do
     config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
   end
 
-  if Rails::VERSION::STRING >= '5.2'
+  if Rails::VERSION::STRING >= '5.2' && Rails::VERSION::STRING < '6'
     config.active_record.sqlite3.represent_boolean_as_integer = true
   end
 
