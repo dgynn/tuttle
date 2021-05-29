@@ -1,0 +1,12 @@
+---
+:file_watcher:
+  Is the class used to detect file updates in the file system when config.reload_classes_only_on_change
+  is true. Rails ships with ActiveSupport::FileUpdateChecker, the default, and ActiveSupport::EventedFileUpdateChecker
+  (this one depends on the listen gem). Custom classes must conform to the ActiveSupport::FileUpdateChecker
+  API.
+:enable_dependency_loading:
+  When true, enables autoloading, even if the application is eager loaded and
+  config.cache_classes is set as true. Defaults to false.
+:debug_exception_response_format:
+  Sets the format used in responses when errors occur in development mode.
+  Defaults to :api for API only apps and :default for normal apps.

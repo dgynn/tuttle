@@ -10,7 +10,11 @@ module Tuttle
     def index
       # TODO: need better filter for sensitive values. this covers DB-style URLs with passwords, passwords, and keys
       env_hash = ENV.to_hash
-      env_hash = ActionDispatch::Http::ParameterFilter.new(ENV_FILTERS).filter(env_hash) unless params[:nofilter]
+      if Rails::VERSION::STRING < "6"
+        env_hash = ActionDispatch::Http::ParameterFilter.new(ENV_FILTERS).filter(env_hash) unless params[:nofilter]
+      else
+        env_hash = ActiveSupport::ParameterFilter.new(ENV_FILTERS).filter(env_hash) unless params[:nofilter]
+      end
       @filtered_env = env_hash.sort
     end
 
@@ -37,8 +41,8 @@ module Tuttle
     end
 
     def constants
-      # Global constants minus a few deprecated constants (to prevent warnings)
-      @constants = (Object.constants - %i[Bignum Fixnum NIL TRUE FALSE TimeoutError Data]).
+      # Global constants minus a few deprecated constants (to prevent warnings/errors)
+      @constants = (Object.constants - %i[Bignum Fixnum NIL TRUE FALSE TimeoutError Data SortedSet]).
                       sort.
                       map { |sym| [sym, Object.const_get(sym).class, Object.const_get(sym)] }.
                       reject { |_sym, klass, _val| klass == Class || klass == Module }

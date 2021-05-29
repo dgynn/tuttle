@@ -35,7 +35,8 @@ module Tuttle
         @controllers.reject! { |controller| controller == Rails::ApplicationController }
       end
 
-      @controllers.sort_by!(&:name)
+      # TODO: some classes do not have names, why?
+      # @controllers.sort_by!(&:name)
     end
 
     def engines

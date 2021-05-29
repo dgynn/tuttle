@@ -48,7 +48,7 @@ class ProfilingMiddlewareTest < ActionDispatch::IntegrationTest
 
   test 'cpu profiling middleware with graph report' do
     get '/tuttle?tuttle-profiler=ruby-prof&ruby-prof_printer=graph'
-    assert_select_quietly 'h1', 'Profile Report: wall_time'
+    assert_select_quietly 'h1', 'Wall_time'
     assert_response :success
   end
 

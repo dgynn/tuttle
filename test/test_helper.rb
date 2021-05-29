@@ -1,9 +1,11 @@
 # Configure Rails Environment
 ENV['RAILS_ENV'] = 'test'
 
-require 'simplecov'
-SimpleCov.start 'rails' do
-  add_group 'Presenters', 'lib/tuttle/presenters'
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start 'rails' do
+    add_group 'Presenters', 'lib/tuttle/presenters'
+  end
 end
 
 if ENV['CODACY_PROJECT_TOKEN']
@@ -47,3 +49,10 @@ class ActionController::TestCase
 end
 # rubocop:enable Style/MixinUsage
 # rubocop:enable Style/ClassAndModuleChildren
+
+require "minitest" # or "minitest/autorun"
+class Minitest::Test
+  def self.test_order
+    :alpha
+  end
+end
