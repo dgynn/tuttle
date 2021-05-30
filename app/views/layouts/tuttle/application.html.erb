@@ -90,9 +90,6 @@
             <%- if defined?(::CanCanCan) %>
               <li><%= link_to 'CanCanCan', cancancan_path %></li>
             <%- end %>
-            <%- if defined?(::Paperclip) %>
-              <li><%= link_to 'Paperclip', paperclip_path %></li>
-            <%- end %>
             <%- if defined?(::GetProcessMem) %>
               <li><%= link_to 'GetProcessMem', gems_get_process_mem_path %></li>
             <%- end %>

@@ -45,10 +45,6 @@ Tuttle::Engine.routes.draw do
     get '/active_model_serializers' => 'active_model_serializers#index' # 0.9.x?
   end
 
-  if defined?(Paperclip)
-    get '/paperclip' => 'paperclip#index'
-  end
-
   if defined?(Devise)
     get '/devise' => 'devise#index'
   end

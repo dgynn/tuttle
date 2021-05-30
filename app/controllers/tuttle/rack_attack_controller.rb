@@ -6,8 +6,8 @@ module Tuttle
 
     def index
       require 'rack/attack/version'
-      if ::Rack::Attack::VERSION < '5'
-        render plain: 'Tuttle Rack::Attack support requires version 5.x' && return
+      if ::Rack::Attack::VERSION < '6'
+        render plain: 'Tuttle Rack::Attack support requires version 6.x' && return
       end
 
       default_keys = %w[rack.attack.matched rack.attack.match_discriminator rack.attack.match_type rack.attack.match_data]
@@ -17,7 +17,9 @@ module Tuttle
       @throttles = Rack::Attack.throttles
       @safelists = Rack::Attack.safelists
       @blocklists = Rack::Attack.blocklists
-      @tracks = Rack::Attack.tracks
+      # TODO: tracks are no longer exposed
+      # @tracks = Rack::Attack.tracks
+      @tracks = []
 
       @asn_listeners = ActiveSupport::Notifications.notifier.listeners_for("rack.attack")
     end

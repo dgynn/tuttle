@@ -37,9 +37,6 @@
         <%- if defined?(Devise) %>
           <li class="list-group-item"><%= link_to 'Devise', devise_path %></li>
         <%- end %>
-        <%- if defined?(Paperclip) %>
-          <li class="list-group-item"><%= link_to 'Paperclip', paperclip_path %></li>
-        <%- end %>
         <li class="list-group-item"><%= link_to 'HTTP Clients', gems_http_clients_path %></li>
         <li class="list-group-item"><%= link_to 'JSON', gems_json_path %></li>
       </ul>
