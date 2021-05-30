@@ -15,9 +15,9 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,lib}/**/*'] + %w[MIT-LICENSE Rakefile README.md CHANGELOG.md]
 
-  s.required_ruby_version = '>= 2.1.0'
+  s.required_ruby_version = '>= 2.7.0'
 
-  s.add_dependency 'rails', '>= 4.1.0'
+  s.add_dependency 'rails', '>= 5.2.0'
 
-  s.add_development_dependency 'appraisal', '>= 2.2.0'
+  s.add_development_dependency 'appraisal', '>= 2.4.0'
 end

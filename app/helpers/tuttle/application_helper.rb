@@ -65,7 +65,7 @@ module Tuttle
         path.gsub(Rails.root.to_s, "$RAILS_ROOT")
       elsif path.start_with?(RbConfig::CONFIG['rubylibdir'])
         path.gsub(RbConfig::CONFIG['rubylibdir'], "$RUBY_LIB_DIR")
-      elsif path == "<internal:prelude>"
+      elsif path == "<internal:prelude>" || path == "<internal:kernel>"
         path
       elsif File.realpath(path).start_with?(File.realpath(Bundler.rubygems.gem_dir))
         File.realpath(path).gsub(BUNDLER_GEM_PATHS_REGEX, "$GEMS")

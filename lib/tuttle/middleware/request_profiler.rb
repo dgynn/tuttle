@@ -87,7 +87,9 @@ module Tuttle
                      ::RubyProf::CallStackPrinter
                    else
                      options[:application] = env['REQUEST_URI']
-                     ::Tuttle::RubyProf::FastCallStackPrinter
+                     # TODO: Restore FastCallStackPrinter to match CallStackPrinter API
+                     # ::Tuttle::RubyProf::FastCallStackPrinter
+                     ::RubyProf::CallStackPrinter
                    end
 
         profiler.new(data).print(result, options)
@@ -206,7 +208,7 @@ module Tuttle
                              trace_info[:target_class],
                              trace_info[:defined_class],
                              trace_info[:location])
-                    end
+          end
         end
 
         [200,

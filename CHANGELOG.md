@@ -1,3 +1,9 @@
+### 0.1.0.alpha
+
+* Changes
+  * Require Rails 5.2+ and Ruby 2.7+
+  * Drop paperclip support 
+
 ### 0.0.8
 
 * Features

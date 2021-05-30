@@ -126,19 +126,6 @@
         Assets will be served with an appropriate scheme based on the request.
       </td>
     </tr>
-    <% if Rails::VERSION::MAJOR < 5 %>
-      <%
-        # Note: in Rails 5 this is config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=31536000' }
-        # See http://blog.bigbinary.com/2015/10/31/rails-5-allows-setting-custom-http-headers-for-assets.html
-      %>
-    <tr>
-      <td>config.static_cache_control</td>
-      <td><code><%= Rails.application.config.static_cache_control %></code></td>
-      <td>In Rails 4, a single Cache-Control header can be configured such as
-        <code>'public, max-age=1000'</code>
-      </td>
-    </tr>
-    <% end %>
   </table>
 
 <% if false # This is working but not tested or complete yet %>

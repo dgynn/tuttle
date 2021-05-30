@@ -1,15 +1,24 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+
 AllCops:
+  TargetRubyVersion: 2.7
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  NewCops: disable
   Exclude:
     - 'db/**/*'
     - 'config/**/*'
+    - 'gemfiles/**/*'
     - 'script/**/*'
     - 'test/dummy/**/*'
     - 'lib/tuttle/ruby_prof/fast_call_stack_printer.rb'
 
-Rails:
-  Enabled: true
+Style/Documentation:
+  Enabled: false
 
-Documentation:
+Style/FrozenStringLiteralComment:
   Enabled: false
 
 Layout/DotPosition:
@@ -38,7 +47,7 @@ Layout/SpaceInsideBlockBraces:
 Metrics/ClassLength:
   Max: 200
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Metrics/MethodLength:

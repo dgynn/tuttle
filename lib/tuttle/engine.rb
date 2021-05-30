@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'tuttle'
 require 'rails/engine'
 
 module Tuttle

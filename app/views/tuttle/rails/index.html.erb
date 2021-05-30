@@ -89,7 +89,7 @@ Log Level = <%= Rails.configuration.log_level %>
       <i>Ideally, all directories should exist.</i>
     </p>
 
-    <%- all_load_paths = (Rails.application.send(:_all_load_paths) + ActiveSupport::Dependencies.autoload_paths).uniq -%>
+    <%- all_load_paths = @all_load_paths -%>
 
     <%- all_autoload_paths = Rails.application.send(:_all_autoload_paths) -%>
     <%- all_autoload_once_paths = Rails.application.send(:_all_autoload_once_paths) -%>
