@@ -8,14 +8,9 @@ Dummy::Application.configure do
   config.cache_classes = true
 
   # Configure static asset server for tests with Cache-Control for performance
-  #config.serve_static_assets = true
-  if Rails::VERSION::MAJOR < 5
-    config.serve_static_files = true
-    config.static_cache_control = 'public, max-age=3600'
-  else
-    config.public_file_server.enabled = true
-    config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
-  end
+  # config.serve_static_assets = true
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
 
   if Rails::VERSION::STRING >= '5.2' && Rails::VERSION::STRING < '6'
     config.active_record.sqlite3.represent_boolean_as_integer = true
